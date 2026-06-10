@@ -1,0 +1,61 @@
+import { connectDB } from "@/lib/db";
+import Order from "@/models/Order";
+import { verifyToken } from "@/lib/auth";
+
+export async function POST(req: Request) {
+    try {
+        await connectDB();
+
+        const authHeader = req.headers.get("authorization");
+
+        if (!authHeader) {
+            return Response.json(
+                { message: "Unauthorized" },
+                { status: 401 }
+            );
+        }
+
+        const token = authHeader.split(" ")[1];
+
+        const decoded = verifyToken(token) as {
+            userId: string;
+            email: string;
+        };
+
+        const body = await req.json();
+
+        const {
+            customerName,
+            customerPhone,
+            productName,
+            quantity,
+            price,
+        } = body;
+
+        const order = await Order.create({
+            customerName,
+            customerPhone,
+            productName,
+            quantity,
+            price,
+
+            userId: decoded.userId,
+        });
+
+        return Response.json(
+            {
+                message: "Order created successfully",
+                order,
+            },
+            { status: 201 }
+        );
+    } catch (error) {
+        return Response.json(
+            {
+                message: "Server error",
+                error,
+            },
+            { status: 500 }
+        );
+    }
+}
