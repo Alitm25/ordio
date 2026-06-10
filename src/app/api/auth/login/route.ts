@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken'
 
 export async function POST(req: Request) {
     try {
@@ -36,12 +37,25 @@ export async function POST(req: Request) {
             );
         }
 
+        // JWT auth
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                email: user.email,
+            },
+            process.env.JWT_SECRET as string,
+            {
+                expiresIn: "7d"
+            }
+        )
+
         return Response.json({
             message: "Login successful",
             user: {
                 id: user._id,
                 email: user.email,
             },
+            token,
         });
     } catch (error) {
         return Response.json(
@@ -49,4 +63,5 @@ export async function POST(req: Request) {
             { status: 500 }
         );
     }
+
 }
