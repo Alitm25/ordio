@@ -59,3 +59,45 @@ export async function POST(req: Request) {
         );
     }
 }
+
+
+
+export async function GET(req: Request) {
+    try {
+        await connectDB();
+
+        const authHeader = req.headers.get("authorization");
+
+        if (!authHeader) {
+            return Response.json(
+                { message: "Unauthorized" },
+                { status: 401 }
+            );
+        }
+
+        const token = authHeader.split(" ")[1];
+
+        const decoded = verifyToken(token) as {
+            userId: string;
+            email: string;
+        };
+
+        const orders = await Order.find({
+            userId: decoded.userId,
+        }).sort({
+            createdAt: -1,
+        });
+
+        return Response.json({
+            orders,
+        });
+    } catch (error) {
+        return Response.json(
+            {
+                message: "Unauthorized",
+                error,
+            },
+            { status: 401 }
+        );
+    }
+}
