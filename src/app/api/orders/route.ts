@@ -55,7 +55,7 @@ export async function GET(req: Request) {
         const user = getCurrentUser(req);
 
         const orders = await Order.find({
-            userId: decoded.userId,
+            userId: user.userId,
         }).sort({
             createdAt: -1,
         });
