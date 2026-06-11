@@ -25,7 +25,7 @@ export async function POST(req: Request) {
             quantity,
             price,
 
-            userId: decoded.userId,
+            userId: user.userId,
         });
 
         return Response.json(
