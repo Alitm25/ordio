@@ -6,21 +6,7 @@ export async function POST(req: Request) {
     try {
         await connectDB();
 
-        const authHeader = req.headers.get("authorization");
-
-        if (!authHeader) {
-            return Response.json(
-                { message: "Unauthorized" },
-                { status: 401 }
-            );
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        const decoded = verifyToken(token) as {
-            userId: string;
-            email: string;
-        };
+        const user = getCurrentUser(req);
 
         const body = await req.json();
 
