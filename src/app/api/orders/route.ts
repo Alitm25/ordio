@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
-import { verifyToken } from "@/lib/auth";
+import {getCurrentUser} from "@/lib/getCurrentUser";
 
 export async function POST(req: Request) {
     try {
