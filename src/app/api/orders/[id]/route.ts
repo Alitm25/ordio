@@ -10,14 +10,8 @@ export async function PATCH(
         await connectDB();
 
         const user = getCurrentUser(req);
-
         const { id } = await params;
-
         const { status } = await req.json();
-
-        console.log("ID:", id);
-        console.log("User ID:", user.userId);
-        console.log("Status:", status);
 
         const order = await Order.findOne({
             _id: id,
@@ -49,5 +43,40 @@ export async function PATCH(
             },
             { status: 500 }
         );
+    }
+}
+
+
+export async function DELETE(
+    req: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        await connectDB();
+        const user = getCurrentUser(req);
+        const { id } = await params;
+
+        const deletedOrder = await Order.findOneAndDelete({
+            _id: id,
+            userId: user.userId,
+        })
+
+        if (!deletedOrder) {
+            return Response.json(
+                { message: "Order not found" },
+                { status: 404 }
+            )
+        }
+
+        return Response.json({
+            message: "Order deleted successfully",
+
+        })
+
+    } catch (error) {
+        return Response.json(
+            { message: "Server error", error: error instanceof Error ? error.message : String(error) },
+            { status: 500 }
+        )
     }
 }
