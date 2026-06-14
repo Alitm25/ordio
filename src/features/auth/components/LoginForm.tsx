@@ -21,6 +21,7 @@ import {
 } from "../schemas/loginSchema";
 
 import { useLogin } from "../hooks/useLogin";
+import {toast} from "sonner";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -41,15 +42,23 @@ export default function LoginForm() {
 
             localStorage.setItem("token", response.token);
 
+            toast.success("Logged in successfully");
+
             router.push("/dashboard");
         } catch (error) {
-            console.error(error);
+            toast.error("Invalid email or password");
         }
     };
 
     return (
-        <Card className="w-full max-w-md">
-            <CardHeader>
+        <Card className="w-full max-w-md border-border/50 shadow-xl">
+            <CardHeader className={'space-y-2'}>
+                <div className="flex justify-center mb-6">
+                    <div className="text-3xl font-bold">
+                        Ordio
+                    </div>
+                </div>
+
                 <CardTitle className="text-2xl">
                     Welcome back
                 </CardTitle>
@@ -59,13 +68,13 @@ export default function LoginForm() {
                 </CardDescription>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className={'space-y-4'}>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="space-y-4"
                 >
                     <div>
-                        <Input type="email" placeholder="Email" {...register("email")} />
+                        <Input type="email" placeholder="Enter your email address" {...register("email")} />
 
                         {
                             errors.email && (
@@ -77,7 +86,7 @@ export default function LoginForm() {
                     </div>
 
                     <div>
-                        <Input type="password" placeholder="Password" {...register("password")} />
+                        <Input type="password" placeholder="Enter your password" {...register("password")} />
 
                         {
                             errors.password && (
@@ -88,10 +97,10 @@ export default function LoginForm() {
                         }
                     </div>
 
-                    <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+                    <Button type="submit" className="w-full cursor-pointer" disabled={loginMutation.isPending}>
                         {
                             loginMutation.isPending
-                            ? "Logging in..."
+                            ? "Signing in..."
                             : "Login"
                         }
                     </Button>
