@@ -1,9 +1,13 @@
-export default function DashboardLayout( {children}: { children: React.ReactNode } ) {
+import Sidebar from "@/components/layout/Sidebar";
+
+export default function DashboardLayout({
+                                            children,
+                                        }: {
+    children: React.ReactNode;
+}) {
     return (
         <div className="flex min-h-screen">
-            <aside className="w-64 border-r p-4">
-                Sidebar
-            </aside>
+            <Sidebar />
 
             <main className="flex-1 p-6">
                 {children}
