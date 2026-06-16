@@ -6,6 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Order {
     _id: string;
@@ -31,6 +33,7 @@ export default function OrdersTable({ orders }: Props) {
                         <TableHead>Status</TableHead>
                         <TableHead>Price</TableHead>
                         <TableHead>Date</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -54,9 +57,19 @@ export default function OrdersTable({ orders }: Props) {
                             </TableCell>
 
                             <TableCell>
-                                {new Date(
-                                    order.createdAt
-                                ).toLocaleDateString()}
+                                { new Date(order.createdAt).toLocaleDateString()}
+                            </TableCell>
+
+                            <TableCell>
+                                <div className="flex gap-2">
+                                    <Button className={'cursor-pointer'} variant="outline" size="icon">
+                                        <Pencil className="h-4 w-4" />
+                                    </Button>
+
+                                    <Button className={'cursor-pointer'} variant="destructive" size="icon">
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}
