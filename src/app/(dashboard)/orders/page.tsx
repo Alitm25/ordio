@@ -6,10 +6,15 @@ import StatsCard from "@/components/dashboard/StatsCard";
 import OrdersTable from "@/components/orders/OrdersTable";
 import {Button} from "@/components/ui/button";
 import {createOrder} from "@/features/orders/services/createOrders";
+import { useState } from "react";
+import CreateOrderDialog from "@/components/orders/CreateOrderDialog";
 
 export default function OrdersPage() {
 
     const queryClient = useQueryClient();
+
+    // create order dialog state
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     // get orders
     const { data, isLoading, error } = useQuery({
@@ -79,19 +84,12 @@ export default function OrdersPage() {
             <h1 className="text-3xl font-bold mb-6">
                 Orders
             </h1>
-            <Button onClick={() => createOrderMutation.mutate({
-                        customerName: "Ali",
-                        customerPhone: "09121234567",
-                        productName: "Test Product",
-                        quantity: 2,
-                        price: 500000,
-                    })
-                }
-            >
+            <Button onClick={() => setDialogOpen(true)}>
                 New Order
             </Button>
 
             <OrdersTable orders={orders} />
+            <CreateOrderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
         </div>
     );
 }
