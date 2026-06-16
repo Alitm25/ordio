@@ -1,14 +1,30 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import { getOrders } from "@/features/orders/services/getOrders";
 import StatsCard from "@/components/dashboard/StatsCard";
 import OrdersTable from "@/components/orders/OrdersTable";
+import {Button} from "@/components/ui/button";
+import {createOrder} from "@/features/orders/services/createOrders";
 
 export default function OrdersPage() {
+
+    const queryClient = useQueryClient();
+
+    // get orders
     const { data, isLoading, error } = useQuery({
         queryKey: ["orders"],
         queryFn: getOrders,
+    });
+
+    const createOrderMutation = useMutation({
+        mutationFn: createOrder,
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["orders"],
+            });
+        },
     });
 
     const orders = data?.orders ?? [];
@@ -63,6 +79,17 @@ export default function OrdersPage() {
             <h1 className="text-3xl font-bold mb-6">
                 Orders
             </h1>
+            <Button onClick={() => createOrderMutation.mutate({
+                        customerName: "Ali",
+                        customerPhone: "09121234567",
+                        productName: "Test Product",
+                        quantity: 2,
+                        price: 500000,
+                    })
+                }
+            >
+                New Order
+            </Button>
 
             <OrdersTable orders={orders} />
         </div>
