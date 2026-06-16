@@ -6,6 +6,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+    createOrderSchema,
+    CreateOrderFormValues,
+} from "@/features/orders/schemas/createOrderSchema";
 
 interface Props {
     open: boolean;
@@ -13,6 +20,19 @@ interface Props {
 }
 
 export default function CreateOrderDialog({open, onOpenChange}: Props) {
+
+    const form = useForm<CreateOrderFormValues>({
+        resolver: zodResolver(createOrderSchema),
+
+        defaultValues: {
+            customerName: "",
+            customerPhone: "",
+            productName: "",
+            quantity: 1,
+            price: 0,
+        },
+    });
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
@@ -22,9 +42,44 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                     </DialogTitle>
                 </DialogHeader>
 
-                <div>
-                    form goes here
-                </div>
+                <form
+                    onSubmit={form.handleSubmit((data) => {
+                        console.log(data);
+                    })}
+                >
+                    <input
+                        {...form.register("customerName")}
+                        placeholder="Customer Name"
+                    />
+
+                    <input
+                        {...form.register("customerPhone")}
+                        placeholder="Phone"
+                    />
+
+                    <input
+                        {...form.register("productName")}
+                        placeholder="Product Name"
+                    />
+
+                    <input
+                        type="number"
+                        {...form.register("quantity", {
+                            valueAsNumber: true,
+                        })}
+                    />
+
+                    <input
+                        type="number"
+                        {...form.register("price", {
+                            valueAsNumber: true,
+                        })}
+                    />
+
+                    <button type="submit">
+                        Submit
+                    </button>
+                </form>
             </DialogContent>
         </Dialog>
     );
