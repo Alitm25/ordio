@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/features/orders/services/getOrders";
 import StatsCard from "@/components/dashboard/StatsCard";
+import OrdersTable from "@/components/orders/OrdersTable";
 
 export default function OrdersPage() {
     const { data, isLoading, error } = useQuery({
@@ -63,9 +64,7 @@ export default function OrdersPage() {
                 Orders
             </h1>
 
-            <pre>
-                {JSON.stringify(data, null, 2)}
-            </pre>
+            <OrdersTable orders={orders} />
         </div>
     );
 }
