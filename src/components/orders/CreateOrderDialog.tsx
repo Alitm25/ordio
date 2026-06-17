@@ -2,7 +2,7 @@
 
 import {
     Dialog,
-    DialogContent,
+    DialogContent, DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -13,6 +13,8 @@ import {
     createOrderSchema,
     CreateOrderFormValues,
 } from "@/features/orders/schemas/createOrderSchema";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {createOrder} from "@/features/orders/services/createOrders";
 
 interface Props {
     open: boolean;
@@ -20,6 +22,17 @@ interface Props {
 }
 
 export default function CreateOrderDialog({open, onOpenChange}: Props) {
+
+    const queryClient = useQueryClient();
+
+    const createOrderMutation = useMutation({
+        mutationFn: createOrder,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
+            form.reset();
+            onOpenChange(false);
+        }
+    });
 
     const form = useForm<CreateOrderFormValues>({
         resolver: zodResolver(createOrderSchema),
@@ -37,14 +50,16 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
+                    <DialogDescription>
+                        Create a new order for your customer.
+                    </DialogDescription>
                     <DialogTitle>
                         Create New Order
                     </DialogTitle>
                 </DialogHeader>
 
-                <form
-                    onSubmit={form.handleSubmit((data) => {
-                        console.log(data);
+                <form onSubmit={form.handleSubmit((data) => {
+                        createOrderMutation.mutate(data);
                     })}
                 >
                     <input
@@ -76,8 +91,12 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                         })}
                     />
 
-                    <button type="submit">
-                        Submit
+                    <button type="submit" disabled={createOrderMutation.isPending}>
+                        {
+                            createOrderMutation.isPending
+                            ? 'Creating...'
+                            : 'Create Order'
+                        }
                     </button>
                 </form>
             </DialogContent>
