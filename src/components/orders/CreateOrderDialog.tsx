@@ -50,7 +50,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="sm:max-w-137.5">
                 <DialogHeader>
                     <DialogDescription>
                         Create a new order for your customer.
@@ -63,44 +63,77 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                 <form onSubmit={form.handleSubmit((data) => {
                         createOrderMutation.mutate(data);
                     })} className={'space-y-4'}>
-                    <Input
-                        {...form.register("customerName")}
-                        placeholder="Customer Name"
-                    />
 
-                    <Input
-                        {...form.register("customerPhone")}
-                        placeholder="Phone"
-                    />
-
-                    <Input
-                        {...form.register("productName")}
-                        placeholder="Product Name"
-                    />
-
-                    <div className={'grid grid-cols-2 gap-4'}>
-                        <Input
-                            type="number"
-                            {...form.register("quantity", {
-                                valueAsNumber: true,
-                            })}
-                        />
-
-                        <Input
-                            type="number"
-                            {...form.register("price", {
-                                valueAsNumber: true,
-                            })}
-                        />
+                    <div className="space-y-1">
+                        <Input {...form.register("customerName")} placeholder="Customer Name"/>
+                        {
+                            form.formState.errors.customerName && (
+                            <p className="text-sm text-red-500">
+                                {form.formState.errors.customerName.message}
+                            </p>)
+                        }
                     </div>
 
-                    <Button type="submit" className={'cursor-pointer w-full'} disabled={createOrderMutation.isPending}>
+                    <div className="space-y-1">
+                        <Input {...form.register("customerPhone")} placeholder="Phone"/>
                         {
-                            createOrderMutation.isPending
-                            ? 'Creating...'
-                            : 'Create Order'
+                            form.formState.errors.customerPhone && (
+                                <p className="text-sm text-red-500">
+                                    {form.formState.errors.customerPhone.message}
+                                </p>)
                         }
-                    </Button>
+                    </div>
+
+                    <div className="space-y-1">
+                        <Input {...form.register("productName")} placeholder="Product Name"/>
+                        {
+                            form.formState.errors.productName && (
+                                <p className="text-sm text-red-500">
+                                    {form.formState.errors.productName.message}
+                                </p>)
+                        }
+                    </div>
+
+                    <div className={'grid grid-cols-2 gap-4'}>
+
+                        <div className="space-y-1">
+                            <Input type="number" {...form.register("quantity", {
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            {
+                                form.formState.errors.quantity && (
+                                    <p className="text-sm text-red-500">
+                                        {form.formState.errors.quantity.message}
+                                    </p>)
+                            }
+                        </div>
+
+                        <div className="space-y-1">
+                            <Input type="number" {...form.register("price", {
+                                    valueAsNumber: true,
+                                })}
+                            />
+                            {
+                                form.formState.errors.price && (
+                                    <p className="text-sm text-red-500">
+                                        {form.formState.errors.price.message}
+                                    </p>)
+                            }
+                        </div>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-4">
+                        <Button type="button" variant="outline" className={'cursor-pointer'} onClick={() => onOpenChange(false)}>
+                            Cancel
+                        </Button>
+
+                        <Button type="submit" className={'cursor-pointer'} disabled={createOrderMutation.isPending}>
+                            {createOrderMutation.isPending
+                                ? "Creating..."
+                                : "Create Order"}
+                        </Button>
+                    </div>
                 </form>
             </DialogContent>
         </Dialog>
