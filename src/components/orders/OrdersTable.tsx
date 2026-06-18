@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
 
 interface Order {
     _id: string;
@@ -49,7 +50,7 @@ export default function OrdersTable({ orders }: Props) {
                             </TableCell>
 
                             <TableCell>
-                                {order.status}
+                                <OrderStatusBadge status={order.status} />
                             </TableCell>
 
                             <TableCell>
