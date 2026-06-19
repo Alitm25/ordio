@@ -1,3 +1,4 @@
+//Login Types
 export interface LoginRequest {
     email: string;
     password: string;
@@ -10,4 +11,18 @@ export interface LoginResponse {
         email: string;
     };
     token: string;
+}
+
+//Register Types
+export interface RegisterRequest {
+    email: string;
+    password: string;
+}
+
+export interface RegisterResponse {
+    message: string;
+    user: {
+        id: string;
+        email: string;
+    };
 }
