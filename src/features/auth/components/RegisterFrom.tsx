@@ -22,6 +22,7 @@ import {
 
 import { useRegister } from "../hooks/useRegister";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function RegisterForm() {
     const router = useRouter();
@@ -100,6 +101,13 @@ export default function RegisterForm() {
                         }
                     </Button>
                 </form>
+                {/* Back to login form */}
+                <p className="text-sm text-center text-muted-foreground mt-4">
+                    Already have an account?{" "}
+                    <Link href="/login" className="text-primary underline-offset-4 hover:underline">
+                        Sign in !
+                    </Link>
+                </p>
             </CardContent>
         </Card>
     );

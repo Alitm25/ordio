@@ -22,6 +22,7 @@ import {
 
 import { useLogin } from "../hooks/useLogin";
 import {toast} from "sonner";
+import Link from "next/link";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -105,6 +106,13 @@ export default function LoginForm() {
                         }
                     </Button>
                 </form>
+                {/* Back to register page */}
+                <p className="text-sm text-center text-muted-foreground mt-4">
+                    Don&apos;t have an account?{" "}
+                    <Link href="/register" className="text-primary underline-offset-4 hover:underline">
+                        Register now !
+                    </Link>
+                </p>
             </CardContent>
         </Card>
     );
