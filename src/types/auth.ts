@@ -26,3 +26,11 @@ export interface RegisterResponse {
         email: string;
     };
 }
+
+//Current user Types
+export interface CurrentUserResponse {
+    user: {
+        id: string;
+        email: string;
+    }
+}
