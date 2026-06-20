@@ -23,6 +23,7 @@ import {
 import { useRegister } from "../hooks/useRegister";
 import { toast } from "sonner";
 import Link from "next/link";
+import {getErrorMessage} from "@/lib/getErrorMessage";
 
 export default function RegisterForm() {
     const router = useRouter();
@@ -45,7 +46,7 @@ export default function RegisterForm() {
 
             router.push("/login");
         } catch (error) {
-            toast.error("Could not create account");
+            toast.error(getErrorMessage(error, "Could not create account"));
         }
     };
 

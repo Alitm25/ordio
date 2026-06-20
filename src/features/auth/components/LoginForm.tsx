@@ -23,6 +23,7 @@ import {
 import { useLogin } from "../hooks/useLogin";
 import {toast} from "sonner";
 import Link from "next/link";
+import {getErrorMessage} from "@/lib/getErrorMessage";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -47,7 +48,7 @@ export default function LoginForm() {
 
             router.push("/dashboard");
         } catch (error) {
-            toast.error("Invalid email or password");
+            toast.error(getErrorMessage(error, "Invalid email or password"));
         }
     };
 
