@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import {LoginRequest, LoginResponse, RegisterRequest, RegisterResponse} from "@/types/auth";
+import {CurrentUserResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse} from "@/types/auth";
 
 // Login API
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
@@ -20,3 +20,10 @@ export const register = async (data: RegisterRequest): Promise<RegisterResponse>
 
     return response.data;
 };
+
+//Current user API
+export const getCurrentUser = async () :Promise<CurrentUserResponse> => {
+    const response = await api.get<CurrentUserResponse>("/me");
+
+    return response.data;
+}
