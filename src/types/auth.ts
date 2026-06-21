@@ -10,7 +10,6 @@ export interface LoginResponse {
         id: string;
         email: string;
     };
-    token: string;
 }
 
 //Register Types
