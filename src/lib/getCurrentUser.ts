@@ -1,18 +1,14 @@
 import { verifyToken } from "@/lib/auth";
+import {cookies} from "next/headers";
 
 export interface JwtPayload {
     userId: string;
     email: string;
 }
 
-export function getCurrentUser(req: Request): JwtPayload {
-    const authHeader = req.headers.get("authorization");
-
-    if (!authHeader) {
-        throw new Error("Unauthorized");
-    }
-
-    const token = authHeader.split(" ")[1];
+export async function getCurrentUser(req: Request): Promise<JwtPayload> {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
 
     if (!token) {
         throw new Error("Unauthorized");
