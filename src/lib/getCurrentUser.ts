@@ -6,7 +6,7 @@ export interface JwtPayload {
     email: string;
 }
 
-export async function getCurrentUser(req: Request): Promise<JwtPayload> {
+export async function getCurrentUser(): Promise<JwtPayload> {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
 
