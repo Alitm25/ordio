@@ -8,18 +8,8 @@ export interface CreateOrderPayload {
     price: number;
 }
 
-export const createOrder = async ( data: CreateOrderPayload) => {
-    const token = localStorage.getItem("token");
-
-    const response = await api.post(
-        "orders",
-        data,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
+export const createOrder = async (data: CreateOrderPayload) => {
+    const response = await api.post("orders", data);
 
     return response.data;
 };
