@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     try {
         await connectDB();
 
-        const user = getCurrentUser(req);
+        const user = await getCurrentUser(req);
 
         const body = await req.json();
 
@@ -52,7 +52,7 @@ export async function GET(req: Request) {
     try {
         await connectDB();
 
-        const user = getCurrentUser(req);
+        const user = await getCurrentUser(req);
 
         const orders = await Order.find({
             userId: user.userId,
