@@ -9,7 +9,7 @@ export async function PATCH(
     try {
         await connectDB();
 
-        const user = getCurrentUser(req);
+        const user = await getCurrentUser(req);
         const { id } = await params;
         const { status } = await req.json();
 
@@ -53,7 +53,7 @@ export async function DELETE(
 ) {
     try {
         await connectDB();
-        const user = getCurrentUser(req);
+        const user = await getCurrentUser(req);
         const { id } = await params;
 
         const deletedOrder = await Order.findOneAndDelete({
