@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
+import {NextResponse} from "next/server";
 
 export async function POST(req: Request) {
     try {
@@ -10,8 +11,8 @@ export async function POST(req: Request) {
         const { email, password } = await req.json();
 
         if (!email || !password) {
-            return Response.json(
-                { message: "Email and password required" },
+            return NextResponse.json(
+                { message: "Email and password are required" },
                 { status: 400 }
             );
         }
@@ -19,7 +20,7 @@ export async function POST(req: Request) {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return Response.json(
+            return NextResponse.json(
                 { message: "Invalid credentials" },
                 { status: 401 }
             );
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
         );
 
         if (!isPasswordCorrect) {
-            return Response.json(
+            return NextResponse.json(
                 { message: "Invalid credentials" },
                 { status: 401 }
             );
@@ -49,16 +50,26 @@ export async function POST(req: Request) {
             }
         )
 
-        return Response.json({
-            message: "Login successful",
+        const response = NextResponse.json({
+            message: "Login successfully",
             user: {
                 id: user._id,
-                email: user.email,
-            },
-            token,
-        });
+                email: user.email
+            }
+        })
+
+        response.cookies.set('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+        })
+
+        return response;
+
     } catch (error) {
-        return Response.json(
+        return NextResponse.json(
             { message: "Server error", error },
             { status: 500 }
         );
