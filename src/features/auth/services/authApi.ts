@@ -11,6 +11,13 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
     return response.data;
 };
 
+// LogOut API
+export const logout = async (): Promise<{ message: string }> => {
+    const response = await api.post<{ message: string }>("/auth/logout");
+
+    return response.data;
+};
+
 //Register API
 export const register = async (data: RegisterRequest): Promise<RegisterResponse> => {
     const response = await api.post<RegisterResponse>(
