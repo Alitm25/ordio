@@ -4,12 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "../services/authApi";
 
 export function useCurrentUser() {
-    const hasToken = typeof window !== "undefined" && !!localStorage.getItem("token");
-
     return useQuery({
         queryKey: ["currentUser"],
         queryFn: getCurrentUser,
         retry: false,
-        enabled: hasToken,
     });
 }
