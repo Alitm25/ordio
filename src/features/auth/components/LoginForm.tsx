@@ -42,8 +42,6 @@ export default function LoginForm() {
         try {
             const response = await loginMutation.mutateAsync(data);
 
-            localStorage.setItem("token", response.token);
-
             toast.success("Logged in successfully");
 
             router.push("/dashboard");
