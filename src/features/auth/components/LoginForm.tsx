@@ -40,7 +40,7 @@ export default function LoginForm() {
 
     const onSubmit = async (data: LoginFormData) => {
         try {
-            const response = await loginMutation.mutateAsync(data);
+            await loginMutation.mutateAsync(data);
 
             toast.success("Logged in successfully");
 
