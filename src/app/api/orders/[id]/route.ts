@@ -11,7 +11,7 @@ export async function PATCH(
 
         const user = await getCurrentUser();
         const { id } = await params;
-        const { status } = await req.json();
+        const body = await req.json();
 
         const order = await Order.findOne({
             _id: id,
