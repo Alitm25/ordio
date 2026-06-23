@@ -25,7 +25,20 @@ export async function PATCH(
             );
         }
 
-        order.status = status;
+        const allowedFields = [
+            "customerName",
+            "customerPhone",
+            "productName",
+            "quantity",
+            "price",
+            "status",
+        ] as const;
+
+        for (const field of allowedFields) {
+            if (body[field] !== undefined) {
+                order[field] = body[field];
+            }
+        }
 
         await order.save();
 
