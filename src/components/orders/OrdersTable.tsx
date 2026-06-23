@@ -35,18 +35,13 @@ export default function OrdersTable({ orders, onEdit }: Props) {
     const deleteOrderMutation = useMutation({
         mutationFn: deleteOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['orders'] });
-        }
-    })
-
-    // delete handler (open a confirmation dialog)
-    const handleOrderDelete = (id: string) => {
-        const confirmed = window.confirm("Are you sure you want to delete this order?");
-
-        if (confirmed) {
-            deleteOrderMutation.mutate(id);
-        }
-    }
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            setOrderToDelete(null);
+        },
+        onError: () => {
+            toast.error("Could not delete order");
+        },
+    });
 
     return (
         <div className="rounded-xl border bg-card">
