@@ -24,6 +24,25 @@ interface Props {
 }
 
 export default function OrdersTable({ orders }: Props) {
+    const queryClient = useQueryClient();
+
+    // delete mutation
+    const deleteOrderMutation = useMutation({
+        mutationFn: deleteOrder,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
+        }
+    })
+
+    // delete handler (open a confirmation dialog)
+    const handleOrderDelete = (id: string) => {
+        const confirmed = window.confirm("Are you sure you want to delete this order?");
+
+        if (confirmed) {
+            deleteOrderMutation.mutate(id);
+        }
+    }
+
     return (
         <div className="rounded-xl border bg-card">
             <Table>
