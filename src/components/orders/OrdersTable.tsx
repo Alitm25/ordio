@@ -25,6 +25,7 @@ export interface Order {
 
 interface Props {
     orders: Order[];
+    onEdit: (order: Order) => void;
 }
 
 export default function OrdersTable({ orders, onEdit }: Props) {
