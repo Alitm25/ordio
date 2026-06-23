@@ -87,7 +87,9 @@ export default function OrdersTable({ orders, onEdit }: Props) {
 
                             <TableCell>
                                 <div className="flex gap-2">
-                                    <Button className={'cursor-pointer'} variant="outline" size="icon">
+                                    <Button className={'cursor-pointer'} variant="outline" size="icon"
+                                        onClick={ () => onEdit(order) }
+                                    >
                                         <Pencil className="h-4 w-4" />
                                     </Button>
 
