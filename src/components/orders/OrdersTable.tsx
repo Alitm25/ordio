@@ -9,6 +9,8 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {deleteOrder} from "@/features/orders/services/deleteOrder";
 
 interface Order {
     _id: string;
