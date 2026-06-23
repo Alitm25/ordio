@@ -45,9 +45,9 @@ export default function OrdersPage() {
         (order: any) => order.status === "completed"
     ).length;
 
-    const cancelledOrders = orders.filter(
-        (order: any) => order.status === "cancelled"
-    ).length;
+    // const cancelledOrders = orders.filter(
+    //     (order: any) => order.status === "cancelled"
+    // ).length;
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -59,7 +59,7 @@ export default function OrdersPage() {
 
     return (
         <div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
                 <StatsCard
                     title="Total Orders"
                     value={totalOrders}
@@ -75,10 +75,10 @@ export default function OrdersPage() {
                     value={completedOrders}
                 />
 
-                <StatsCard
-                    title="Cancelled"
-                    value={cancelledOrders}
-                />
+                {/*<StatsCard*/}
+                {/*    title="Cancelled"*/}
+                {/*    value={cancelledOrders}*/}
+                {/*/>*/}
             </div>
 
             <h1 className="text-3xl font-bold mb-6">
