@@ -27,7 +27,7 @@ interface Props {
     orders: Order[];
 }
 
-export default function OrdersTable({ orders }: Props) {
+export default function OrdersTable({ orders, onEdit }: Props) {
     const queryClient = useQueryClient();
 
     // delete mutation
