@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
 
 
-export async function GET() {
+export async function GET( _req :Request ) {
     try {
         await connectDB();
 
