@@ -86,7 +86,9 @@ export default function OrdersTable({ orders }: Props) {
                                         <Pencil className="h-4 w-4" />
                                     </Button>
 
-                                    <Button className={'cursor-pointer'} variant="destructive" size="icon">
+                                    <Button className={'cursor-pointer'} variant="destructive" size="icon"
+                                        onClick={() => handleOrderDelete(order._id) }
+                                    >
                                         <Trash2 className="h-4 w-4" />
                                     </Button>
                                 </div>
