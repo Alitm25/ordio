@@ -12,7 +12,7 @@ import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {deleteOrder} from "@/features/orders/services/deleteOrder";
 
-interface Order {
+export interface Order {
     _id: string;
     customerName: string;
     productName: string;
