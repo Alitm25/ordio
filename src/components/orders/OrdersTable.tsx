@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import {
     Table,
     TableBody,
@@ -9,12 +10,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Pencil, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteOrder } from "@/features/orders/services/deleteOrder";
-import { toast } from "sonner";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -25,6 +27,16 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+
+import { Pencil, Trash2 } from "lucide-react";
+import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteOrder } from "@/features/orders/services/deleteOrder";
+import { toast } from "sonner";
+
+import {updateOrderStatus} from "@/features/orders/services/updateOrderStatus";
+
 
 export interface Order {
     _id: string;
@@ -46,6 +58,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
     const queryClient = useQueryClient();
     const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
 
+    // Delete an order Mutation
     const deleteOrderMutation = useMutation({
         mutationFn: deleteOrder,
         onSuccess: () => {
@@ -54,6 +67,17 @@ export default function OrdersTable({ orders, onEdit }: Props) {
         },
         onError: () => {
             toast.error("Could not delete order");
+        },
+    });
+
+    // Update an order status Mutation
+    const updateStatusMutation = useMutation({
+        mutationFn: updateOrderStatus,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+        onError: () => {
+            toast.error("Could not update status");
         },
     });
 
@@ -78,7 +102,31 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                 <TableCell>{order.customerName}</TableCell>
                                 <TableCell>{order.productName}</TableCell>
                                 <TableCell>
-                                    <OrderStatusBadge status={order.status} />
+                                    <Select
+                                        value={order.status}
+                                        onValueChange={(value) =>
+                                            updateStatusMutation.mutate({
+                                                id: order._id,
+                                                status: value,
+                                            })
+                                        }
+                                    >
+                                        <SelectTrigger className="w-36 cursor-pointer">
+                                            <SelectValue />
+                                        </SelectTrigger>
+
+                                        <SelectContent>
+                                            <SelectItem value="pending">
+                                                Pending
+                                            </SelectItem>
+                                            <SelectItem value="processing">
+                                                Processing
+                                            </SelectItem>
+                                            <SelectItem value="completed">
+                                                Completed
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </TableCell>
                                 <TableCell>
                                     {order.price.toLocaleString()}
