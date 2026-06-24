@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import {orderStatusColors} from "@/lib/orderStatusColors";
 
 interface Props {
     status: string;
@@ -10,25 +11,25 @@ export default function OrderStatusBadge({
     switch (status) {
         case "pending":
             return (
-                <Badge variant="secondary" className={'border-amber-500/30 bg-amber-500/10 text-amber-500'}>
+                <Badge variant="secondary" className={orderStatusColors.pending}>
                     Pending
                 </Badge>
             );
         case "processing":
             return (
-                <Badge className={'border-blue-500/30 bg-blue-500/10 text-blue-400'}>
+                <Badge className={orderStatusColors.processing}>
                     Processing
                 </Badge>
             );
         case "completed":
             return (
-                <Badge className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                <Badge className={orderStatusColors.completed}>
                     Completed
                 </Badge>
             );
         case "cancelled":
             return (
-                <Badge variant="destructive" className={'border-red-500/30 bg-red-500/10 text-red-400'}>
+                <Badge variant="destructive" className={orderStatusColors.cancelled}>
                     Cancelled
                 </Badge>
             );
