@@ -36,6 +36,7 @@ import { deleteOrder } from "@/features/orders/services/deleteOrder";
 import { toast } from "sonner";
 
 import {updateOrderStatus} from "@/features/orders/services/updateOrderStatus";
+import {orderStatusColors} from "@/lib/orderStatusColors";
 
 
 export interface Order {
@@ -116,14 +117,22 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                         </SelectTrigger>
 
                                         <SelectContent>
-                                            <SelectItem value="pending">
-                                                Pending
+                                            <SelectItem value="pending" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.pending}`}>
+                                                    Pending
+                                                </span>
                                             </SelectItem>
-                                            <SelectItem value="processing">
-                                                Processing
+
+                                            <SelectItem value="processing" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.processing}`}>
+                                                    Processing
+                                                </span>
                                             </SelectItem>
-                                            <SelectItem value="completed">
-                                                Completed
+
+                                            <SelectItem value="completed" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.completed}`}>
+                                                    Completed
+                                                </span>
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
