@@ -14,7 +14,7 @@ export default function StatsCard({ title, value }: StatsCardProps) {
                 </p>
 
                 <h2 className="text-3xl font-bold mt-2">
-                    {value}
+                    {value.toLocaleString()}
                 </h2>
             </CardContent>
         </Card>
