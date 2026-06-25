@@ -19,7 +19,8 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart, Wallet, Clock, TrendingUp } from "lucide-react";
+import {ShoppingCart, Wallet, Clock, TrendingUp, AlertCircle} from "lucide-react";
+import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 
 const STATUS_COLORS = {
     pending: "#f59e0b",
