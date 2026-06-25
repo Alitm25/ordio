@@ -37,17 +37,10 @@ import { toast } from "sonner";
 import {updateOrderStatus} from "@/features/orders/services/updateOrderStatus";
 import {orderStatusColors} from "@/lib/orderStatusColors";
 
+import {Order} from "@/types/order";
 
-export interface Order {
-    _id: string;
-    customerName: string;
-    customerPhone: string;
-    productName: string;
-    quantity: number;
-    price: number;
-    status: string;
-    createdAt: string;
-}
+
+export type { Order }
 
 interface Props {
     orders: Order[];
