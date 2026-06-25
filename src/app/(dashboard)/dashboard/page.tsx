@@ -35,12 +35,35 @@ export default function DashboardPage() {
         queryFn: getDashboardStats,
     });
 
+    // Loading return component
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <DashboardSkeleton />
     }
 
+    // Error return component
     if (error || !data) {
-        return <div>Error loading dashboard</div>;
+        return (
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed py-24 text-center">
+                <div className="rounded-full bg-destructive/10 p-3">
+                    <AlertCircle className="h-6 w-6 text-destructive" />
+                </div>
+
+                <div>
+                    <p className="font-medium">Couldn&apos;t load dashboard</p>
+                    <p className="text-sm text-muted-foreground">
+                        Something went wrong while fetching your stats.
+                    </p>
+                </div>
+
+                <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => refetch()}
+                >
+                    Try again
+                </Button>
+            </div>
+        );
     }
 
     // Status section variables
