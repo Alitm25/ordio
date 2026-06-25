@@ -85,7 +85,17 @@ export default function OrdersPage() {
                     />
                 </div>
 
-            <h1 className="text-3xl font-bold mb-6">Orders</h1>
+                <Select value={status} onValueChange={handleStatusChange}>
+                    <SelectTrigger className="w-40 cursor-pointer">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all" className="cursor-pointer">All Statuses</SelectItem>
+                        <SelectItem value="pending" className="cursor-pointer">Pending</SelectItem>
+                        <SelectItem value="processing" className="cursor-pointer">Processing</SelectItem>
+                        <SelectItem value="completed" className="cursor-pointer">Completed</SelectItem>
+                    </SelectContent>
+                </Select>
 
             <Button onClick={() => setDialogOpen(true)}>New Order</Button>
 
