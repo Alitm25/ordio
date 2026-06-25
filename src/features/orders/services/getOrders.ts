@@ -18,8 +18,8 @@ export interface GetOrdersResponse {
     page: number;
 }
 
-export const getOrders = async () => {
-    const response = await api.get("orders");
+export const getOrders = async (params: GetOrdersParams) :Promise<GetOrdersResponse> => {
+    const response = await api.get("orders", { params });
 
     return response.data;
 };
