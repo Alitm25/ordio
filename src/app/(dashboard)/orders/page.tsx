@@ -28,15 +28,20 @@ export default function OrdersPage() {
 
     // Orders API Query
     const { data, isLoading, error } = useQuery({
-        queryKey: ["orders"],
-        queryFn: getOrders,
-    });
-
-    const createOrderMutation = useMutation({
-        mutationFn: createOrder,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
-        },
+        queryKey: [
+            "orders",
+            { search: debouncedSearch, status, sortBy, sortOrder, page },
+        ],
+        queryFn: () =>
+            getOrders({
+                search: debouncedSearch || undefined,
+                status,
+                sortBy,
+                sortOrder,
+                page,
+                limit: 10,
+            }),
+        placeholderData: keepPreviousData,
     });
 
     const orders: Order[] = data?.orders ?? [];
