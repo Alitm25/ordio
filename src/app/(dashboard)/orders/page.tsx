@@ -1,18 +1,32 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/features/orders/services/getOrders";
-import StatsCard from "@/components/dashboard/StatsCard";
 import OrdersTable, { Order } from "@/components/orders/OrdersTable";
 import { Button } from "@/components/ui/button";
-import { createOrder } from "@/features/orders/services/createOrders";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import CreateOrderDialog from "@/components/orders/CreateOrderDialog";
 import EditOrderDialog from "@/components/orders/EditOrderDialog";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { Search } from "lucide-react";
+
+const SORT_OPTIONS = [
+    { value: "createdAt:desc", label: "Newest first" },
+    { value: "createdAt:asc", label: "Oldest first" },
+    { value: "price:desc", label: "Price: High to Low" },
+    { value: "price:asc", label: "Price: Low to High" },
+];
 
 export default function OrdersPage() {
-    const queryClient = useQueryClient();
-
+    // Dialog and edit States
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
@@ -44,17 +58,25 @@ export default function OrdersPage() {
         placeholderData: keepPreviousData,
     });
 
+    // Orders and total number of orders Variables
     const orders: Order[] = data?.orders ?? [];
+    const totalCount = data?.totalCount ?? 0;
 
-    const totalOrders = orders.length;
+    // Handle functions
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setPage(1);
+    };
 
-    const pendingOrders = orders.filter(
-        (order) => order.status === "pending"
-    ).length;
+    const handleStatusChange = (value: string) => {
+        setStatus(value);
+        setPage(1);
+    };
 
-    const completedOrders = orders.filter(
-        (order) => order.status === "completed"
-    ).length;
+    const handleSortChange = (value: string) => {
+        setSort(value);
+        setPage(1);
+    };
 
     if (isLoading) {
         return <div>Loading...</div>;
