@@ -65,12 +65,25 @@ export default function OrdersPage() {
     }
 
     return (
-        <div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
-                <StatsCard title="Total Orders" value={totalOrders} />
-                <StatsCard title="Pending" value={pendingOrders} />
-                <StatsCard title="Completed" value={completedOrders} />
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold">Orders</h1>
+
+                <Button className="cursor-pointer" onClick={() => setDialogOpen(true)}>
+                    + New Order
+                </Button>
             </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+                <div className="relative min-w-[220px] flex-1">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        placeholder="Search by customer or product..."
+                        value={search}
+                        onChange={(e) => handleSearchChange(e.target.value)}
+                        className="pl-9"
+                    />
+                </div>
 
             <h1 className="text-3xl font-bold mb-6">Orders</h1>
 
