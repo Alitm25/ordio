@@ -16,6 +16,17 @@ export default function OrdersPage() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
+    // URL Params States
+    const [search, setSearch] = useState("");
+    const [status, setStatus] = useState("all");
+    const [sort, setSort] = useState("createdAt:desc");
+    const [page, setPage] = useState(1);
+
+    // Debounce and sort Variables
+    const debouncedSearch = useDebouncedValue(search, 400);
+    const [sortBy, sortOrder] = sort.split(":") as [string, "asc" | "desc"];
+
+    // Orders API Query
     const { data, isLoading, error } = useQuery({
         queryKey: ["orders"],
         queryFn: getOrders,
