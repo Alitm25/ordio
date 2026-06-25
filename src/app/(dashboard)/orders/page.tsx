@@ -97,7 +97,27 @@ export default function OrdersPage() {
                     </SelectContent>
                 </Select>
 
-            <Button onClick={() => setDialogOpen(true)}>New Order</Button>
+                <Select value={sort} onValueChange={handleSortChange}>
+                    <SelectTrigger className="w-44 cursor-pointer">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {SORT_OPTIONS.map((option) => (
+                            <SelectItem
+                                key={option.value}
+                                value={option.value}
+                                className="cursor-pointer"
+                            >
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+                {totalCount} order{totalCount !== 1 ? "s" : ""} found
+            </p>
 
             <OrdersTable orders={orders} onEdit={setEditingOrder} />
 
