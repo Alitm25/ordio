@@ -65,9 +65,30 @@ export async function GET( _req :Request ) {
 
         const filter: Record<string, unknown> = {
             userId: user.userId,
-        }).sort({
-            createdAt: -1,
-        });
+        };
+
+        if (status !== "all") {
+            filter.status = status;
+        }
+
+        if (search) {
+            filter.$or = [
+                { customerName: { $regex: search, $options: "i" } },
+                { productName: { $regex: search, $options: "i" } },
+            ];
+        }
+
+        const sort: Record<string, 1 | -1> = {
+            [sortBy]: sortOrder === "asc" ? 1 : -1,
+        };
+
+        const [orders, totalCount] = await Promise.all([
+            Order.find(filter)
+                .sort(sort)
+                .skip((page - 1) * limit)
+                .limit(limit),
+            Order.countDocuments(filter),
+        ]);
 
         return Response.json({
             orders,
