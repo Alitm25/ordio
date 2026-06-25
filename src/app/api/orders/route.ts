@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
-import {getCurrentUser} from "@/lib/getCurrentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 
 export async function POST(req: Request) {
     try {
@@ -24,7 +24,6 @@ export async function POST(req: Request) {
             productName,
             quantity,
             price,
-
             userId: user.userId,
         });
 
@@ -46,9 +45,7 @@ export async function POST(req: Request) {
     }
 }
 
-
-
-export async function GET( _req :Request ) {
+export async function GET(req: Request) {
     try {
         await connectDB();
 
@@ -92,6 +89,9 @@ export async function GET( _req :Request ) {
 
         return Response.json({
             orders,
+            totalCount,
+            totalPages: Math.ceil(totalCount / limit),
+            page,
         });
     } catch (error) {
         return Response.json(
@@ -100,6 +100,41 @@ export async function GET( _req :Request ) {
                 error,
             },
             { status: 401 }
+        );
+    }
+}
+
+export async function DELETE(req: Request) {
+    try {
+        await connectDB();
+
+        const user = await getCurrentUser();
+
+        const { ids } = await req.json();
+
+        if (!Array.isArray(ids) || ids.length === 0) {
+            return Response.json(
+                { message: "No order ids provided" },
+                { status: 400 }
+            );
+        }
+
+        const result = await Order.deleteMany({
+            _id: { $in: ids },
+            userId: user.userId,
+        });
+
+        return Response.json({
+            message: "Orders deleted successfully",
+            deletedCount: result.deletedCount,
+        });
+    } catch (error) {
+        return Response.json(
+            {
+                message: "Server error",
+                error: error instanceof Error ? error.message : String(error),
+            },
+            { status: 500 }
         );
     }
 }
