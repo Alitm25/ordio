@@ -54,7 +54,16 @@ export async function GET( _req :Request ) {
 
         const user = await getCurrentUser();
 
-        const orders = await Order.find({
+        const { searchParams } = new URL(req.url);
+
+        const search = searchParams.get("search") ?? "";
+        const status = searchParams.get("status") ?? "all";
+        const sortBy = searchParams.get("sortBy") ?? "createdAt";
+        const sortOrder = searchParams.get("sortOrder") ?? "desc";
+        const page = Number(searchParams.get("page") ?? "1");
+        const limit = Number(searchParams.get("limit") ?? "10");
+
+        const filter: Record<string, unknown> = {
             userId: user.userId,
         }).sort({
             createdAt: -1,
