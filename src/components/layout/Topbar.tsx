@@ -30,11 +30,11 @@ export default function Topbar() {
                     )
                 }
 
-                <Button variant="outline" size="sm" className={'cursor-pointer'}
+                <Button variant="outline" size="sm" className={'cursor-pointer group'}
                     onClick={() => logoutMutation.mutate()}
                     disabled={logoutMutation.isPending}
                 >
-                    <LogOut className="h-4 w-4 mr-2" />
+                    <LogOut className="h-4 w-4 mr-2 group-hover:text-red-500 transition" />
                     {logoutMutation.isPending ? "Logging out..." : "Logout"}
                 </Button>
             </div>
