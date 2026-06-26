@@ -20,6 +20,8 @@ export const createOrderSchema = z.object({
     price: z
         .number()
         .min(1, "Price must be greater than 0"),
+    paymentStatus: z.enum(["unpaid", "paid", "partial"]).default("unpaid"),
+    paymentMethod: z.enum(["cash", "card", "transfer"]).optional(),
 });
 
 export type CreateOrderFormValues =
