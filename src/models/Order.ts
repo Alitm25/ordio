@@ -39,6 +39,16 @@ const OrderSchema = new Schema(
             ref: "User",
             required: true,
         },
+        paymentStatus: {
+            type: String,
+            enum: ["unpaid", "paid", "partial"],
+            default: "unpaid",
+        },
+        paymentMethod: {
+            type: String,
+            enum: ["cash", "card", "transfer"],
+            default: null,
+        },
     },
     {
         timestamps: true,
