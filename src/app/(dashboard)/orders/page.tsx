@@ -16,6 +16,7 @@ import {
 import CreateOrderDialog from "@/components/orders/CreateOrderDialog";
 import EditOrderDialog from "@/components/orders/EditOrderDialog";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import OrdersPagination from "@/components/orders/OrdersPagination";
 import { Search } from "lucide-react";
 
 const SORT_OPTIONS = [
@@ -61,6 +62,7 @@ export default function OrdersPage() {
     // Orders and total number of orders Variables
     const orders: Order[] = data?.orders ?? [];
     const totalCount = data?.totalCount ?? 0;
+    const totalPages = data?.totalPages ?? 1;
 
     // Handle functions
     const handleSearchChange = (value: string) => {
@@ -142,6 +144,12 @@ export default function OrdersPage() {
             </p>
 
             <OrdersTable orders={orders} onEdit={setEditingOrder} />
+
+            <OrdersPagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+            />
 
             <CreateOrderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
