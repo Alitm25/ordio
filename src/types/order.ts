@@ -6,5 +6,7 @@ export interface Order {
     quantity: number;
     price: number;
     status: string;
+    paymentStatus: string;
+    paymentMethod: string | null;
     createdAt: string;
 }
