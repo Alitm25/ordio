@@ -4,6 +4,10 @@ import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/features/orders/services/getOrders";
 import OrdersTable, { Order } from "@/components/orders/OrdersTable";
+import OrdersTableSkeleton from "@/components/orders/OrdersTableSkeleton";
+import OrdersPagination from "@/components/orders/OrdersPagination";
+import EmptyOrdersState from "@/components/orders/EmptyOrdersState";
+import ErrorState from "@/components/shared/ErrorState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +20,6 @@ import {
 import CreateOrderDialog from "@/components/orders/CreateOrderDialog";
 import EditOrderDialog from "@/components/orders/EditOrderDialog";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import OrdersPagination from "@/components/orders/OrdersPagination";
 import { Search } from "lucide-react";
 
 const SORT_OPTIONS = [
@@ -27,22 +30,18 @@ const SORT_OPTIONS = [
 ];
 
 export default function OrdersPage() {
-    // Dialog and edit States
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
-    // URL Params States
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("all");
     const [sort, setSort] = useState("createdAt:desc");
     const [page, setPage] = useState(1);
 
-    // Debounce and sort Variables
     const debouncedSearch = useDebouncedValue(search, 400);
     const [sortBy, sortOrder] = sort.split(":") as [string, "asc" | "desc"];
 
-    // Orders API Query
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading, error, refetch } = useQuery({
         queryKey: [
             "orders",
             { search: debouncedSearch, status, sortBy, sortOrder, page },
@@ -59,12 +58,12 @@ export default function OrdersPage() {
         placeholderData: keepPreviousData,
     });
 
-    // Orders and total number of orders Variables
     const orders: Order[] = data?.orders ?? [];
     const totalCount = data?.totalCount ?? 0;
     const totalPages = data?.totalPages ?? 1;
 
-    // Handle functions
+    const hasActiveFilters = search !== "" || status !== "all";
+
     const handleSearchChange = (value: string) => {
         setSearch(value);
         setPage(1);
@@ -80,20 +79,18 @@ export default function OrdersPage() {
         setPage(1);
     };
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error loading orders</div>;
-    }
+    const handleClearFilters = () => {
+        setSearch("");
+        setStatus("all");
+        setPage(1);
+    };
 
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold">Orders</h1>
 
-                <Button className="cursor-pointer" onClick={() => setDialogOpen(true)}>
+                <Button className="cursor-pointer" onClick={() => setDialogOpen(true)} >
                     + New Order
                 </Button>
             </div>
@@ -114,10 +111,18 @@ export default function OrdersPage() {
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all" className="cursor-pointer">All Statuses</SelectItem>
-                        <SelectItem value="pending" className="cursor-pointer">Pending</SelectItem>
-                        <SelectItem value="processing" className="cursor-pointer">Processing</SelectItem>
-                        <SelectItem value="completed" className="cursor-pointer">Completed</SelectItem>
+                        <SelectItem value="all" className="cursor-pointer">
+                            All Statuses
+                        </SelectItem>
+                        <SelectItem value="pending" className="cursor-pointer">
+                            Pending
+                        </SelectItem>
+                        <SelectItem value="processing" className="cursor-pointer">
+                            Processing
+                        </SelectItem>
+                        <SelectItem value="completed" className="cursor-pointer">
+                            Completed
+                        </SelectItem>
                     </SelectContent>
                 </Select>
 
@@ -139,17 +144,35 @@ export default function OrdersPage() {
                 </Select>
             </div>
 
-            <p className="text-sm text-muted-foreground">
-                {totalCount} order{totalCount !== 1 ? "s" : ""} found
-            </p>
+            {isLoading ? (
+                <OrdersTableSkeleton />
+            ) : error ? (
+                <ErrorState
+                    title="Couldn't load orders"
+                    description="Something went wrong while fetching your orders."
+                    onRetry={() => refetch()}
+                />
+            ) : orders.length === 0 ? (
+                <EmptyOrdersState
+                    hasActiveFilters={hasActiveFilters}
+                    onClearFilters={handleClearFilters}
+                    onCreateOrder={() => setDialogOpen(true)}
+                />
+            ) : (
+                <>
+                    <p className="text-sm text-muted-foreground">
+                        {totalCount} order{totalCount !== 1 ? "s" : ""} found
+                    </p>
 
-            <OrdersTable orders={orders} onEdit={setEditingOrder} />
+                    <OrdersTable orders={orders} onEdit={setEditingOrder} />
 
-            <OrdersPagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-            />
+                    <OrdersPagination
+                        page={page}
+                        totalPages={totalPages}
+                        onPageChange={setPage}
+                    />
+                </>
+            )}
 
             <CreateOrderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
