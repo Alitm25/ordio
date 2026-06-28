@@ -172,6 +172,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                             <TableHead>Customer</TableHead>
                             <TableHead>Product</TableHead>
                             <TableHead>Status</TableHead>
+                            <TableHead>Payment</TableHead>
                             <TableHead>Price</TableHead>
                             <TableHead>Date</TableHead>
                             <TableHead>Actions</TableHead>
@@ -241,6 +242,23 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
+                                </TableCell>
+                                <TableCell>
+                                    <span
+                                        className={`rounded border px-2 py-0.5 text-xs font-medium ${
+                                            order.paymentStatus === "paid"
+                                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
+                                                : order.paymentStatus === "partial"
+                                                    ? "border-amber-500/30 bg-amber-500/10 text-amber-500"
+                                                    : "border-muted-foreground/20 bg-muted text-muted-foreground"
+                                        }`}
+                                    >
+                                        {order.paymentStatus === "paid"
+                                            ? "Paid"
+                                            : order.paymentStatus === "partial"
+                                                ? "Partial"
+                                                : "Unpaid"}
+                                    </span>
                                 </TableCell>
                                 <TableCell>
                                     {order.price.toLocaleString()}
