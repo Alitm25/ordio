@@ -32,6 +32,8 @@ export async function PATCH(
             "quantity",
             "price",
             "status",
+            "paymentStatus",
+            "paymentMethod",
         ] as const;
 
         for (const field of allowedFields) {
