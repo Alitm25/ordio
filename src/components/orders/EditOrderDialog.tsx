@@ -8,6 +8,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +45,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
             productName: "",
             quantity: 1,
             price: 0,
+            paymentStatus: 'unpaid',
         },
     });
 
@@ -50,6 +58,12 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                 productName: order.productName,
                 quantity: order.quantity,
                 price: order.price,
+                paymentStatus: order.paymentStatus as "unpaid" | "paid" | "partial",
+                paymentMethod: order.paymentMethod as
+                    | "cash"
+                    | "card"
+                    | "transfer"
+                    | undefined,
             });
         }
     }, [order, form]);
@@ -132,6 +146,64 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                                 </p>
                             )}
                         </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                            <Select
+                                value={form.watch("paymentStatus")}
+                                onValueChange={(value) =>
+                                    form.setValue(
+                                        "paymentStatus",
+                                        value as "unpaid" | "paid" | "partial"
+                                    )
+                                }
+                            >
+                                <SelectTrigger className="w-full cursor-pointer">
+                                    <SelectValue placeholder="Payment Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="unpaid" className="cursor-pointer">
+                                        Unpaid
+                                    </SelectItem>
+                                    <SelectItem value="partial" className="cursor-pointer">
+                                        Partial
+                                    </SelectItem>
+                                    <SelectItem value="paid" className="cursor-pointer">
+                                        Paid
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {form.watch("paymentStatus") !== "unpaid" && (
+                            <div className="space-y-1">
+                                <Select
+                                    value={form.watch("paymentMethod")}
+                                    onValueChange={(value) =>
+                                        form.setValue(
+                                            "paymentMethod",
+                                            value as "cash" | "card" | "transfer"
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full cursor-pointer">
+                                        <SelectValue placeholder="Payment Method" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="cash" className="cursor-pointer">
+                                            Cash
+                                        </SelectItem>
+                                        <SelectItem value="card" className="cursor-pointer">
+                                            Card
+                                        </SelectItem>
+                                        <SelectItem value="transfer" className="cursor-pointer">
+                                            Transfer
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
