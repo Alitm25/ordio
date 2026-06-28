@@ -16,6 +16,8 @@ export async function POST(req: Request) {
             productName,
             quantity,
             price,
+            paymentStatus,
+            paymentMethod,
         } = body;
 
         const order = await Order.create({
@@ -24,6 +26,8 @@ export async function POST(req: Request) {
             productName,
             quantity,
             price,
+            paymentStatus,
+            paymentMethod,
             userId: user.userId,
         });
 
