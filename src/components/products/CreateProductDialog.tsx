@@ -14,6 +14,7 @@ interface Props {
 }
 
 export default function CreateProductDialog({ open, onOpenChange }: Props) {
+    // Dialog form default values initiation
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(productSchema),
         defaultValues: {
@@ -23,11 +24,13 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
         },
     });
 
+    // Create Product function declaration
     const createProduct = useCreateProduct(() => {
         form.reset();
         onOpenChange(false);
     });
 
+    // Dialog Form OnSubmit function declaration
     const onSubmit = (data: ProductFormValues) => {
         createProduct.mutate(data);
         console.log('data', data);
