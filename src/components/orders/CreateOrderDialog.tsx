@@ -13,6 +13,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+// @ts-ignore
+import ProductCombobox from "@/components/products/ProductCombobox";
+import { useProducts } from "@/features/products/hooks/useProducts";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,9 +34,9 @@ interface Props {
 }
 
 export default function CreateOrderDialog({open, onOpenChange}: Props) {
-
     const queryClient = useQueryClient();
 
+    // Create Order mutation function declaration
     const createOrderMutation = useMutation({
         mutationFn: createOrder,
         onSuccess: () => {
@@ -43,6 +46,11 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
         }
     });
 
+    // Get products catalog data
+    const { data: productsData } = useProducts();
+    const products = productsData?.products ?? [];
+
+    // Create Order Form default values initialization
     const form = useForm<CreateOrderFormValues>({
         resolver: zodResolver(createOrderSchema),
 
@@ -91,6 +99,24 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                 </p>)
                         }
                     </div>
+
+                    {
+                        products.length > 0 && (
+                            <div className="space-y-1">
+                                <ProductCombobox
+                                    products={products}
+                                    value={ form.watch('productName') }
+                                    onSelect={ (product) => {
+                                        form.setValue('productName', product.name);
+                                        form.setValue('price', product.price)
+                                    }}
+                                />
+                                <p className={'text-xs text-muted-foreground px-1'}>
+                                    Or type manually below
+                                </p>
+                            </div>
+                        )
+                    }
 
                     <div className="space-y-1">
                         <Input {...form.register("productName")} placeholder="Product Name"/>
