@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
     LayoutDashboard,
     Package,
-    Settings,
+    Settings, ShoppingBag,
 } from "lucide-react";
 
 const links = [
@@ -19,6 +19,11 @@ const links = [
         href: "/orders",
         label: "Orders",
         icon: Package,
+    },
+    {
+        href: "/products",
+        label: "Products",
+        icon: ShoppingBag,
     },
     {
         href: "/settings",
