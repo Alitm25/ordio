@@ -36,7 +36,20 @@ interface Props {
 export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const queryClient = useQueryClient();
 
-    // default values of form
+    // Update Order mutation function declaration
+    const updateOrderMutation = useMutation({
+        mutationFn: updateOrder,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            onOpenChange(false);
+        },
+    });
+
+    // Get products catalog data
+    const { data: productsData } = useProducts();
+    const products = productsData?.products ?? [];
+
+    // Form default values initializations
     const form = useForm<CreateOrderFormValues>({
         resolver: zodResolver(createOrderSchema),
         defaultValues: {
