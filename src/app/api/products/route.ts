@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
         const { name, price, description } = await req.json();
 
-        if (!name || !price || !description) {
+        if (!name || !price) {
             return Response.json(
                 { message: 'Name and price are required' },
                 { status: 400 }
