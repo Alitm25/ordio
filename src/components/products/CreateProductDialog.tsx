@@ -33,7 +33,6 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
     // Dialog Form OnSubmit function declaration
     const onSubmit = (data: ProductFormValues) => {
         createProduct.mutate(data);
-        console.log('data', data);
     };
 
     return (
