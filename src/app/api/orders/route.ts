@@ -87,7 +87,8 @@ export async function GET(req: Request) {
             Order.find(filter)
                 .sort(sort)
                 .skip((page - 1) * limit)
-                .limit(limit),
+                .limit(limit)
+                .populate("customerId", "name phone"),
             Order.countDocuments(filter),
         ]);
 
