@@ -27,6 +27,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateOrder } from "@/features/orders/services/updateOrder";
 import { Button } from "@/components/ui/button";
 import { Order } from "@/components/orders/OrdersTable";
+import {useProducts} from "@/features/products/hooks/useProducts";
+import ProductCombobox from "@/components/products/ProductCombobox";
 
 interface Props {
     order: Order | null;
@@ -81,13 +83,6 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
         }
     }, [order, form]);
 
-    const updateOrderMutation = useMutation({
-        mutationFn: updateOrder,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
-            onOpenChange(false);
-        },
-    });
 
     return (
         <Dialog open={!!order} onOpenChange={onOpenChange}>
