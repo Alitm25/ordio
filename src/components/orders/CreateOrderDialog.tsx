@@ -99,7 +99,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                 </p>)
                         }
                     </div>
-
+                    {/* choosing products catalog SECTION */}
                     {
                         products.length > 0 && (
                             <div className="space-y-1">
