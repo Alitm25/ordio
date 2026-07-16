@@ -49,6 +49,12 @@ const OrderSchema = new Schema(
             enum: ["cash", "card", "transfer"],
             default: null,
         },
+        customerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Customer",
+            required: false,
+            default: null,
+        }
     },
     {
         timestamps: true,
