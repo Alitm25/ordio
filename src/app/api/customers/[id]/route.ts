@@ -1,0 +1,46 @@
+import {connectDB} from "@/lib/db";
+import {getCurrentUser} from "@/lib/getCurrentUser";
+import Customer from "@/models/Customer";
+
+export async function PATCH(
+    req: Request,
+    { params } : { params: Promise<{id: String}> }
+) {
+    try {
+        await connectDB();
+
+        const user = await getCurrentUser();
+        const { id } = await params;
+        const { name, phone, notes } = await req.json();
+
+        const customer = await Customer.findOne({
+            _id: id,
+            userId: user.userId
+        });
+
+        if (!customer) {
+            return Response.json(
+                { message: "Customer not found" },
+                { status: 404 }
+            );
+        }
+
+        if (name !== undefined) customer.name = name;
+        if (phone !== undefined) customer.phone = phone;
+        if (notes !== undefined) customer.notes = notes;
+
+        await customer.save();
+
+        return Response.json({
+                message: "Customer updated successfully",
+                customer,
+            },
+        )
+
+    } catch (error) {
+        return Response.json(
+            { message: "Server error", error },
+            { status: 500 }
+        );
+    }
+}
