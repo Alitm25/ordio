@@ -111,6 +111,25 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                         )}
                     </div>
 
+                    {/* choosing products catalog SECTION */}
+                    {
+                        products.length > 0 && (
+                            <div className="space-y-1">
+                                <ProductCombobox
+                                    products={products}
+                                    value={ form.watch('productName') }
+                                    onSelect={ (product) => {
+                                        form.setValue('productName', product.name);
+                                        form.setValue('price', product.price)
+                                    }}
+                                />
+                                <p className={'text-xs text-muted-foreground px-1'}>
+                                    Or type manually below
+                                </p>
+                            </div>
+                        )
+                    }
+
                     <div className="space-y-1">
                         <Input {...form.register("productName")} placeholder="Product Name" />
                         {form.formState.errors.productName && (
