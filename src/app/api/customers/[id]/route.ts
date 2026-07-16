@@ -44,3 +44,36 @@ export async function PATCH(
         );
     }
 }
+
+export async function DELETE(
+    _req: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        await connectDB();
+
+        const user = await getCurrentUser();
+        const { id } = await params;
+
+        const deleted = await Customer.findOneAndDelete({
+            _id: id,
+            userId: user.userId,
+        });
+
+        if (!deleted) {
+            return Response.json(
+                { message: "Customer not found" },
+                { status: 404 }
+            );
+        }
+
+        return Response.json({
+            message: "Customer deleted successfully",
+        });
+    } catch (error) {
+        return Response.json(
+            { message: "Server error", error },
+            { status: 500 }
+        );
+    }
+}
