@@ -18,6 +18,7 @@ export async function POST(req: Request) {
             price,
             paymentStatus,
             paymentMethod,
+            customerId
         } = body;
 
         const order = await Order.create({
@@ -28,6 +29,7 @@ export async function POST(req: Request) {
             price,
             paymentStatus,
             paymentMethod,
+            customerId: customerId ?? null,
             userId: user.userId,
         });
 
