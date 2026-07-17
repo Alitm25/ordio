@@ -1,3 +1,9 @@
+export interface OrderCustomer {
+    _id: string;
+    name: string;
+    phone: string;
+}
+
 export interface Order {
     _id: string;
     customerName: string;
@@ -8,5 +14,6 @@ export interface Order {
     status: string;
     paymentStatus: string;
     paymentMethod: string | null;
+    customerId: OrderCustomer | null;
     createdAt: string;
 }
