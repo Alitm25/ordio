@@ -24,5 +24,12 @@ export async function connectDB() {
     }
 
     cached.conn = await cached.promise;
+
+    // اطمینان از register شدن همه‌ی مدل‌ها
+    await import("@/models/User");
+    await import("@/models/Order");
+    await import("@/models/Customer");
+    await import("@/models/Product");
+
     return cached.conn;
 }
