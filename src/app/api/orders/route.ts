@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import Customer from "@/models/Customer";
 
 export async function POST(req: Request) {
     try {
