@@ -29,6 +29,9 @@ import { Button } from "@/components/ui/button";
 import { Order } from "@/components/orders/OrdersTable";
 import {useProducts} from "@/features/products/hooks/useProducts";
 import ProductCombobox from "@/components/products/ProductCombobox";
+import {useCustomers} from "@/features/customers/hooks/useCustomer";
+import {Customer} from "@/types/customer";
+import CustomerCombobox from "@/components/customers/CustomerCombobox";
 
 interface Props {
     order: Order | null;
@@ -51,6 +54,10 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const { data: productsData } = useProducts();
     const products = productsData?.products ?? [];
 
+    // Get customers catalog data
+    const { data: customersData } = useCustomers();
+    const customers = customersData?.customers ?? [];
+
     // Form default values initializations
     const form = useForm<CreateOrderFormValues>({
         resolver: zodResolver(createOrderSchema),
@@ -63,6 +70,14 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
             paymentStatus: 'unpaid',
         },
     });
+
+    // Customer select Handler
+    const handleCustomerSelect = (customer: Customer) => {
+        form.setValue("customerName", customer.name);
+        form.setValue("customerPhone", customer.phone);
+        form.setValue("customerId", customer._id);
+    };
+
 
     // reset form for various forms
     useEffect(() => {
@@ -101,6 +116,21 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                     })}
                     className="space-y-4"
                 >
+
+                    {/* Customer catalog section */}
+                    {customers.length > 0 && (
+                        <div className="space-y-1">
+                            <CustomerCombobox
+                                customers={customers}
+                                value={form.watch("customerId") ?? ""}
+                                onSelect={handleCustomerSelect}
+                            />
+                            <p className="text-xs text-muted-foreground px-1">
+                                Or fill in manually below
+                            </p>
+                        </div>
+                    )}
+
                     <div className="space-y-1">
                         <Input{...form.register("customerName")} placeholder="Customer Name" />
                         {form.formState.errors.customerName && (
