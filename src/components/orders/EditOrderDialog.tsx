@@ -89,11 +89,8 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                 quantity: order.quantity,
                 price: order.price,
                 paymentStatus: order.paymentStatus as "unpaid" | "paid" | "partial",
-                paymentMethod: order.paymentMethod as
-                    | "cash"
-                    | "card"
-                    | "transfer"
-                    | undefined,
+                paymentMethod: order.paymentMethod as "cash" | "card" | "transfer" | undefined,
+                customerId: order.customerId?._id ?? undefined,
             });
         }
     }, [order, form]);
