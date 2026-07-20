@@ -195,8 +195,7 @@ export default function CustomersPage()  {
                     </AlertDialogContent>
                 </AlertDialog>
             {/* Dialogs rendering END */}
-
-        </>
+        </div>
 
     )
 }
