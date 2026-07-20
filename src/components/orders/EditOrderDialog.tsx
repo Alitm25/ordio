@@ -58,6 +58,8 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const { data: customersData } = useCustomers();
     const customers = customersData?.customers ?? [];
 
+    /*FIXME fix the bug about 'not saving' edits after catalog changes*/
+
     // Form default values initializations
     const form = useForm<CreateOrderFormValues>({
         resolver: zodResolver(createOrderSchema),
