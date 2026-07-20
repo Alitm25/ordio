@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
     LayoutDashboard,
     Package,
-    Settings, ShoppingBag,
+    Settings, ShoppingBag, Users,
 } from "lucide-react";
 
 const links = [
@@ -30,6 +30,11 @@ const links = [
         label: "Settings",
         icon: Settings,
     },
+    {
+        href: "/customers",
+        label: "Customers",
+        icon: Users
+    }
 ];
 
 export default function Sidebar() {
