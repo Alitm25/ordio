@@ -33,7 +33,7 @@ export default function CustomersPage()  {
     const deleteCustomer = useDeleteCustomer();
     const customers: Customer[] = data?.customers ?? [];
     return (
-        <>
+        <div className={'space-y-6'}>
             {/* Header */}
             <div className="space-y-6">
                 <div className={'flex items-center justify-between'}>
