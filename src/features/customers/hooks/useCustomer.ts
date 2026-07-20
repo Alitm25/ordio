@@ -6,7 +6,7 @@ import {toast} from "sonner";
 
 // GET customers Custom Hook
 export function useCustomers (){
-    useQuery({
+    return useQuery({
         queryKey: ["customers"],
         queryFn: getCustomers
     })
