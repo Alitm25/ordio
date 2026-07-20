@@ -98,8 +98,8 @@ export default function CustomersPage()  {
                                 </TableHeader>
                                 {/* Table body */}
                                 <TableBody>
-                                    {customers.map((customer) => (
-                                        <TableRow>
+                                    {customers.map((customer, index) => (
+                                        <TableRow key={index}>
                                             <TableCell className={'font-medium'}>
                                                 {customer.name}
                                             </TableCell>
