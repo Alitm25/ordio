@@ -37,6 +37,8 @@ const links = [
     }
 ];
 
+
+/* TODO added responsive sidebar (Hamburger Menu) */
 export default function Sidebar() {
     const pathname = usePathname();
 
