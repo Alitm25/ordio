@@ -66,6 +66,7 @@ Coming soon...
 
 ## Getting Started
 
+```bash
 git clone https://github.com/Alitm25/ordio.git
 
 cd ordio
@@ -73,11 +74,13 @@ cd ordio
 npm install
 
 npm run dev
+```
 
+```env
 MONGODB_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_super_secret_key
-
+```
 
 ## Roadmap
 
