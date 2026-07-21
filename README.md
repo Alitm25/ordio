@@ -46,17 +46,19 @@ Each feature encapsulates its own components, services, hooks, and validation lo
 
 # Project Structure
 
-src
-├── app
-├── components
-├── features
-├── hooks
-├── lib
-├── models
-├── providers
-├── services
-├── types
-└── utils
+```text
+src/
+├── app/            # Next.js App Router
+├── components/     # Shared UI components
+├── features/       # Feature modules
+├── hooks/          # Custom React hooks
+├── lib/            # Shared libraries
+├── models/         # Mongoose models
+├── providers/      # Global providers
+├── services/       # Business logic & API calls
+├── types/          # TypeScript types
+└── utils/          # Utility functions
+```
 
 - app → Next.js App Router
 - features → Domain-specific business logic
