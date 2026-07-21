@@ -35,11 +35,6 @@ const links = [
         label: "Settings",
         icon: Settings,
     },
-    {
-        href: "/customers",
-        label: "Customers",
-        icon: Users
-    }
 ];
 
 interface Props {
