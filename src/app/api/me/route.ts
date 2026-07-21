@@ -21,6 +21,7 @@ export async function GET() {
             user: {
                 id: user._id,
                 email: user.email,
+                createdAt: user.createdAt
             },
         });
     } catch (error) {
