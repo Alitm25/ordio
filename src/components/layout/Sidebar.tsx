@@ -37,6 +37,9 @@ const links = [
     }
 ];
 
+interface Props {
+    onNavigate: () => void;
+}
 
 // Sidebar and menu content
 export function SidebarContent() {
