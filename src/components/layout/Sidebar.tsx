@@ -74,7 +74,7 @@ export function SidebarContent({ onNavigate } :Props) {
                     );
                 })}
             </nav>
-        </aside>
+        </div>
     );
 }
 
