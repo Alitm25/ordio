@@ -76,3 +76,12 @@ export function SidebarContent() {
         </aside>
     );
 }
+
+// Sidebar JSX
+export default function Sidebar() {
+    return (
+        <aside className={'hidden lg:flex w-64 border-r bg-card flex-col'}>
+            <SidebarContent />
+        </aside>
+    )
+}
