@@ -1,9 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import {LogOut, Menu} from "lucide-react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import {useState} from "react";
+import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
+import {SidebarContent} from "@/components/layout/Sidebar";
 
 export default function Topbar() {
     const { data } = useCurrentUser();
@@ -12,31 +15,43 @@ export default function Topbar() {
 
     return (
         <header className="border-b px-8 py-5 flex items-center justify-between">
-            <div>
-                <h1 className="text-2xl font-bold">
-                    Orders Management
-                </h1>
+        {/* SideBar Menu */}
+            <div className={'flex items-center gap-4'}>
+                <Sheet open={open} onOpenChange={setOpen}>
+                    <SheetTrigger asChild>
+                        <Button variant={'ghost'} size={"icon"} className={'lg:hidden cursor-pointer'}>
+                            <Menu className={'h-5 w-5'} />
+                        </Button>
+                    </SheetTrigger>
 
-                <p className="text-sm text-muted-foreground mt-1">
-                    Manage and track customer orders
-                </p>
+                    <SheetContent side={'left'} className={'p-0 w-64'}>
+                        <SheetTitle className={'sr-only'}>
+                            Navigation Menu
+                        </SheetTitle>
+                        <SidebarContent onNavigate={ () => setOpen(false)}/>
+                    </SheetContent>
+                </Sheet>
+
+                <div className={'lg:hidden font-bold text-lg'}>Ordio</div>
             </div>
 
+        {/* Logout section */}
             <div className="flex items-center gap-4">
-                {
-                    data?.user.email && (
-                        <span className="text-sm text-muted-foreground">
-                            {data.user.email}
-                        </span>
-                    )
-                }
+                {data?.user.email && (
+                    <span className={'text-sm text-muted-foreground hidden sm:block'}>
+                        {data.user.email}
+                    </span>
+                )}
 
-                <Button variant="outline" size="sm" className={'cursor-pointer group'}
+                <Button
+                    variant={'outline'}
+                    size={'sm'}
                     onClick={() => logoutMutation.mutate()}
                     disabled={logoutMutation.isPending}
+                    className={'cursor-pointer group'}
                 >
-                    <LogOut className="h-4 w-4 mr-2 group-hover:text-red-500 transition" />
-                    {logoutMutation.isPending ? "Logging out..." : "Logout"}
+                    <LogOut className={'h-4 w-4 mr-2 group-hover:text-red-600'}/>
+                    {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
                 </Button>
             </div>
         </header>
