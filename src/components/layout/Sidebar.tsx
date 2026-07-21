@@ -38,7 +38,7 @@ const links = [
 ];
 
 interface Props {
-    onNavigate: () => void;
+    onNavigate?: () => void;
 }
 
 // Sidebar and menu content
