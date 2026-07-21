@@ -8,6 +8,7 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 export default function Topbar() {
     const { data } = useCurrentUser();
     const logoutMutation = useLogout();
+    const [open, setOpen] = useState(false);
 
     return (
         <header className="border-b px-8 py-5 flex items-center justify-between">
