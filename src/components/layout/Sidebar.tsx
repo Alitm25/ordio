@@ -66,6 +66,7 @@ export function SidebarContent({ onNavigate } :Props) {
                                     ? "bg-primary text-primary-foreground"
                                     : "hover:bg-muted"
                                 }`}
+                              onClick={onNavigate}
                         >
                             <Icon size={18} />
                             <span>{link.label}</span>
