@@ -109,6 +109,9 @@ export default function CustomersPage()  {
                                                     {customer.phone}
                                                 </a>
                                             </TableCell>
+                                            <TableCell className="text-muted-foreground">
+                                                {customer.notes || "—"}
+                                            </TableCell>
                                             <TableCell>
                                                 <div className="flex gap-2">
                                                     <Button
