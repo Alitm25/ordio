@@ -42,7 +42,7 @@ interface Props {
 }
 
 // Sidebar and menu content
-export function SidebarContent() {
+export function SidebarContent({ onNavigate } :Props) {
     // Get the current path
     const pathname = usePathname();
 
