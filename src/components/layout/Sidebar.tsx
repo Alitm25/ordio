@@ -38,8 +38,9 @@ const links = [
 ];
 
 
-/* TODO added responsive sidebar (Hamburger Menu) */
-export default function Sidebar() {
+// Sidebar and menu content
+export function SidebarContent() {
+    // Get the current path
     const pathname = usePathname();
 
     return (
