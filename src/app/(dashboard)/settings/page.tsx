@@ -51,7 +51,7 @@ export default function SettingsPage() {
     return (
         <div className="space-y-6 max-w-2xl">
             <h1 className="text-3xl font-bold">Settings</h1>
-
+            {/* Account information section */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -75,15 +75,11 @@ export default function SettingsPage() {
                             Member since
                         </span>
                         <span className="font-medium">
-                            {user
-                                ? new Date(
-                                    (user as any).createdAt
-                                ).toLocaleDateString("en-US", {
+                            {user?.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US", {
                                     year: "numeric",
                                     month: "long",
                                     day: "numeric",
-                                })
-                                : "—"}
+                                }) : "—"}
                         </span>
                     </div>
                 </CardContent>
