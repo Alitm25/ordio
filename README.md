@@ -60,14 +60,6 @@ src/
 └── utils/          # Utility functions
 ```
 
-- app → Next.js App Router
-- features → Domain-specific business logic
-- services → API layer
-- models → Database models
-- hooks → Shared custom hooks
-- providers → Global providers
-
-
 ## Screenshots
 Coming soon...
 
