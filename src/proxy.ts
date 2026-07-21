@@ -16,7 +16,7 @@ export function proxy(request: NextRequest) {
     );
 
     // Redirect user to the dashboard or login page whether the user is logged-in or not
-    if (pathname === "/") {
+    if (pathname === "/" || pathname === "") {
         if (token) {
             return NextResponse.redirect(new URL("/dashboard", request.url));
         } else {
