@@ -26,6 +26,11 @@ const links = [
         icon: ShoppingBag,
     },
     {
+        href: "/customers",
+        label: "Customers",
+        icon: Users
+    },
+    {
         href: "/settings",
         label: "Settings",
         icon: Settings,
