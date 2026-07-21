@@ -47,7 +47,7 @@ export function SidebarContent() {
     const pathname = usePathname();
 
     return (
-        <aside className="w-64 border-r bg-card flex flex-col">
+        <div className="flex flex-col h-full">
             <div className="p-6 border-b">
                 <h1 className="text-2xl font-bold">
                     Ordio
