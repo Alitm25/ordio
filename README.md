@@ -44,7 +44,7 @@ The project follows a feature-based architecture to improve scalability and main
 Each feature encapsulates its own components, services, hooks, and validation logic while shared utilities remain isolated inside dedicated directories.
 
 
-# Project Structure
+## Project Structure
 
 ```text
 src/
