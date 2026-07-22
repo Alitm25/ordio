@@ -19,7 +19,7 @@ The project is currently in the MVP stage and is actively being developed with s
 - Order management
 - Form validation with Zod
 - Responsive interface
-- Modern UI built with Tailwind CSS & SHADCN
+- Modern UI built with Tailwind CSS & Shadcn UI
 - MongoDB database integration
 - Server state management using TanStack Query
 
