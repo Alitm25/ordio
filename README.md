@@ -1,6 +1,7 @@
 # Ordio
 
 > Modern business management platform built with Next.js and TypeScript.
+> [Watch Demo](https://ordio-theta.vercel.app)
 
 
 ## About
