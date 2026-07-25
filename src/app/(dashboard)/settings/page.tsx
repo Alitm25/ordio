@@ -18,7 +18,8 @@ export default function SettingsPage() {
     const { data } = useCurrentUser();
     const user = data?.user;
 
-    // Show and Hide password inputs states
+    // Change email & passwords states
+    const [showEmailPassword, setShowEmailPassword] = useState(false);
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
