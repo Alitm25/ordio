@@ -1,6 +1,7 @@
 # Ordio
 
 > Modern business management platform built with Next.js and TypeScript.
+> [Watch Demo](https://ordio-theta.vercel.app)
 
 
 ## About
@@ -19,7 +20,7 @@ The project is currently in the MVP stage and is actively being developed with s
 - Order management
 - Form validation with Zod
 - Responsive interface
-- Modern UI built with Tailwind CSS & SHADCN
+- Modern UI built with Tailwind CSS & Shadcn UI
 - MongoDB database integration
 - Server state management using TanStack Query
 
@@ -44,7 +45,7 @@ The project follows a feature-based architecture to improve scalability and main
 Each feature encapsulates its own components, services, hooks, and validation logic while shared utilities remain isolated inside dedicated directories.
 
 
-# Project Structure
+## Project Structure
 
 ```text
 src/
