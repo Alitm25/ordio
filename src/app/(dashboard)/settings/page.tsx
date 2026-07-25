@@ -17,6 +17,7 @@ export default function SettingsPage() {
     // Get the current user
     const { data } = useCurrentUser();
     const user = data?.user;
+    const queryClient = useQueryClient();
 
     // Change email & passwords states
     const [showEmailPassword, setShowEmailPassword] = useState(false);
