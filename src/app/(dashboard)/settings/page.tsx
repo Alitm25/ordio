@@ -113,13 +113,85 @@ export default function SettingsPage() {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Lock className="h-5 w-5" />
-                        Change Password
-                    </CardTitle>
-                </CardHeader>
+            {/* Change Email Card START */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Mail className="h-5 w-5" />
+                            Change Email
+                        </CardTitle>
+                    </CardHeader>
+
+                    <CardContent>
+                        <form
+                            onSubmit={emailForm.handleSubmit(onEmailSubmit)}
+                            className="space-y-4"
+                        >
+                            <div className="space-y-1">
+                                <Input
+                                    {...emailForm.register("newEmail")}
+                                    type="email"
+                                    placeholder="New email address"
+                                />
+                                {emailForm.formState.errors.newEmail && (
+                                    <p className="text-sm text-red-500">
+                                        {emailForm.formState.errors.newEmail.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1">
+                                <div className="relative">
+                                    <Input
+                                        {...emailForm.register("currentPassword")}
+                                        type={showEmailPassword ? "text" : "password"}
+                                        placeholder="Confirm with current password"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setShowEmailPassword((prev) => !prev)
+                                        }
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    >
+                                        {showEmailPassword ? (
+                                            <EyeOff className="h-4 w-4" />
+                                        ) : (
+                                            <Eye className="h-4 w-4" />
+                                        )}
+                                    </button>
+                                </div>
+                                {emailForm.formState.errors.currentPassword && (
+                                    <p className="text-sm text-red-500">
+                                        {emailForm.formState.errors.currentPassword.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="flex justify-end pt-2">
+                                <Button
+                                    type="submit"
+                                    className="cursor-pointer"
+                                    disabled={emailForm.formState.isSubmitting}
+                                >
+                                    {emailForm.formState.isSubmitting
+                                        ? "Saving..."
+                                        : "Change Email"}
+                                </Button>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
+            {/* Change Email Card END */}
+
+            {/* Change Password Card START */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Lock className="h-5 w-5" />
+                            Change Password
+                        </CardTitle>
+                    </CardHeader>
 
                 <CardContent>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
