@@ -43,12 +43,38 @@ export default function SettingsPage() {
                 newPassword: data.newPassword,
             });
 
-            toast.success("Password changed successfully");
-            form.reset();
-        } catch (error) {
-            toast.error(getErrorMessage(error, "Could not change password"));
-        }
-    };
+                toast.success("Password changed successfully");
+                form.reset();
+            } catch (error) {
+                toast.error(getErrorMessage(error, "Could not change password"));
+            }
+        };
+    /* Change Password section END */
+
+    /* Change Email section START */
+        // email form default values initialization
+        const emailForm = useForm<ChangeEmailFormValues>({
+            resolver: zodResolver(changeEmailSchema),
+            defaultValues: {
+                newEmail: "",
+                currentPassword: "",
+            },
+        });
+
+        // Change email onSubmit handler
+        const onEmailSubmit = async (data: ChangeEmailFormValues) => {
+            try {
+                await api.patch("user/change-email", data);
+
+                toast.success("Email changed successfully");
+                emailForm.reset();
+
+                queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+            } catch (error) {
+                toast.error(getErrorMessage(error, "Could not change email"));
+            }
+        };
+    /* Change Email section END */
 
     return (
         <div className="space-y-6 max-w-2xl">
