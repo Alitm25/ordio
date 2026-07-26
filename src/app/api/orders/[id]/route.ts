@@ -2,6 +2,35 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 
+export async function GET(_req: Request, {params} :{params: Promise<{ id: string }>} ) {
+    try {
+        await connectDB();
+
+        const user = await getCurrentUser();
+        const {id} = await params;
+
+        const order = await Order.findOne({
+            _id: id,
+            userId: user.userId,
+        }).populate("customerId", "name phone");
+
+        if (!order) {
+            return Response.json(
+                {message: "Order not found"},
+                {status: 404}
+            );
+        }
+
+        return Response.json({order});
+    } catch (error) {
+        return Response.json(
+            {message: "Server error", error},
+            {status: 500}
+        );
+    }
+}
+
+
 export async function PATCH(
     req: Request,
     { params }: { params: Promise<{ id: string }> }
