@@ -48,7 +48,7 @@ export function SidebarContent({ onNavigate } :Props) {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="p-6 border-b">
+            <div className="p-4.5 border-b">
                 <h1 className="text-2xl font-bold">
                     Ordio
                 </h1>
