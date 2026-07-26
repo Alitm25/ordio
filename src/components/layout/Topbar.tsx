@@ -31,10 +31,7 @@ export default function Topbar() {
                         <SidebarContent onNavigate={ () => setOpen(false)}/>
                     </SheetContent>
                 </Sheet>
-
-                <div className={'lg:hidden font-bold text-lg'}>Ordio</div>
             </div>
-
         {/* Logout section */}
             <div className="flex items-center gap-4">
                 {data?.user.email && (
