@@ -92,7 +92,7 @@ export default function CustomersPage()  {
                                     <TableRow>
                                         <TableHead>Name</TableHead>
                                         <TableHead>Phone</TableHead>
-                                        <TableHead>Notes</TableHead>
+                                        <TableHead className="hidden md:table-cell">Notes</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -109,7 +109,7 @@ export default function CustomersPage()  {
                                                     {customer.phone}
                                                 </a>
                                             </TableCell>
-                                            <TableCell className="text-muted-foreground">
+                                            <TableCell className="text-muted-foreground hidden md:table-cell">
                                                 {customer.notes || "—"}
                                             </TableCell>
                                             <TableCell>
