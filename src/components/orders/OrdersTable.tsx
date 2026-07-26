@@ -171,11 +171,11 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                 />
                             </TableHead>
                             <TableHead>Customer</TableHead>
-                            <TableHead>Product</TableHead>
+                            <TableHead className="hidden md:table-cell">Product</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Payment</TableHead>
-                            <TableHead>Price</TableHead>
-                            <TableHead>Date</TableHead>
+                            <TableHead className="hidden md:table-cell">Price</TableHead>
+                            <TableHead className="hidden md:table-cell">Date</TableHead>
                             <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -197,7 +197,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                         {order.customerName}
                                     </Link>
                                 </TableCell>
-                                <TableCell>{order.productName}</TableCell>
+                                <TableCell className="hidden md:table-cell">{order.productName}</TableCell>
                                 <TableCell>
                                     <Select
                                         value={order.status}
@@ -265,10 +265,10 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                                 : "Unpaid"}
                                     </span>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="hidden md:table-cell">
                                     {order.price.toLocaleString()}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="hidden md:table-cell">
                                     {new Date(order.createdAt).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell>
