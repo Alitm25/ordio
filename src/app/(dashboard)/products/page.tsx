@@ -76,7 +76,7 @@ export default function ProductsPage() {
                             <TableRow>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Price</TableHead>
-                                <TableHead>Description</TableHead>
+                                <TableHead className="hidden md:table-cell">Description</TableHead>
                                 <TableHead>Actions</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -89,7 +89,7 @@ export default function ProductsPage() {
                                     <TableCell>
                                         {product.price.toLocaleString()}
                                     </TableCell>
-                                    <TableCell className="text-muted-foreground">
+                                    <TableCell className="text-muted-foreground hidden md:table-cell">
                                         {product.description || "—"}
                                     </TableCell>
                                     <TableCell>
