@@ -36,6 +36,7 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Order } from "@/types/order";
+import Link from "next/link";
 
 export type { Order };
 
