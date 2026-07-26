@@ -199,8 +199,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">{order.productName}</TableCell>
                                 <TableCell>
-                                    <Select
-                                        value={order.status}
+                                    <Select value={order.status}
                                         onValueChange={(value) =>
                                             updateStatusMutation.mutate({
                                                 id: order._id,
@@ -213,35 +212,20 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                         </SelectTrigger>
 
                                         <SelectContent>
-                                            <SelectItem
-                                                value="pending"
-                                                className="cursor-pointer"
-                                            >
-                                                <span
-                                                    className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.pending}`}
-                                                >
+                                            <SelectItem value="pending" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.pending}`}>
                                                     Pending
                                                 </span>
                                             </SelectItem>
 
-                                            <SelectItem
-                                                value="processing"
-                                                className="cursor-pointer"
-                                            >
-                                                <span
-                                                    className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.processing}`}
-                                                >
+                                            <SelectItem value="processing" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.processing}`}>
                                                     Processing
                                                 </span>
                                             </SelectItem>
 
-                                            <SelectItem
-                                                value="completed"
-                                                className="cursor-pointer"
-                                            >
-                                                <span
-                                                    className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.completed}`}
-                                                >
+                                            <SelectItem value="completed" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.completed}`}>
                                                     Completed
                                                 </span>
                                             </SelectItem>
@@ -249,8 +233,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                     </Select>
                                 </TableCell>
                                 <TableCell>
-                                    <span
-                                        className={`rounded border px-2 py-0.5 text-xs font-medium ${
+                                    <span className={`rounded border px-2 py-0.5 text-xs font-medium ${
                                             order.paymentStatus === "paid"
                                                 ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
                                                 : order.paymentStatus === "partial"
@@ -273,21 +256,11 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        <Button
-                                            className="cursor-pointer"
-                                            variant="outline"
-                                            size="icon"
-                                            onClick={() => onEdit(order)}
-                                        >
+                                        <Button className="cursor-pointer" variant="outline" size="icon" onClick={() => onEdit(order)}>
                                             <Pencil className="h-4 w-4" />
                                         </Button>
 
-                                        <Button
-                                            className="cursor-pointer"
-                                            variant="destructive"
-                                            size="icon"
-                                            onClick={() => setOrderToDelete(order)}
-                                        >
+                                        <Button className="cursor-pointer" variant="destructive" size="icon" onClick={() => setOrderToDelete(order)}>
                                             <Trash2 className="h-4 w-4" />
                                         </Button>
                                     </div>
@@ -298,8 +271,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                 </Table>
             </div>
 
-            <AlertDialog
-                open={!!orderToDelete}
+            <AlertDialog open={!!orderToDelete}
                 onOpenChange={(open) => {
                     if (!open) setOrderToDelete(null);
                 }}
@@ -328,9 +300,11 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                 }
                             }}
                         >
-                            {deleteOrderMutation.isPending
+                            {
+                                deleteOrderMutation.isPending
                                 ? "Deleting..."
-                                : "Delete"}
+                                : "Delete"
+                            }
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -358,9 +332,11 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                             disabled={bulkDeleteMutation.isPending}
                             onClick={() => bulkDeleteMutation.mutate(selectedIds)}
                         >
-                            {bulkDeleteMutation.isPending
+                            {
+                                bulkDeleteMutation.isPending
                                 ? "Deleting..."
-                                : "Delete"}
+                                : "Delete"
+                            }
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
