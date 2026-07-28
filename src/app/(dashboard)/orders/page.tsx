@@ -20,7 +20,8 @@ import {
 import CreateOrderDialog from "@/components/orders/CreateOrderDialog";
 import EditOrderDialog from "@/components/orders/EditOrderDialog";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import { Search } from "lucide-react";
+import {Download, Search} from "lucide-react";
+import {exportToCsv} from "@/lib/exportToCsv";
 
 const SORT_OPTIONS = [
     { value: "createdAt:desc", label: "Newest first" },
@@ -117,9 +118,16 @@ export default function OrdersPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold">Orders</h1>
-                <Button className="cursor-pointer" onClick={() => setDialogOpen(true)} >
-                    + New Order
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" className="cursor-pointer" onClick={handleExport} disabled={orders.length === 0}>
+                        <Download className="h-4 w-4 mr-2" />
+                        Export CSV
+                    </Button>
+
+                    <Button className="cursor-pointer" onClick={() => setDialogOpen(true)}>
+                        + New Order
+                    </Button>
+                </div>
             </div>
             {/* Search bar */}
             <div className="flex flex-wrap items-center gap-3">
