@@ -35,7 +35,15 @@ function getDateRange(range: string):{ start: Date, end: Date } {
     return { start, end };
 }
 
-
+// Declare a function for changing 'range' param to Days
+function getTrendDays(range: string): number {
+    switch (range) {
+        case "7d": return 7;
+        case "30d": return 30;
+        case "90d": return 90;
+        default: return 30;
+    }
+}
 
 export async function GET() {
     try {
