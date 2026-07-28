@@ -2,6 +2,41 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 
+//  a getDataRange function in order to show the stats based on the various period of times
+function getDateRange(range: string):{ start: Date, end: Date } {
+    // declare today and end of the date variables
+    const now = new Date();
+    const end = new Date(now)
+    let start :Date;
+
+    // Initialize the 'range' param to start date and calculate end of the time range
+    switch (range) {
+        case "7d":
+            start = new Date(now);
+            start.setDate(start.getDate() - 6);
+            start.setHours(0, 0, 0, 0);
+            break;
+        case "30d":
+            start = new Date(now);
+            start.setDate(start.getDate() - 29);
+            start.setHours(0, 0, 0, 0);
+            break;
+        case "90d":
+            start = new Date(now);
+            start.setDate(start.getDate() - 89);
+            start.setHours(0, 0, 0, 0);
+            break;
+        case "this_month":
+        default:
+            start = new Date(now.getFullYear(), now.getMonth(), 1);
+            break;
+    }
+
+    return { start, end };
+}
+
+
+
 export async function GET() {
     try {
         await connectDB();
