@@ -71,6 +71,8 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
         },
     });
 
+    const paymentStatus = form.watch("paymentStatus")
+
     // Customer select Handler
     const handleCustomerSelect = (customer: Customer) => {
         form.setValue("customerName", customer.name);
