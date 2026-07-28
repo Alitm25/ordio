@@ -213,7 +213,7 @@ export default function OrdersPage() {
                 </>
             )}
 
-            {/* Create & Edit Order dialogs Component */}ad
+            {/* Create & Edit Order dialogs Component */}
             <CreateOrderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
             <EditOrderDialog
