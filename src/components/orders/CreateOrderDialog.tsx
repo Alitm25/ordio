@@ -1,35 +1,22 @@
 "use client";
 
-import {
-    Dialog,
-    DialogContent, DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 // @ts-ignore
 import ProductCombobox from "@/components/products/ProductCombobox";
 import { useProducts } from "@/features/products/hooks/useProducts";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-    createOrderSchema,
-    CreateOrderFormValues,
-} from "@/features/orders/schemas/createOrderSchema";
+import { createOrderSchema, CreateOrderFormValues } from "@/features/orders/schemas/createOrderSchema";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {createOrder} from "@/features/orders/services/createOrders";
 import {Button} from "@/components/ui/button";
 import {useCustomers} from "@/features/customers/hooks/useCustomer";
 import {Customer} from "@/types/customer";
 import CustomerCombobox from "@/components/customers/CustomerCombobox";
+
 
 interface Props {
     open: boolean;
@@ -216,32 +203,33 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                             />
                         </div>
 
-                        {form.watch("paymentStatus") !== "unpaid" && (
+                        { paymentStatus !== "unpaid" && (
                             <div className="space-y-1">
-                                <Select
-                                    value={form.watch("paymentMethod")}
-                                    onValueChange={(value) =>
-                                        form.setValue(
-                                            "paymentMethod",
-                                            value as "cash" | "card" | "transfer"
-                                        )
-                                    }
-                                >
-                                    <SelectTrigger className="w-full cursor-pointer">
-                                        <SelectValue placeholder="Payment Method" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="cash" className="cursor-pointer">
-                                            Cash
-                                        </SelectItem>
-                                        <SelectItem value="card" className="cursor-pointer">
-                                            Card
-                                        </SelectItem>
-                                        <SelectItem value="transfer" className="cursor-pointer">
-                                            Transfer
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <Controller
+                                    control={form.control}
+                                    name="paymentMethod"
+                                    render={({ field }) => (
+                                        <Select
+                                            value={field.value ?? ""}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <SelectTrigger className="w-full cursor-pointer">
+                                                <SelectValue placeholder="Payment Method" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="cash" className="cursor-pointer">
+                                                    Cash
+                                                </SelectItem>
+                                                <SelectItem value="card" className="cursor-pointer">
+                                                    Card
+                                                </SelectItem>
+                                                <SelectItem value="transfer" className="cursor-pointer">
+                                                    Transfer
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
                             </div>
                         )}
                     </div>
