@@ -30,17 +30,22 @@ const SORT_OPTIONS = [
 ];
 
 export default function OrdersPage() {
+    // Order action dialog open & close state
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
 
+    // Filter orders States
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("all");
     const [sort, setSort] = useState("createdAt:desc");
     const [page, setPage] = useState(1);
 
+    // debounce function
     const debouncedSearch = useDebouncedValue(search, 400);
+    // sort variables
     const [sortBy, sortOrder] = sort.split(":") as [string, "asc" | "desc"];
 
+    // Get orders query fetch
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: [
             "orders",
@@ -58,43 +63,46 @@ export default function OrdersPage() {
         placeholderData: keepPreviousData,
     });
 
+    // Order and page variables
     const orders: Order[] = data?.orders ?? [];
     const totalCount = data?.totalCount ?? 0;
     const totalPages = data?.totalPages ?? 1;
 
+    // check whether filters are active or not
     const hasActiveFilters = search !== "" || status !== "all";
 
-    const handleSearchChange = (value: string) => {
-        setSearch(value);
-        setPage(1);
-    };
+    // Handlers START
+        const handleSearchChange = (value: string) => {
+            setSearch(value);
+            setPage(1);
+        };
 
-    const handleStatusChange = (value: string) => {
-        setStatus(value);
-        setPage(1);
-    };
 
-    const handleSortChange = (value: string) => {
-        setSort(value);
-        setPage(1);
-    };
+        const handleStatusChange = (value: string) => {
+            setStatus(value);
+            setPage(1);
+        };
 
-    const handleClearFilters = () => {
-        setSearch("");
-        setStatus("all");
-        setPage(1);
-    };
+        const handleSortChange = (value: string) => {
+            setSort(value);
+            setPage(1);
+        };
 
+        const handleClearFilters = () => {
+            setSearch("");
+            setStatus("all");
+            setPage(1);
+        };
+    // Handlers END
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold">Orders</h1>
-
                 <Button className="cursor-pointer" onClick={() => setDialogOpen(true)} >
                     + New Order
                 </Button>
             </div>
-
+            {/* Search bar */}
             <div className="flex flex-wrap items-center gap-3">
                 <div className="relative min-w-55 flex-1">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -106,6 +114,7 @@ export default function OrdersPage() {
                     />
                 </div>
 
+                {/* Status Filter section */}
                 <Select value={status} onValueChange={handleStatusChange}>
                     <SelectTrigger className="w-40 cursor-pointer">
                         <SelectValue />
@@ -126,6 +135,7 @@ export default function OrdersPage() {
                     </SelectContent>
                 </Select>
 
+                {/* Sort Section */}
                 <Select value={sort} onValueChange={handleSortChange}>
                     <SelectTrigger className="w-44 cursor-pointer">
                         <SelectValue />
@@ -144,6 +154,7 @@ export default function OrdersPage() {
                 </Select>
             </div>
 
+            {/* Loading, Error and Empty Data Section */}
             {isLoading ? (
                 <OrdersTableSkeleton />
             ) : error ? (
@@ -159,6 +170,7 @@ export default function OrdersPage() {
                     onCreateOrder={() => setDialogOpen(true)}
                 />
             ) : (
+                // Orders Table
                 <>
                     <p className="text-sm text-muted-foreground">
                         {totalCount} order{totalCount !== 1 ? "s" : ""} found
@@ -174,6 +186,7 @@ export default function OrdersPage() {
                 </>
             )}
 
+            {/* Create & Edit Order dialogs Component */}ad
             <CreateOrderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
             <EditOrderDialog
