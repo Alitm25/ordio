@@ -93,6 +93,25 @@ export default function OrdersPage() {
             setStatus("all");
             setPage(1);
         };
+
+        const handleExport = () => {
+            const rows = orders.map(order => (
+                {
+                    "Customer Name": order.customerName,
+                    "Customer Phone": order.customerPhone,
+                    "Product": order.productName,
+                    "Quantity": order.quantity,
+                    "Price": order.price,
+                    "Status": order.status,
+                    "Payment Status": order.paymentStatus,
+                    "Payment Method": order.paymentMethod ?? "",
+                    "Date": new Date(order.createdAt).toLocaleDateString("en-US"),
+                }
+            ))
+
+            const dateStr = new Date().toISOString().split("T")[0];
+            exportToCsv(`orders-${dateStr}`, rows)
+        }
     // Handlers END
     return (
         <div className="space-y-6">
