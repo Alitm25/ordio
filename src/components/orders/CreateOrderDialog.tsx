@@ -187,30 +187,31 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <Select
-                                value={form.watch("paymentStatus")}
-                                onValueChange={(value) =>
-                                    form.setValue(
-                                        "paymentStatus",
-                                        value as "unpaid" | "paid" | "partial"
-                                    )
-                                }
-                            >
-                                <SelectTrigger className="w-full cursor-pointer">
-                                    <SelectValue placeholder="Payment Status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="unpaid" className="cursor-pointer">
-                                        Unpaid
-                                    </SelectItem>
-                                    <SelectItem value="partial" className="cursor-pointer">
-                                        Partial
-                                    </SelectItem>
-                                    <SelectItem value="paid" className="cursor-pointer">
-                                        Paid
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <Controller
+                                control={form.control}
+                                name="paymentStatus"
+                                render={({ field }) => (
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <SelectTrigger className="w-full cursor-pointer">
+                                            <SelectValue placeholder="Payment Status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="unpaid" className="cursor-pointer">
+                                                Unpaid
+                                            </SelectItem>
+                                            <SelectItem value="partial" className="cursor-pointer">
+                                                Partial
+                                            </SelectItem>
+                                            <SelectItem value="paid" className="cursor-pointer">
+                                                Paid
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
                         </div>
 
                         {form.watch("paymentStatus") !== "unpaid" && (
