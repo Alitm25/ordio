@@ -26,6 +26,7 @@ export interface DashboardStats {
         pending: number;
         processing: number;
         completed: number;
+        cancelled: number;
     };
     range: DashboardRange;
 }
