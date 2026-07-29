@@ -133,6 +133,7 @@ export async function GET(req: Request) {
                 pending: pendingCount,
                 processing: processingCount,
                 completed: completedCount,
+                cancelled: cancelledCount,
             },
             range,
         });
