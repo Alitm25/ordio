@@ -159,6 +159,9 @@ export default function OrdersPage() {
                         <SelectItem value="completed" className="cursor-pointer">
                             Completed
                         </SelectItem>
+                        <SelectItem value="cancelled" className="cursor-pointer">
+                            Cancelled
+                        </SelectItem>
                     </SelectContent>
                 </Select>
 
