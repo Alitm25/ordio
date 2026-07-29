@@ -31,8 +31,8 @@ const STATUS_COLORS = {
 export default function DashboardPage() {
     // Dashboard API Fetch
     const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ["dashboardStats"],
-        queryFn: getDashboardStats,
+        queryKey: ["dashboardStats", range],
+        queryFn: () => getDashboardStats(range),
     });
 
     // Loading return component
