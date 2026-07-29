@@ -13,6 +13,8 @@ export interface DashboardRecentOrder {
     createdAt: string;
 }
 
+export type DashboardRange = '7d' | '30d' | '90d' | 'this-month'
+
 export interface DashboardStats {
     totalOrdersThisMonth: number;
     totalRevenueThisMonth: number;
