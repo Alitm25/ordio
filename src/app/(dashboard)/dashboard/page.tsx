@@ -75,7 +75,8 @@ export default function DashboardPage() {
     const totalStatusOrders =
         data.statusBreakdown.pending +
         data.statusBreakdown.processing +
-        data.statusBreakdown.completed;
+        data.statusBreakdown.completed +
+        data.statusBreakdown.cancelled;
 
     return (
         <div className="space-y-8">
