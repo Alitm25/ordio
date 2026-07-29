@@ -65,7 +65,7 @@ export async function GET(req: Request) {
         trendStart.setHours(0, 0, 0, 0);
 
         // Declare each stats variables with finding the exact order with given filters
-        const [ rangeOrders, trendOrders, recentOrders, pendingCount, processingCount, completedCount ] = await Promise.all([
+        const [ rangeOrders, trendOrders, recentOrders, pendingCount, processingCount, completedCount, cancelledCount ] = await Promise.all([
             Order.find({
                 userId: user.userId,
                 createdAt: { $gte: start, $lte: end },
@@ -78,6 +78,7 @@ export async function GET(req: Request) {
             Order.countDocuments({ userId: user.userId, status: "pending" }),
             Order.countDocuments({ userId: user.userId, status: "processing" }),
             Order.countDocuments({ userId: user.userId, status: "completed" }),
+            Order.countDocuments({ userId: user.userId, status: 'cancelled' })
         ]);
 
         const completedInRange = rangeOrders.filter(
