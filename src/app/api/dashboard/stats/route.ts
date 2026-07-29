@@ -85,7 +85,9 @@ export async function GET() {
             (order) => order.status === "completed"
         );
 
-        const totalRevenueThisMonth = completedThisMonth.reduce(
+        const totalOrdersInRange = rangeOrders.length;
+
+        const totalRevenueInRange = completedInRange.reduce(
             (sum, order) => sum + order.price,
             0
         );
