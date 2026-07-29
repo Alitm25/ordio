@@ -58,16 +58,21 @@ export async function GET() {
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
         sevenDaysAgo.setHours(0, 0, 0, 0);
 
-        const [
-            monthOrders,
-            weekOrders,
-            recentOrders,
-            pendingCount,
-            processingCount,
-            completedCount,
-        ] = await Promise.all([
-            Order.find({ userId: user.userId, createdAt: { $gte: startOfMonth } }),
-            Order.find({ userId: user.userId, createdAt: { $gte: sevenDaysAgo } }),
+        // set the Start day and End day
+        const trendStart = new Date(end);
+        trendStart.setDate(trendStart.getDate() - (trendDays - 1));
+        trendStart.setHours(0, 0, 0, 0);
+
+        // Declare each stats variables with finding the exact order with given filters
+        const [ rangeOrders, trendOrders, recentOrders, pendingCount, processingCount, completedCount ] = await Promise.all([
+            Order.find({
+                userId: user.userId,
+                createdAt: { $gte: start, $lte: end },
+            }),
+            Order.find({
+                userId: user.userId,
+                createdAt: { $gte: trendStart, $lte: end },
+            }),
             Order.find({ userId: user.userId }).sort({ createdAt: -1 }).limit(5),
             Order.countDocuments({ userId: user.userId, status: "pending" }),
             Order.countDocuments({ userId: user.userId, status: "processing" }),
