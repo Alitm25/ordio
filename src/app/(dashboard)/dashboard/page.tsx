@@ -4,23 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getDashboardStats } from "@/features/dashboard/services/getDashboardStats";
 import StatsCard from "@/components/dashboard/StatsCard";
 import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Sector,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Sector } from "recharts";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {ShoppingCart, Wallet, Clock, TrendingUp, AlertCircle} from "lucide-react";
 import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
+import {useState} from "react";
+import {DashboardRange} from "@/types/dashboard";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 const STATUS_COLORS = {
     pending: "#f59e0b",
@@ -28,7 +20,16 @@ const STATUS_COLORS = {
     completed: "#10b981",
 };
 
+const RANGE_LABELS :Record<DashboardRange, string> = {
+    "7d": "Last 7 Days",
+    "30d": "Last 30 Days",
+    "90d": "Last 90 Days",
+    'this-month': "This Month",
+}
+
 export default function DashboardPage() {
+    const [range, setRange] = useState<DashboardRange>('this-month');
+
     // Dashboard API Fetch
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: ["dashboardStats", range],
@@ -55,11 +56,7 @@ export default function DashboardPage() {
                     </p>
                 </div>
 
-                <Button
-                    variant="outline"
-                    className="cursor-pointer"
-                    onClick={() => refetch()}
-                >
+                <Button variant="outline" className="cursor-pointer" onClick={() => refetch()}>
                     Try again
                 </Button>
             </div>
@@ -80,7 +77,7 @@ export default function DashboardPage() {
 
     return (
         <div className="space-y-8">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
                 <h1 className="text-3xl font-bold">Dashboard</h1>
                 {/* Range select input */}
                 <div className="flex items-center gap-3">
@@ -113,20 +110,21 @@ export default function DashboardPage() {
                 </div>
             </div>
 
+            {/* KPI Stats Card START */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <StatsCard
-                    title="Orders This Month"
-                    value={data.totalOrdersThisMonth}
+                    title={`Orders (${RANGE_LABELS[range]})`}
+                    value={data.totalOrdersInRange}
                     icon={ShoppingCart}
                 />
                 <StatsCard
-                    title="Revenue This Month"
-                    value={data.totalRevenueThisMonth}
+                    title={`Revenue (${RANGE_LABELS[range]})`}
+                    value={data.totalRevenueInRange}
                     icon={Wallet}
                     iconClassName="bg-emerald-500/10 text-emerald-500"
                 />
                 <StatsCard
-                    title="Pending Orders"
+                    title={`Pending Orders`}
                     value={data.pendingOrders}
                     icon={Clock}
                     iconClassName="bg-amber-500/10 text-amber-500"
@@ -138,6 +136,7 @@ export default function DashboardPage() {
                     iconClassName="bg-blue-500/10 text-blue-500"
                 />
             </div>
+            {/* KPI Stats Card END */}
 
             <div className="grid gap-4 lg:grid-cols-3">
                 <Card className="lg:col-span-2">
@@ -233,10 +232,7 @@ export default function DashboardPage() {
 
                         <div className="mt-4 space-y-2">
                             {statusData.map((entry) => (
-                                <div
-                                    key={entry.name}
-                                    className="flex items-center justify-between text-sm"
-                                >
+                                <div key={entry.name} className="flex items-center justify-between text-sm">
                                     <div className="flex items-center gap-2">
                                         <span
                                             className="h-2.5 w-2.5 rounded-full"
