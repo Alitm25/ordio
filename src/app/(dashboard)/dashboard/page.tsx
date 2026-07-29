@@ -69,6 +69,7 @@ export default function DashboardPage() {
         { name: "Pending", value: data.statusBreakdown.pending, color: STATUS_COLORS.pending },
         { name: "Processing", value: data.statusBreakdown.processing, color: STATUS_COLORS.processing },
         { name: "Completed", value: data.statusBreakdown.completed, color: STATUS_COLORS.completed },
+        { name: 'Cancelled', value: data.statusBreakdown.cancelled, color: STATUS_COLORS.cancelled }
     ];
 
     const totalStatusOrders =
