@@ -16,8 +16,8 @@ export interface DashboardRecentOrder {
 export type DashboardRange = '7d' | '30d' | '90d' | 'this-month'
 
 export interface DashboardStats {
-    totalOrdersThisMonth: number;
-    totalRevenueThisMonth: number;
+    totalOrdersInRange: number;
+    totalRevenueInRange: number;
     pendingOrders: number;
     averageOrderValue: number;
     trend: DashboardTrendPoint[];
