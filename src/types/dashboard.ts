@@ -27,4 +27,5 @@ export interface DashboardStats {
         processing: number;
         completed: number;
     };
+    range: DashboardRange;
 }
