@@ -45,18 +45,19 @@ function getTrendDays(range: string): number {
     }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
         await connectDB();
 
         const user = await getCurrentUser();
 
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        // Get the range param from URL
+        const { searchParams } = new URL(req.url);
+        const range = searchParams.get("range") ?? "this_month";
 
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-        sevenDaysAgo.setHours(0, 0, 0, 0);
+        // Get the range time and change it to days
+        const { start, end } = getDateRange(range);
+        const trendDays = getTrendDays(range);
 
         // set the Start day and End day
         const trendStart = new Date(end);
@@ -79,9 +80,7 @@ export async function GET() {
             Order.countDocuments({ userId: user.userId, status: "completed" }),
         ]);
 
-        const totalOrdersThisMonth = monthOrders.length;
-
-        const completedThisMonth = monthOrders.filter(
+        const completedInRange = rangeOrders.filter(
             (order) => order.status === "completed"
         );
 
@@ -92,15 +91,12 @@ export async function GET() {
             0
         );
 
-        const averageOrderValue =
-            completedThisMonth.length > 0
-                ? totalRevenueThisMonth / completedThisMonth.length
-                : 0;
+        const averageOrderValue = completedInRange.length > 0 ? totalRevenueInRange / completedInRange.length : 0;
 
         const trendMap = new Map<string, { orders: number; revenue: number }>();
 
-        for (let i = 0; i < 7; i++) {
-            const d = new Date(sevenDaysAgo);
+        for (let i = 0; i < trendDays; i++) {
+            const d = new Date(trendStart);
             d.setDate(d.getDate() + i);
             trendMap.set(d.toISOString().split("T")[0], {
                 orders: 0,
@@ -108,13 +104,12 @@ export async function GET() {
             });
         }
 
-        for (const order of weekOrders) {
+        for (const order of trendOrders) {
             const key = new Date(order.createdAt).toISOString().split("T")[0];
             const entry = trendMap.get(key);
 
             if (entry) {
                 entry.orders += 1;
-
                 if (order.status === "completed") {
                     entry.revenue += order.price;
                 }
@@ -127,8 +122,8 @@ export async function GET() {
         }));
 
         return Response.json({
-            totalOrdersThisMonth,
-            totalRevenueThisMonth,
+            totalOrdersInRange,
+            totalRevenueInRange,
             pendingOrders: pendingCount,
             averageOrderValue,
             trend,
@@ -138,13 +133,11 @@ export async function GET() {
                 processing: processingCount,
                 completed: completedCount,
             },
+            range,
         });
     } catch (error) {
         return Response.json(
-            {
-                message: "Server error",
-                error: error instanceof Error ? error.message : String(error),
-            },
+            { message: "Server error", error },
             { status: 401 }
         );
     }
