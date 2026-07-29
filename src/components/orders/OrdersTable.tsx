@@ -229,6 +229,12 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                                     Completed
                                                 </span>
                                             </SelectItem>
+
+                                            <SelectItem value="cancelled" className="cursor-pointer">
+                                                <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.cancelled}`}>
+                                                    Cancelled
+                                                </span>
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </TableCell>
