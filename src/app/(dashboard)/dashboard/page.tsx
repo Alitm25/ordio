@@ -82,10 +82,35 @@ export default function DashboardPage() {
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold">Dashboard</h1>
-
-                <Link href="/orders">
-                    <Button className="cursor-pointer">+ New Order</Button>
-                </Link>
+                {/* Range select input */}
+                <div className="flex items-center gap-3">
+                    <Select value={range}
+                        onValueChange={(value) =>
+                            setRange(value as DashboardRange)
+                        }
+                    >
+                        <SelectTrigger className="w-40 cursor-pointer">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {Object.entries(RANGE_LABELS).map(
+                                ([value, label]) => (
+                                    <SelectItem
+                                        key={value}
+                                        value={value}
+                                        className="cursor-pointer"
+                                    >
+                                        {label}
+                                    </SelectItem>
+                                )
+                            )}
+                        </SelectContent>
+                    </Select>
+                    {/* New Order Button */}
+                    <Link href="/orders">
+                        <Button className="cursor-pointer">+ New Order</Button>
+                    </Link>
+                </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
