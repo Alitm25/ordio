@@ -90,15 +90,15 @@ JWT_SECRET=your_super_secret_key
 - [x] Product Management
 - [x] Order Management
 - [x] Dashboard
+- [x] CSV Exports
+- [x] Change Email in settings
+- [x] Details Page for Each Order
 - [ ] UI updates
 - [ ] Home Page (Landing page)
 - [ ] Multi-Item Orders
-- [ ] CSV Exports
 - [ ] Notifications
 - [ ] Inventory Management
-- [ ] Change Email in settings
-- [ ] Details Page for Each Order
-
+      
 
 ## Contributing
 
