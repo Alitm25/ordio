@@ -1,0 +1,273 @@
+{
+  "common": {
+    "save": "ذخیره تغییرات",
+    "cancel": "انصراف",
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "create": "ایجاد",
+    "search": "جستجو",
+    "loading": "در حال بارگذاری...",
+    "error": "مشکلی پیش آمد",
+    "retry": "تلاش مجدد",
+    "noData": "داده‌ای یافت نشد",
+    "actions": "عملیات",
+    "confirm": "آیا مطمئن هستید؟",
+    "back": "بازگشت"
+  },
+  "nav": {
+    "dashboard": "داشبورد",
+    "orders": "سفارش‌ها",
+    "products": "محصولات",
+    "customers": "مشتریان",
+    "settings": "تنظیمات"
+  },
+  "auth": {
+    "login": {
+      "title": "خوش برگشتید",
+      "description": "وارد حساب کاربری خود شوید",
+      "email": "آدرس ایمیل",
+      "password": "رمز عبور",
+      "submit": "ورود",
+      "loading": "در حال ورود...",
+      "noAccount": "حساب کاربری ندارید؟",
+      "register": "ثبت‌نام"
+    },
+    "register": {
+      "title": "ایجاد حساب کاربری",
+      "description": "ثبت‌نام کنید و سفارش‌هایتان را مدیریت کنید",
+      "email": "آدرس ایمیل",
+      "password": "رمز عبور",
+      "submit": "ثبت‌نام",
+      "loading": "در حال ایجاد حساب...",
+      "hasAccount": "حساب کاربری دارید؟",
+      "login": "ورود"
+    }
+  },
+  "dashboard": {
+    "title": "داشبورد",
+    "newOrder": "+ سفارش جدید",
+    "viewAllOrders": "مشاهده همه سفارش‌ها ←",
+    "recentOrders": "سفارش‌های اخیر",
+    "noOrders": "هنوز سفارشی ثبت نشده.",
+    "orderStatus": "وضعیت سفارش‌ها",
+    "orders": "سفارش",
+    "trend": "روند",
+    "kpi": {
+      "orders": "سفارش‌ها",
+      "revenue": "درآمد",
+      "pending": "سفارش‌های معلق",
+      "avgOrder": "میانگین ارزش سفارش"
+    },
+    "range": {
+      "7d": "۷ روز گذشته",
+      "30d": "۳۰ روز گذشته",
+      "90d": "۹۰ روز گذشته",
+      "this_month": "این ماه"
+    },
+    "error": {
+      "title": "خطا در بارگذاری داشبورد",
+      "description": "مشکلی در دریافت اطلاعات پیش آمد."
+    }
+  },
+  "orders": {
+    "title": "سفارش‌ها",
+    "newOrder": "+ سفارش جدید",
+    "exportCsv": "خروجی CSV",
+    "searchPlaceholder": "جستجو بر اساس مشتری یا محصول...",
+    "allStatuses": "همه وضعیت‌ها",
+    "found": "سفارش یافت شد",
+    "foundPlural": "سفارش یافت شد",
+    "status": {
+      "pending": "در انتظار",
+      "processing": "در حال پردازش",
+      "completed": "تکمیل شده",
+      "cancelled": "لغو شده"
+    },
+    "sort": {
+      "newestFirst": "جدیدترین",
+      "oldestFirst": "قدیمی‌ترین",
+      "priceHighToLow": "قیمت: زیاد به کم",
+      "priceLowToHigh": "قیمت: کم به زیاد"
+    },
+    "table": {
+      "customer": "مشتری",
+      "product": "محصول",
+      "status": "وضعیت",
+      "payment": "پرداخت",
+      "price": "قیمت",
+      "date": "تاریخ",
+      "actions": "عملیات"
+    },
+    "empty": {
+      "noOrders": "هنوز سفارشی ندارید",
+      "noOrdersDesc": "اولین سفارش خود را ثبت کنید.",
+      "noResults": "سفارشی با این فیلترها یافت نشد",
+      "noResultsDesc": "جستجو یا فیلتر وضعیت را تغییر دهید.",
+      "clearFilters": "پاک کردن فیلترها"
+    },
+    "delete": {
+      "title": "حذف این سفارش؟",
+      "description": "سفارش این مشتری برای همیشه حذف می‌شود:",
+      "cannotUndo": "این عملیات قابل بازگشت نیست."
+    },
+    "bulkDelete": {
+      "selected": "انتخاب شده",
+      "clear": "پاک کردن",
+      "deleteSelected": "حذف موارد انتخابی",
+      "title": "حذف سفارش‌ها؟",
+      "description": "سفارش‌های انتخابی برای همیشه حذف می‌شوند."
+    },
+    "create": {
+      "title": "سفارش جدید",
+      "description": "یک سفارش جدید ثبت کنید.",
+      "customerName": "نام مشتری",
+      "customerPhone": "شماره تلفن",
+      "productName": "نام محصول",
+      "quantity": "تعداد",
+      "price": "قیمت",
+      "paymentStatus": "وضعیت پرداخت",
+      "paymentMethod": "روش پرداخت",
+      "selectFromCatalog": "یا به صورت دستی وارد کنید",
+      "submit": "ثبت سفارش",
+      "loading": "در حال ثبت..."
+    },
+    "edit": {
+      "title": "ویرایش سفارش",
+      "description": "اطلاعات این سفارش را ویرایش کنید.",
+      "submit": "ذخیره تغییرات",
+      "loading": "در حال ذخیره..."
+    },
+    "payment": {
+      "unpaid": "پرداخت نشده",
+      "partial": "پرداخت ناقص",
+      "paid": "پرداخت شده",
+      "cash": "نقد",
+      "card": "کارت (درگاه)",
+      "transfer": "کارت به کارت"
+    },
+    "details": {
+      "title": "جزئیات سفارش",
+      "backToOrders": "بازگشت به سفارش‌ها",
+      "product": "محصول",
+      "quantity": "تعداد",
+      "price": "قیمت",
+      "date": "تاریخ",
+      "paymentStatus": "وضعیت پرداخت",
+      "paymentMethod": "روش پرداخت",
+      "customer": "مشتری",
+      "viewCustomerProfile": "مشاهده پروفایل مشتری",
+      "notFound": "سفارش یافت نشد",
+      "backButton": "بازگشت به سفارش‌ها"
+    },
+    "error": {
+      "title": "خطا در بارگذاری سفارش‌ها",
+      "description": "مشکلی در دریافت اطلاعات پیش آمد."
+    }
+  },
+  "products": {
+    "title": "محصولات",
+    "newProduct": "+ محصول جدید",
+    "table": {
+      "name": "نام",
+      "price": "قیمت",
+      "description": "توضیحات",
+      "actions": "عملیات"
+    },
+    "empty": {
+      "title": "هنوز محصولی ندارید",
+      "description": "اولین محصول را به کاتالوگ اضافه کنید.",
+      "cta": "+ محصول جدید"
+    },
+    "create": {
+      "title": "محصول جدید",
+      "description": "یک محصول به کاتالوگ اضافه کنید.",
+      "name": "نام محصول",
+      "price": "قیمت",
+      "descriptionField": "توضیحات (اختیاری)",
+      "submit": "ایجاد",
+      "loading": "در حال ایجاد..."
+    },
+    "edit": {
+      "title": "ویرایش محصول",
+      "description": "اطلاعات این محصول را ویرایش کنید.",
+      "submit": "ذخیره تغییرات",
+      "loading": "در حال ذخیره..."
+    },
+    "delete": {
+      "title": "حذف این محصول؟",
+      "description": "این محصول برای همیشه از کاتالوگ حذف می‌شود:",
+      "descriptionSuffix": "",
+      "cannotUndo": "این عملیات قابل بازگشت نیست."
+    },
+    "selectFromCatalog": "انتخاب از کاتالوگ..."
+  },
+  "customers": {
+    "title": "مشتریان",
+    "newCustomer": "+ مشتری جدید",
+    "table": {
+      "name": "نام",
+      "phone": "تلفن",
+      "notes": "یادداشت",
+      "actions": "عملیات"
+    },
+    "empty": {
+      "title": "هنوز مشتری‌ای ندارید",
+      "description": "اولین مشتری خود را اضافه کنید.",
+      "cta": "+ مشتری جدید"
+    },
+    "create": {
+      "title": "مشتری جدید",
+      "description": "یک مشتری جدید اضافه کنید.",
+      "name": "نام مشتری",
+      "phone": "شماره تلفن",
+      "notes": "یادداشت (اختیاری)",
+      "submit": "ایجاد",
+      "loading": "در حال ایجاد..."
+    },
+    "edit": {
+      "title": "ویرایش مشتری",
+      "description": "اطلاعات این مشتری را ویرایش کنید.",
+      "submit": "ذخیره تغییرات",
+      "loading": "در حال ذخیره..."
+    },
+    "delete": {
+      "title": "حذف این مشتری؟",
+      "description": "این مشتری برای همیشه حذف می‌شود:",
+      "ordersNote": "سفارش‌های قبلی این مشتری تأثیری نمی‌گیرند."
+    },
+    "selectFromList": "انتخاب از لیست مشتریان..."
+  },
+  "settings": {
+    "title": "تنظیمات",
+    "account": {
+      "title": "اطلاعات حساب",
+      "email": "ایمیل",
+      "memberSince": "عضو از"
+    },
+    "changePassword": {
+      "title": "تغییر رمز عبور",
+      "currentPassword": "رمز عبور فعلی",
+      "newPassword": "رمز عبور جدید",
+      "confirmPassword": "تأیید رمز عبور جدید",
+      "submit": "تغییر رمز عبور",
+      "loading": "در حال ذخیره..."
+    },
+    "changeEmail": {
+      "title": "تغییر ایمیل",
+      "newEmail": "آدرس ایمیل جدید",
+      "currentPassword": "تأیید با رمز عبور فعلی",
+      "submit": "تغییر ایمیل",
+      "loading": "در حال ذخیره..."
+    }
+  },
+  "topbar": {
+    "logout": "خروج",
+    "loggingOut": "در حال خروج..."
+  },
+  "notFound": {
+    "title": "صفحه یافت نشد",
+    "description": "صفحه‌ای که دنبالش می‌گردید وجود ندارد یا جابه‌جا شده.",
+    "goToDashboard": "رفتن به داشبورد",
+    "viewOrders": "مشاهده سفارش‌ها"
+  }
+}
