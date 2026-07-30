@@ -1,0 +1,273 @@
+{
+  "common": {
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "noData": "No data found",
+    "actions": "Actions",
+    "confirm": "Are you sure?",
+    "back": "Back"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "products": "Products",
+    "customers": "Customers",
+    "settings": "Settings"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "description": "Sign in to your account",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Login",
+      "loading": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "register": "Register"
+    },
+    "register": {
+      "title": "Create an account",
+      "description": "Sign up to start managing your orders",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Register",
+      "loading": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "login": "Login"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "newOrder": "+ New Order",
+    "viewAllOrders": "View all orders →",
+    "recentOrders": "Recent Orders",
+    "noOrders": "No orders yet.",
+    "orderStatus": "Order Status",
+    "orders": "orders",
+    "trend": "Trend",
+    "kpi": {
+      "orders": "Orders",
+      "revenue": "Revenue",
+      "pending": "Pending Orders",
+      "avgOrder": "Avg. Order Value"
+    },
+    "range": {
+      "7d": "Last 7 Days",
+      "30d": "Last 30 Days",
+      "90d": "Last 90 Days",
+      "this_month": "This Month"
+    },
+    "error": {
+      "title": "Couldn't load dashboard",
+      "description": "Something went wrong while fetching your stats."
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "newOrder": "+ New Order",
+    "exportCsv": "Export CSV",
+    "searchPlaceholder": "Search by customer or product...",
+    "allStatuses": "All Statuses",
+    "found": "order found",
+    "foundPlural": "orders found",
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "sort": {
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "priceHighToLow": "Price: High to Low",
+      "priceLowToHigh": "Price: Low to High"
+    },
+    "table": {
+      "customer": "Customer",
+      "product": "Product",
+      "status": "Status",
+      "payment": "Payment",
+      "price": "Price",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "empty": {
+      "noOrders": "No orders yet",
+      "noOrdersDesc": "Create your first order to get started.",
+      "noResults": "No orders match your filters",
+      "noResultsDesc": "Try adjusting your search or status filter.",
+      "clearFilters": "Clear filters"
+    },
+    "delete": {
+      "title": "Delete this order?",
+      "description": "This will permanently delete the order for",
+      "cannotUndo": "This action cannot be undone."
+    },
+    "bulkDelete": {
+      "selected": "selected",
+      "clear": "Clear",
+      "deleteSelected": "Delete Selected",
+      "title": "Delete orders?",
+      "description": "This will permanently delete the selected orders."
+    },
+    "create": {
+      "title": "New Order",
+      "description": "Add a new order.",
+      "customerName": "Customer Name",
+      "customerPhone": "Phone",
+      "productName": "Product Name",
+      "quantity": "Quantity",
+      "price": "Price",
+      "paymentStatus": "Payment Status",
+      "paymentMethod": "Payment Method",
+      "selectFromCatalog": "Or fill in manually below",
+      "submit": "Create Order",
+      "loading": "Creating..."
+    },
+    "edit": {
+      "title": "Edit Order",
+      "description": "Update the details of this order.",
+      "submit": "Save Changes",
+      "loading": "Saving..."
+    },
+    "payment": {
+      "unpaid": "Unpaid",
+      "partial": "Partial",
+      "paid": "Paid",
+      "cash": "Cash",
+      "card": "Card",
+      "transfer": "Transfer"
+    },
+    "details": {
+      "title": "Order Details",
+      "backToOrders": "Back to Orders",
+      "product": "Product",
+      "quantity": "Quantity",
+      "price": "Price",
+      "date": "Date",
+      "paymentStatus": "Payment Status",
+      "paymentMethod": "Payment Method",
+      "customer": "Customer",
+      "viewCustomerProfile": "View Customer Profile",
+      "notFound": "Order not found",
+      "backButton": "Back to Orders"
+    },
+    "error": {
+      "title": "Couldn't load orders",
+      "description": "Something went wrong while fetching your orders."
+    }
+  },
+  "products": {
+    "title": "Products",
+    "newProduct": "+ New Product",
+    "table": {
+      "name": "Name",
+      "price": "Price",
+      "description": "Description",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "No products yet",
+      "description": "Add your first product to the catalog.",
+      "cta": "+ New Product"
+    },
+    "create": {
+      "title": "New Product",
+      "description": "Add a product to your catalog.",
+      "name": "Product name",
+      "price": "Price",
+      "descriptionField": "Description (optional)",
+      "submit": "Create",
+      "loading": "Creating..."
+    },
+    "edit": {
+      "title": "Edit Product",
+      "description": "Update this product's details.",
+      "submit": "Save Changes",
+      "loading": "Saving..."
+    },
+    "delete": {
+      "title": "Delete this product?",
+      "description": "This will permanently delete",
+      "descriptionSuffix": "from your catalog.",
+      "cannotUndo": "This action cannot be undone."
+    },
+    "selectFromCatalog": "Select from catalog..."
+  },
+  "customers": {
+    "title": "Customers",
+    "newCustomer": "+ New Customer",
+    "table": {
+      "name": "Name",
+      "phone": "Phone",
+      "notes": "Notes",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "No customers yet",
+      "description": "Add your first customer to get started.",
+      "cta": "+ New Customer"
+    },
+    "create": {
+      "title": "New Customer",
+      "description": "Add a new customer to your list.",
+      "name": "Customer name",
+      "phone": "Phone number",
+      "notes": "Notes (optional)",
+      "submit": "Create",
+      "loading": "Creating..."
+    },
+    "edit": {
+      "title": "Edit Customer",
+      "description": "Update this customer's details.",
+      "submit": "Save Changes",
+      "loading": "Saving..."
+    },
+    "delete": {
+      "title": "Delete this customer?",
+      "description": "This will permanently delete",
+      "ordersNote": "Their past orders won't be affected."
+    },
+    "selectFromList": "Select from customers..."
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "Account Information",
+      "email": "Email",
+      "memberSince": "Member since"
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Change Password",
+      "loading": "Saving..."
+    },
+    "changeEmail": {
+      "title": "Change Email",
+      "newEmail": "New email address",
+      "currentPassword": "Confirm with current password",
+      "submit": "Change Email",
+      "loading": "Saving..."
+    }
+  },
+  "topbar": {
+    "logout": "Logout",
+    "loggingOut": "Logging out..."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "goToDashboard": "Go to Dashboard",
+    "viewOrders": "View Orders"
+  }
+}
