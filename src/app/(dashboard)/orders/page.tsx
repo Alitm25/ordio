@@ -22,15 +22,13 @@ import EditOrderDialog from "@/components/orders/EditOrderDialog";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import {Download, Search} from "lucide-react";
 import {exportToCsv} from "@/lib/exportToCsv";
-
-const SORT_OPTIONS = [
-    { value: "createdAt:desc", label: "Newest first" },
-    { value: "createdAt:asc", label: "Oldest first" },
-    { value: "price:desc", label: "Price: High to Low" },
-    { value: "price:asc", label: "Price: Low to High" },
-];
+import {useTranslations} from "next-intl";
 
 export default function OrdersPage() {
+    // Translate intl function
+    const tOrders = useTranslations('orders');
+    const tCreate = useTranslations('create');
+
     // Order action dialog open & close state
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
@@ -45,6 +43,12 @@ export default function OrdersPage() {
     const debouncedSearch = useDebouncedValue(search, 400);
     // sort variables
     const [sortBy, sortOrder] = sort.split(":") as [string, "asc" | "desc"];
+    const SORT_OPTIONS = [
+        { value: `createdAt:desc`, label: `${ tOrders('sort.newestFirst') }` },
+        { value: "createdAt:asc", label: `${ tOrders('sort.oldestFirst') }` },
+        { value: "price:desc", label: `${ tOrders('sort.priceHighToLow') }` },
+        { value: "price:asc", label: `${ tOrders('sort.priceLowToHigh') }` },
+    ];
 
     // Get orders query fetch
     const { data, isLoading, error, refetch } = useQuery({
@@ -117,15 +121,15 @@ export default function OrdersPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold">Orders</h1>
+                <h1 className="text-3xl font-bold">{ tOrders('title') }</h1>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" className="cursor-pointer" onClick={handleExport} disabled={orders.length === 0}>
                         <Download className="h-4 w-4 mr-2" />
-                        Export CSV
+                        { tOrders('exportCsv') }
                     </Button>
 
                     <Button className="cursor-pointer" onClick={() => setDialogOpen(true)}>
-                        + New Order
+                        { tOrders('newOrder') }
                     </Button>
                 </div>
             </div>
@@ -134,7 +138,7 @@ export default function OrdersPage() {
                 <div className="relative min-w-55 flex-1">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                        placeholder="Search by customer or product..."
+                        placeholder={ tOrders('searchPlaceholder') }
                         value={search}
                         onChange={(e) => handleSearchChange(e.target.value)}
                         className="pl-9"
@@ -148,19 +152,19 @@ export default function OrdersPage() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all" className="cursor-pointer">
-                            All Statuses
+                            { tOrders('allStatuses') }
                         </SelectItem>
                         <SelectItem value="pending" className="cursor-pointer">
-                            Pending
+                            { tOrders('status.pending') }
                         </SelectItem>
                         <SelectItem value="processing" className="cursor-pointer">
-                            Processing
+                            { tOrders('status.processing') }
                         </SelectItem>
                         <SelectItem value="completed" className="cursor-pointer">
-                            Completed
+                            { tOrders('status.completed') }
                         </SelectItem>
                         <SelectItem value="cancelled" className="cursor-pointer">
-                            Cancelled
+                            { tOrders('status.cancelled') }
                         </SelectItem>
                     </SelectContent>
                 </Select>
@@ -189,8 +193,8 @@ export default function OrdersPage() {
                 <OrdersTableSkeleton />
             ) : error ? (
                 <ErrorState
-                    title="Couldn't load orders"
-                    description="Something went wrong while fetching your orders."
+                    title={ tOrders('error.title') }
+                    description={ tOrders('error.description') }
                     onRetry={() => refetch()}
                 />
             ) : orders.length === 0 ? (
