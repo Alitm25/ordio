@@ -8,12 +8,14 @@ import {useState} from "react";
 import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {SidebarContent} from "@/components/layout/Sidebar";
 import LanguageToggle from "@/components/layout/LanguageToggle";
+import {useTranslations} from "next-intl";
 
 export default function Topbar() {
     const { data } = useCurrentUser();
     const logoutMutation = useLogout();
     const [open, setOpen] = useState(false);
 
+    const t = useTranslations('topbar');
     return (
         <header className="border-b px-8 py-5 flex items-center justify-between">
         {/* SideBar Menu */}
@@ -51,7 +53,7 @@ export default function Topbar() {
                     className={'cursor-pointer group'}
                 >
                     <LogOut className={'h-4 w-4 mr-2 group-hover:text-red-600'}/>
-                    {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
+                    {logoutMutation.isPending ? `${t('loggingOut')}` : `${t('logout')}`}
                 </Button>
             </div>
         </header>
