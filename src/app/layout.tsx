@@ -54,14 +54,18 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     const dir = locale === 'fa' ? 'rtl' : 'ltr';
 
   return (
-      <html lang={locale} dir={dir}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <QueryProvider>
-          <NextIntlClientProvider messages={messages}>
-              {children}
-              <Toaster />
-          </NextIntlClientProvider>
-      </QueryProvider>
+      <html lang={locale} dir={dir} className={
+          `dark 
+            ${ locale === 'en' ? geistSans.variable : vazirMatn.variable }
+          `
+      }>
+      <body className={"antialiased"}>
+      <NextIntlClientProvider messages={messages}>
+          <QueryProvider>
+                  {children}
+                  <Toaster />
+          </QueryProvider>
+      </NextIntlClientProvider>
       </body>
       </html>
   );
