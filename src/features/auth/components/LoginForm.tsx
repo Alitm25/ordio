@@ -7,29 +7,22 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-import {
-    loginSchema,
-    LoginFormData,
-} from "../schemas/loginSchema";
+import { loginSchema, LoginFormData } from "../schemas/loginSchema";
 
 import { useLogin } from "../hooks/useLogin";
-import {toast} from "sonner";
+import { toast } from "sonner";
 import Link from "next/link";
-import {getErrorMessage} from "@/lib/getErrorMessage";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import {useTranslations} from "next-intl";
 
 export default function LoginForm() {
     const router = useRouter();
 
     const loginMutation = useLogin();
 
+    const t = useTranslations('auth.login');
     const {
         register,
         handleSubmit,
@@ -60,11 +53,11 @@ export default function LoginForm() {
                 </div>
 
                 <CardTitle className="text-2xl">
-                    Welcome back
+                    { t('title') }
                 </CardTitle>
 
                 <CardDescription>
-                    Sign in to manage your orders
+                    { t("description") }
                 </CardDescription>
             </CardHeader>
 
@@ -74,7 +67,7 @@ export default function LoginForm() {
                     className="space-y-4"
                 >
                     <div>
-                        <Input type="email" placeholder="Enter your email address" {...register("email")} />
+                        <Input type="email" placeholder={ t('email') } {...register("email")} />
 
                         {
                             errors.email && (
@@ -86,7 +79,7 @@ export default function LoginForm() {
                     </div>
 
                     <div>
-                        <Input type="password" placeholder="Enter your password" {...register("password")} />
+                        <Input type="password" placeholder={ t('password') } {...register("password")} />
 
                         {
                             errors.password && (
@@ -100,16 +93,16 @@ export default function LoginForm() {
                     <Button type="submit" className="w-full cursor-pointer" disabled={loginMutation.isPending}>
                         {
                             loginMutation.isPending
-                            ? "Signing in..."
-                            : "Login"
+                            ? `${ t('loading') }`
+                            : `${ t("submit") }`
                         }
                     </Button>
                 </form>
                 {/* Back to register page */}
                 <p className="text-sm text-center text-muted-foreground mt-4">
-                    Don&apos;t have an account?{" "}
+                    { t('noAccount') }{" "}
                     <Link href="/register" className="text-primary underline-offset-4 hover:underline">
-                        Register now !
+                        { t('register') }
                     </Link>
                 </p>
             </CardContent>
