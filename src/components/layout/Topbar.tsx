@@ -7,6 +7,7 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import {useState} from "react";
 import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {SidebarContent} from "@/components/layout/Sidebar";
+import LanguageToggle from "@/components/layout/LanguageToggle";
 
 export default function Topbar() {
     const { data } = useCurrentUser();
