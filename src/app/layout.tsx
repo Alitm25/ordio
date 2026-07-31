@@ -24,6 +24,29 @@ export const metadata: Metadata = {
     description: "Order Management System",
 };
 
+// Persian fonts
+const vazirMatn = localFont({
+    src: [
+        {
+            path: '../public/fonts/Woff2/IRANYekanXFaNum-Regular.woff2',
+            weight: '400',
+            style: "normal"
+        },
+        {
+            path: '../public/fonts/Woff2/IRANYekanXFaNum-Medium.woff2',
+            weight: '500',
+            style: "normal"
+        },
+        {
+            path: '../public/fonts/Woff2/IRANYekanXFaNum-Bold.woff2',
+            weight: '700',
+            style: "bold"
+        }
+    ],
+    variable: "--font-vazirmatn",
+    display: "swap",
+})
+
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
     const locale = await getLocale();
