@@ -8,34 +8,8 @@ import {
     Package,
     Settings, ShoppingBag, Users,
 } from "lucide-react";
-
-const links = [
-    {
-        href: "/dashboard",
-        label: "Dashboard",
-        icon: LayoutDashboard,
-    },
-    {
-        href: "/orders",
-        label: "Orders",
-        icon: Package,
-    },
-    {
-        href: "/products",
-        label: "Products",
-        icon: ShoppingBag,
-    },
-    {
-        href: "/customers",
-        label: "Customers",
-        icon: Users
-    },
-    {
-        href: "/settings",
-        label: "Settings",
-        icon: Settings,
-    },
-];
+import {useTransition} from "react";
+import {useTranslations} from "next-intl";
 
 interface Props {
     onNavigate?: () => void;
@@ -45,6 +19,17 @@ interface Props {
 export function SidebarContent({ onNavigate } :Props) {
     // Get the current path
     const pathname = usePathname();
+    // Translation Hook
+    const t = useTranslations('nav');
+
+    // Nav links
+    const links = [
+        { href: "/dashboard", label: t("dashboard"), icon: LayoutDashboard },
+        { href: "/orders", label: t("orders"), icon: Package },
+        { href: "/products", label: t("products"), icon: ShoppingBag },
+        { href: "/customers", label: t("customers"), icon: Users },
+        { href: "/settings", label: t("settings"), icon: Settings },
+    ];
 
     return (
         <div className="flex flex-col h-full">
