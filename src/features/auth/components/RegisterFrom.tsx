@@ -24,11 +24,14 @@ import { useRegister } from "../hooks/useRegister";
 import { toast } from "sonner";
 import Link from "next/link";
 import {getErrorMessage} from "@/lib/getErrorMessage";
+import {useTranslations} from "next-intl";
 
 export default function RegisterForm() {
     const router = useRouter();
 
     const registerMutation = useRegister();
+
+    const t = useTranslations('auth.register');
 
     const {
         register,
@@ -60,18 +63,18 @@ export default function RegisterForm() {
                 </div>
 
                 <CardTitle className="text-2xl">
-                    Create an account
+                    { t('title') }
                 </CardTitle>
 
                 <CardDescription>
-                    Sign up to start managing your orders
+                    { t('description') }
                 </CardDescription>
             </CardHeader>
 
             <CardContent className={'space-y-4'}>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div>
-                        <Input type="email" placeholder="Enter your email address" {...register("email")} />
+                        <Input type="email" placeholder={ t('email') }{...register("email")} />
 
                         {
                             errors.email && (
@@ -83,7 +86,7 @@ export default function RegisterForm() {
                     </div>
 
                     <div>
-                        <Input type="password" placeholder="Enter your password" {...register("password")} />
+                        <Input type="password" placeholder={ t('password') } {...register("password")} />
 
                         {
                             errors.password && (
@@ -97,16 +100,16 @@ export default function RegisterForm() {
                     <Button type="submit" className="w-full cursor-pointer" disabled={registerMutation.isPending}>
                         {
                             registerMutation.isPending
-                                ? "Creating account..."
-                                : "Register"
+                                ? `${ t('loading') }`
+                                : `${ t('submit') }`
                         }
                     </Button>
                 </form>
                 {/* Back to login form */}
                 <p className="text-sm text-center text-muted-foreground mt-4">
-                    Already have an account?{" "}
+                    { t('hasAccount') }{" "}
                     <Link href="/login" className="text-primary underline-offset-4 hover:underline">
-                        Sign in !
+                        { t('login') }
                     </Link>
                 </p>
             </CardContent>
