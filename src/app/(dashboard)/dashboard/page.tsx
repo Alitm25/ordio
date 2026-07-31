@@ -13,6 +13,7 @@ import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 import {useState} from "react";
 import {DashboardRange} from "@/types/dashboard";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {useTranslations} from "next-intl";
 
 const STATUS_COLORS = {
     pending: "#f59e0b",
@@ -21,15 +22,21 @@ const STATUS_COLORS = {
     cancelled: "#ef4444",
 };
 
-const RANGE_LABELS :Record<DashboardRange, string> = {
-    "7d": "Last 7 Days",
-    "30d": "Last 30 Days",
-    "90d": "Last 90 Days",
-    'this-month': "This Month",
-}
-
 export default function DashboardPage() {
+    // Time range state
     const [range, setRange] = useState<DashboardRange>('this-month');
+    // Translate intl function
+    const tDashboard = useTranslations('dashboard');
+    const tCommon = useTranslations('common')
+    const tOrders = useTranslations('orders')
+
+    // Range Labels
+    const RANGE_LABELS :Record<DashboardRange, string> = {
+        "7d": `${tDashboard('range.7d')}`,
+        "30d": `${tDashboard('range.30d')}`,
+        "90d": `${tDashboard('range.90d')}`,
+        'this-month': `${tDashboard('range.this_month')}`,
+    }
 
     // Dashboard API Fetch
     const { data, isLoading, error, refetch } = useQuery({
@@ -51,14 +58,14 @@ export default function DashboardPage() {
                 </div>
 
                 <div>
-                    <p className="font-medium">Couldn&apos;t load dashboard</p>
+                    <p className="font-medium">{ tDashboard('error.title') }</p>
                     <p className="text-sm text-muted-foreground">
-                        Something went wrong while fetching your stats.
+                        { tDashboard('error.description') }
                     </p>
                 </div>
 
                 <Button variant="outline" className="cursor-pointer" onClick={() => refetch()}>
-                    Try again
+                    { tCommon('retry') }
                 </Button>
             </div>
         );
@@ -66,10 +73,10 @@ export default function DashboardPage() {
 
     // Status section variables
     const statusData = [
-        { name: "Pending", value: data.statusBreakdown.pending, color: STATUS_COLORS.pending },
-        { name: "Processing", value: data.statusBreakdown.processing, color: STATUS_COLORS.processing },
-        { name: "Completed", value: data.statusBreakdown.completed, color: STATUS_COLORS.completed },
-        { name: 'Cancelled', value: data.statusBreakdown.cancelled, color: STATUS_COLORS.cancelled }
+        { name: `${tOrders('status.pending')}`, value: data.statusBreakdown.pending, color: STATUS_COLORS.pending },
+        { name: `${tOrders('status.processing')}`, value: data.statusBreakdown.processing, color: STATUS_COLORS.processing },
+        { name: `${tOrders('status.completed')}`, value: data.statusBreakdown.completed, color: STATUS_COLORS.completed },
+        { name: `${tOrders('status.cancelled')}`, value: data.statusBreakdown.cancelled, color: STATUS_COLORS.cancelled }
     ];
 
     const totalStatusOrders =
@@ -81,7 +88,7 @@ export default function DashboardPage() {
     return (
         <div className="space-y-8">
             <div className="flex items-center justify-between gap-4">
-                <h1 className="text-3xl font-bold">Dashboard</h1>
+                <h1 className="text-3xl font-bold">{ tDashboard('title') }</h1>
                 {/* Range select input */}
                 <div className="flex items-center gap-3">
                     <Select value={range}
@@ -108,7 +115,7 @@ export default function DashboardPage() {
                     </Select>
                     {/* New Order Button */}
                     <Link href="/orders">
-                        <Button className="cursor-pointer">+ New Order</Button>
+                        <Button className="cursor-pointer">{ tDashboard('newOrder') }</Button>
                     </Link>
                 </div>
             </div>
@@ -116,24 +123,24 @@ export default function DashboardPage() {
             {/* KPI Stats Card START */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <StatsCard
-                    title={`Orders (${RANGE_LABELS[range]})`}
+                    title={`${ tDashboard('kpi.orders') } (${RANGE_LABELS[range]})`}
                     value={data.totalOrdersInRange}
                     icon={ShoppingCart}
                 />
                 <StatsCard
-                    title={`Revenue (${RANGE_LABELS[range]})`}
+                    title={`${ tDashboard('kpi.revenue') } (${RANGE_LABELS[range]})`}
                     value={data.totalRevenueInRange}
                     icon={Wallet}
                     iconClassName="bg-emerald-500/10 text-emerald-500"
                 />
                 <StatsCard
-                    title={`Pending Orders`}
+                    title={`${ tDashboard('kpi.pending' )}`}
                     value={data.pendingOrders}
                     icon={Clock}
                     iconClassName="bg-amber-500/10 text-amber-500"
                 />
                 <StatsCard
-                    title="Avg. Order Value"
+                    title={`${ tDashboard('kpi.avgOrder') }`}
                     value={Math.round(data.averageOrderValue)}
                     icon={TrendingUp}
                     iconClassName="bg-blue-500/10 text-blue-500"
@@ -144,7 +151,7 @@ export default function DashboardPage() {
             <div className="grid gap-4 lg:grid-cols-3">
                 <Card className="lg:col-span-2">
                     <CardHeader>
-                        <CardTitle>Last 7 Days</CardTitle>
+                        <CardTitle>{ tDashboard('range.7d') }</CardTitle>
                     </CardHeader>
 
                     <CardContent>
@@ -199,7 +206,7 @@ export default function DashboardPage() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Order Status</CardTitle>
+                        <CardTitle>{ tDashboard('orderStatus') }</CardTitle>
                     </CardHeader>
 
                     <CardContent>
@@ -228,7 +235,7 @@ export default function DashboardPage() {
                                     {totalStatusOrders}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
-                                    orders
+                                    { tDashboard('orders') }
                                 </span>
                             </div>
                         </div>
@@ -255,13 +262,13 @@ export default function DashboardPage() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Recent Orders</CardTitle>
+                    <CardTitle>{ tDashboard('recentOrders') }</CardTitle>
                 </CardHeader>
 
                 <CardContent className="space-y-1">
                     {data.recentOrders.length === 0 && (
                         <p className="text-sm text-muted-foreground">
-                            No orders yet.
+                            { tDashboard('noOrders') }
                         </p>
                     )}
 
@@ -297,7 +304,7 @@ export default function DashboardPage() {
                             href="/orders"
                             className="text-sm text-primary underline-offset-4 hover:underline"
                         >
-                            View all orders →
+                            { tDashboard('viewAllOrders') }
                         </Link>
                     </div>
                 </CardContent>
