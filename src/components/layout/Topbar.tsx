@@ -39,7 +39,9 @@ export default function Topbar() {
                         {data.user.email}
                     </span>
                 )}
-
+                {/* language Toggle */}
+                <LanguageToggle />
+                {/* logout */}
                 <Button
                     variant={'outline'}
                     size={'sm'}
