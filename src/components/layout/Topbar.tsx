@@ -32,7 +32,7 @@ export default function Topbar() {
                     </SheetContent>
                 </Sheet>
             </div>
-        {/* Logout section */}
+        {/* Logout and Language Toggle section */}
             <div className="flex items-center gap-4">
                 {data?.user.email && (
                     <span className={'text-sm text-muted-foreground hidden sm:block'}>
