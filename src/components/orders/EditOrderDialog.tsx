@@ -32,6 +32,7 @@ import ProductCombobox from "@/components/products/ProductCombobox";
 import {useCustomers} from "@/features/customers/hooks/useCustomer";
 import {Customer} from "@/types/customer";
 import CustomerCombobox from "@/components/customers/CustomerCombobox";
+import {useTranslations} from "next-intl";
 
 interface Props {
     order: Order | null;
@@ -40,6 +41,11 @@ interface Props {
 
 export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const queryClient = useQueryClient();
+
+    const tCreate = useTranslations('orders.create');
+    const tEdit = useTranslations('orders.edit');
+    const tOrders = useTranslations('orders');
+    const tCommon = useTranslations('common');
 
     // Update Order mutation function declaration
     const updateOrderMutation = useMutation({
@@ -103,9 +109,9 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
             <DialogContent className="sm:max-w-137.5">
                 <DialogHeader>
                     <DialogDescription>
-                        Update the details of this order.
+                        { tEdit('description') }
                     </DialogDescription>
-                    <DialogTitle>Edit Order</DialogTitle>
+                    <DialogTitle>{ tEdit('title') }</DialogTitle>
                 </DialogHeader>
 
                 <form onSubmit={form.handleSubmit((data) => {
@@ -125,13 +131,13 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                                 onSelect={handleCustomerSelect}
                             />
                             <p className="text-xs text-muted-foreground px-1">
-                                Or fill in manually below
+                                { tCreate('selectFromCatalog') }
                             </p>
                         </div>
                     )}
 
                     <div className="space-y-1">
-                        <Input{...form.register("customerName")} placeholder="Customer Name" />
+                        <Input{...form.register("customerName")} placeholder={ tCreate('customerName') } />
                         {form.formState.errors.customerName && (
                             <p className="text-sm text-red-500">
                                 {form.formState.errors.customerName.message}
@@ -140,7 +146,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                     </div>
 
                     <div className="space-y-1">
-                        <Input {...form.register("customerPhone")} placeholder="Phone" />
+                        <Input {...form.register("customerPhone")} placeholder={ tCreate('customerPhone') } />
                         {form.formState.errors.customerPhone && (
                             <p className="text-sm text-red-500">
                                 {form.formState.errors.customerPhone.message}
@@ -161,14 +167,14 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                                     }}
                                 />
                                 <p className={'text-xs text-muted-foreground px-1'}>
-                                    Or type manually below
+                                    { tCreate('selectFromCatalog') }
                                 </p>
                             </div>
                         )
                     }
 
                     <div className="space-y-1">
-                        <Input {...form.register("productName")} placeholder="Product Name" />
+                        <Input {...form.register("productName")} placeholder={ tCreate('productName') } />
                         {form.formState.errors.productName && (
                             <p className="text-sm text-red-500">
                                 {form.formState.errors.productName.message}
@@ -220,13 +226,13 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="unpaid" className="cursor-pointer">
-                                        Unpaid
+                                        { tOrders('payment.unpaid') }
                                     </SelectItem>
                                     <SelectItem value="partial" className="cursor-pointer">
-                                        Partial
+                                        { tOrders('payment.partial') }
                                     </SelectItem>
                                     <SelectItem value="paid" className="cursor-pointer">
-                                        Paid
+                                        { tOrders('payment.paid') }
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
@@ -248,13 +254,13 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="cash" className="cursor-pointer">
-                                            Cash
+                                            { tOrders('payment.cash') }
                                         </SelectItem>
                                         <SelectItem value="card" className="cursor-pointer">
-                                            Card
+                                            { tOrders('payment.card') }
                                         </SelectItem>
                                         <SelectItem value="transfer" className="cursor-pointer">
-                                            Transfer
+                                            { tOrders('payment.transfer') }
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -266,13 +272,13 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                         <Button type="button" variant="outline" className="cursor-pointer"
                             onClick={() => onOpenChange(false)}
                         >
-                            Cancel
+                            { tCommon('cancel') }
                         </Button>
 
                         <Button type="submit" className="cursor-pointer" disabled={updateOrderMutation.isPending}>
                             {updateOrderMutation.isPending
-                                ? "Saving..."
-                                : "Save Changes"}
+                                ? tEdit('loading')
+                                : tEdit('submit')}
                         </Button>
                     </div>
                 </form>
