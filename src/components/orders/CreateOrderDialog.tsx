@@ -16,6 +16,7 @@ import {Button} from "@/components/ui/button";
 import {useCustomers} from "@/features/customers/hooks/useCustomer";
 import {Customer} from "@/types/customer";
 import CustomerCombobox from "@/components/customers/CustomerCombobox";
+import {useTranslations} from "next-intl";
 
 
 interface Props {
@@ -25,6 +26,11 @@ interface Props {
 
 export default function CreateOrderDialog({open, onOpenChange}: Props) {
     const queryClient = useQueryClient();
+
+    const tCreate = useTranslations('orders.create');
+    const tOrder = useTranslations('orders');
+    const tCommon = useTranslations('common');
+
 
     // Create Order mutation function declaration
     const createOrderMutation = useMutation({
@@ -72,10 +78,10 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
             <DialogContent className="sm:max-w-137.5">
                 <DialogHeader>
                     <DialogDescription>
-                        Create a new order for your customer.
+                        { tCreate('description') }
                     </DialogDescription>
                     <DialogTitle>
-                        Create New Order
+                        { tCreate('title') }
                     </DialogTitle>
                 </DialogHeader>
 
@@ -92,13 +98,13 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                 onSelect={handleCustomerSelect}
                             />
                             <p className="text-xs text-muted-foreground px-1">
-                                Or fill in manually below
+                                { tCreate('selectFromCatalog') }
                             </p>
                         </div>
                     )}
 
                     <div className="space-y-1">
-                        <Input {...form.register("customerName")} placeholder="Customer Name"/>
+                        <Input {...form.register("customerName")} placeholder={ tCreate('customerName') }/>
                         {
                             form.formState.errors.customerName && (
                             <p className="text-sm text-red-500">
@@ -108,7 +114,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                     </div>
 
                     <div className="space-y-1">
-                        <Input {...form.register("customerPhone")} placeholder="Phone"/>
+                        <Input {...form.register("customerPhone")} placeholder={ tCreate('customerPhone') }/>
                         {
                             form.formState.errors.customerPhone && (
                                 <p className="text-sm text-red-500">
@@ -129,14 +135,14 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                     }}
                                 />
                                 <p className={'text-xs text-muted-foreground px-1'}>
-                                    Or type manually below
+                                    { tCreate('selectFromCatalog') }
                                 </p>
                             </div>
                         )
                     }
 
                     <div className="space-y-1">
-                        <Input {...form.register("productName")} placeholder="Product Name"/>
+                        <Input {...form.register("productName")} placeholder={ tCreate('productName') }/>
                         {
                             form.formState.errors.productName && (
                                 <p className="text-sm text-red-500">
@@ -185,17 +191,17 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                         onValueChange={field.onChange}
                                     >
                                         <SelectTrigger className="w-full cursor-pointer">
-                                            <SelectValue placeholder="Payment Status" />
+                                            <SelectValue placeholder={ tCreate('paymentStatus') } />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="unpaid" className="cursor-pointer">
-                                                Unpaid
+                                                { tOrder('payment.unpaid') }
                                             </SelectItem>
                                             <SelectItem value="partial" className="cursor-pointer">
-                                                Partial
+                                                { tOrder('payment.partial') }
                                             </SelectItem>
                                             <SelectItem value="paid" className="cursor-pointer">
-                                                Paid
+                                                { tOrder('payment.paid') }
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -214,17 +220,17 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                             onValueChange={field.onChange}
                                         >
                                             <SelectTrigger className="w-full cursor-pointer">
-                                                <SelectValue placeholder="Payment Method" />
+                                                <SelectValue placeholder={ tCreate('paymentMethod') }/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="cash" className="cursor-pointer">
-                                                    Cash
+                                                    { tOrder('payment.cash') }
                                                 </SelectItem>
                                                 <SelectItem value="card" className="cursor-pointer">
-                                                    Card
+                                                    { tOrder('payment.card') }
                                                 </SelectItem>
                                                 <SelectItem value="transfer" className="cursor-pointer">
-                                                    Transfer
+                                                    { tOrder('payment.transfer') }
                                                 </SelectItem>
                                             </SelectContent>
                                         </Select>
@@ -236,13 +242,13 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
 
                     <div className="flex justify-end gap-2 pt-4">
                         <Button type="button" variant="outline" className={'cursor-pointer'} onClick={() => onOpenChange(false)}>
-                            Cancel
+                            { tCommon('cancel') }
                         </Button>
 
                         <Button type="submit" className={'cursor-pointer'} disabled={createOrderMutation.isPending}>
                             {createOrderMutation.isPending
-                                ? "Creating..."
-                                : "Create Order"}
+                                ?  tCreate('loading')
+                                : tCreate('submit') }
                         </Button>
                     </div>
                 </form>
