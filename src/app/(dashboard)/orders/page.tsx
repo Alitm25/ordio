@@ -207,7 +207,7 @@ export default function OrdersPage() {
                 // Orders Table
                 <>
                     <p className="text-sm text-muted-foreground">
-                        {totalCount} order{totalCount !== 1 ? "s" : ""} found
+                        {totalCount} {tOrders(totalCount !== 1 ? "foundPlural" : "found")}
                     </p>
 
                     <OrdersTable orders={orders} onEdit={setEditingOrder} />
