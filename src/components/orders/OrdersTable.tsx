@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Order } from "@/types/order";
 import Link from "next/link";
+import {useTranslations} from "next-intl";
 
 export type { Order };
 
@@ -47,6 +48,10 @@ interface Props {
 
 export default function OrdersTable({ orders, onEdit }: Props) {
     const queryClient = useQueryClient();
+
+    // Translate intl function
+    const tOrders = useTranslations('orders');
+    const tCommon = useTranslations('common');
 
     // selected orders to delete States
     const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
@@ -127,7 +132,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
             {selectedIds.length > 0 && (
                 <div className="mb-3 flex items-center justify-between rounded-lg border bg-muted/50 px-4 py-2.5">
                     <span className="text-sm font-medium">
-                        {selectedIds.length} selected
+                        {selectedIds.length} { tOrders('bulkDelete.selected') }
                     </span>
 
                     <div className="flex gap-2">
@@ -137,7 +142,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                             className="cursor-pointer"
                             onClick={() => setSelectedIds([])}
                         >
-                            Clear
+                            { tOrders('bulkDelete.clear') }
                         </Button>
 
                         <Button
@@ -147,7 +152,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                             onClick={() => setBulkDeleteOpen(true)}
                         >
                             <Trash2 className="h-4 w-4 mr-1" />
-                            Delete Selected
+                            { tOrders('bulkDelete.deleteSelected') }
                         </Button>
                     </div>
                 </div>
@@ -170,13 +175,13 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                     onCheckedChange={toggleSelectAll}
                                 />
                             </TableHead>
-                            <TableHead>Customer</TableHead>
-                            <TableHead className="hidden md:table-cell">Product</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Payment</TableHead>
-                            <TableHead className="hidden md:table-cell">Price</TableHead>
-                            <TableHead className="hidden md:table-cell">Date</TableHead>
-                            <TableHead>Actions</TableHead>
+                            <TableHead>{ tOrders('table.customer') }</TableHead>
+                            <TableHead className="hidden md:table-cell">{ tOrders('table.product') }</TableHead>
+                            <TableHead>{ tOrders('table.status') }</TableHead>
+                            <TableHead>{ tOrders('table.payment') }</TableHead>
+                            <TableHead className="hidden md:table-cell">{ tOrders('table.price') }</TableHead>
+                            <TableHead className="hidden md:table-cell">{ tOrders('table.date') }</TableHead>
+                            <TableHead>{ tOrders('table.actions') }</TableHead>
                         </TableRow>
                     </TableHeader>
 
@@ -214,25 +219,25 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                         <SelectContent>
                                             <SelectItem value="pending" className="cursor-pointer">
                                                 <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.pending}`}>
-                                                    Pending
+                                                    { tOrders('status.pending') }
                                                 </span>
                                             </SelectItem>
 
                                             <SelectItem value="processing" className="cursor-pointer">
                                                 <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.processing}`}>
-                                                    Processing
+                                                    { tOrders('status.processing') }
                                                 </span>
                                             </SelectItem>
 
                                             <SelectItem value="completed" className="cursor-pointer">
                                                 <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.completed}`}>
-                                                    Completed
+                                                    { tOrders('status.completed') }
                                                 </span>
                                             </SelectItem>
 
                                             <SelectItem value="cancelled" className="cursor-pointer">
                                                 <span className={`rounded border px-2 py-0.5 text-xs font-medium ${orderStatusColors.cancelled}`}>
-                                                    Cancelled
+                                                    { tOrders('status.cancelled') }
                                                 </span>
                                             </SelectItem>
                                         </SelectContent>
@@ -248,10 +253,10 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                         }`}
                                     >
                                         {order.paymentStatus === "paid"
-                                            ? "Paid"
+                                            ? tOrders('payment.paid')
                                             : order.paymentStatus === "partial"
-                                                ? "Partial"
-                                                : "Unpaid"}
+                                                ? tOrders('payment.partial')
+                                                : tOrders('payment.unpaid') }
                                     </span>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
@@ -284,17 +289,17 @@ export default function OrdersTable({ orders, onEdit }: Props) {
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete this order?</AlertDialogTitle>
+                        <AlertDialogTitle>{ tOrders('delete.title') }</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will permanently delete the order for{" "}
+                            { tOrders('delete.description') }{" "}
                             <strong>{orderToDelete?.customerName}</strong>.
-                            This action cannot be undone.
+                            { tOrders('delete.cannotUndo') }
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 
                     <AlertDialogFooter>
                         <AlertDialogCancel className="cursor-pointer">
-                            Cancel
+                            { tCommon('cancel') }
                         </AlertDialogCancel>
 
                         <AlertDialogAction
@@ -308,8 +313,8 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                         >
                             {
                                 deleteOrderMutation.isPending
-                                ? "Deleting..."
-                                : "Delete"
+                                ? tCommon('deleting')
+                                : tCommon('delete')
                             }
                         </AlertDialogAction>
                     </AlertDialogFooter>
@@ -320,17 +325,17 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Delete {selectedIds.length} orders?
+                            { tOrders('bulkDelete.title') }
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will permanently delete the selected orders.
-                            This action cannot be undone.
+                            { tOrders('bulkDelete.description') }
+                            { tOrders('delete.cannotUndo') }
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 
                     <AlertDialogFooter>
                         <AlertDialogCancel className="cursor-pointer">
-                            Cancel
+                            { tCommon('cancel') }
                         </AlertDialogCancel>
 
                         <AlertDialogAction
@@ -340,8 +345,8 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                         >
                             {
                                 bulkDeleteMutation.isPending
-                                ? "Deleting..."
-                                : "Delete"
+                                ? tCommon('deleting')
+                                : tCommon('delete')
                             }
                         </AlertDialogAction>
                     </AlertDialogFooter>
