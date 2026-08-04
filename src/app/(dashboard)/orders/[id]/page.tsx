@@ -246,7 +246,7 @@ export default function OrderDetailsPage() {
                             Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
-                            className="cursor-pointer bg-destructive text-white hover:bg-destructive/90"
+                            className="cursor-pointer bg-red-800 text-white hover:bg-red-700"
                             disabled={deleteOrderMutation.isPending}
                             onClick={() =>
                                 deleteOrderMutation.mutate(order._id)
