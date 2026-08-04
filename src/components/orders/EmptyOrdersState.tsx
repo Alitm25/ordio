@@ -2,6 +2,7 @@
 
 import { PackageSearch, PackageOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {useTranslations} from "next-intl";
 
 interface Props {
     hasActiveFilters: boolean;
@@ -10,6 +11,10 @@ interface Props {
 }
 
 export default function EmptyOrdersState({ hasActiveFilters, onClearFilters, onCreateOrder }: Props) {
+    // Translation function
+    const t = useTranslations('orders.empty');
+    const tOrders = useTranslations('orders');
+
     if (hasActiveFilters) {
         return (
             <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed py-20 text-center">
@@ -18,9 +23,9 @@ export default function EmptyOrdersState({ hasActiveFilters, onClearFilters, onC
                 </div>
 
                 <div>
-                    <p className="font-medium">No orders match your filters</p>
+                    <p className="font-medium">{ t('noResults') }</p>
                     <p className="text-sm text-muted-foreground">
-                        Try adjusting your search or status filter.
+                        { t('noResultsDesc') }
                     </p>
                 </div>
 
@@ -29,7 +34,7 @@ export default function EmptyOrdersState({ hasActiveFilters, onClearFilters, onC
                     className="cursor-pointer"
                     onClick={onClearFilters}
                 >
-                    Clear filters
+                    { t('clearFilters') }
                 </Button>
             </div>
         );
@@ -42,14 +47,14 @@ export default function EmptyOrdersState({ hasActiveFilters, onClearFilters, onC
             </div>
 
             <div>
-                <p className="font-medium">No orders yet</p>
+                <p className="font-medium">{ t('noOrders') }</p>
                 <p className="text-sm text-muted-foreground">
-                    Create your first order to get started.
+                    { t('noOrdersDesc') }
                 </p>
             </div>
 
             <Button className="cursor-pointer" onClick={onCreateOrder}>
-                + New Order
+                { tOrders('newOrder') }
             </Button>
         </div>
     );
