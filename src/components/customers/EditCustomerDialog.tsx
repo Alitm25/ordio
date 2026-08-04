@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { customerSchema, CustomerFormValues } from "@/features/customers/schemas/customerSchema";
 import { useUpdateCustomer } from "@/features/customers/hooks/useCustomer";
 import { Customer } from "@/types/customer";
+import {useTranslations} from "next-intl";
 
 interface Props {
     customer: Customer | null;
@@ -25,6 +26,12 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
             notes: "",
         },
     });
+
+    // Translation functions
+    const tCustomersEdit = useTranslations('customers.edit')
+    const tCustomerCreate = useTranslations('customers.create');
+    const tCommon = useTranslations('common');
+
 
     // Attaching customer values to the edit form (new and old values)
     useEffect(() => {
@@ -50,16 +57,16 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
         <Dialog open={!!customer} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit Customer</DialogTitle>
+                    <DialogTitle>{ tCustomersEdit('title') }</DialogTitle>
                     <DialogDescription>
-                        Update this customer's details.
+                        { tCustomersEdit('description') }
                     </DialogDescription>
                 </DialogHeader>
                 {/* Form START */}
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {/* Name Input */}
                         <div className="space-y-1">
-                            <Input {...form.register("name")} placeholder="Customer name" />
+                            <Input {...form.register("name")} placeholder={ tCustomerCreate('name') } />
                             {form.formState.errors.name && (
                                 <p className="text-sm text-red-500">
                                     {form.formState.errors.name.message}
@@ -68,7 +75,7 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
                         </div>
                         {/* Phone number input */}
                         <div className="space-y-1">
-                            <Input {...form.register("phone")} placeholder="Phone number" />
+                            <Input {...form.register("phone")} placeholder={ tCustomerCreate('phone') } />
                             {form.formState.errors.phone && (
                                 <p className="text-sm text-red-500">
                                     {form.formState.errors.phone.message}
@@ -77,18 +84,18 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
                         </div>
                         {/* Notes input */}
                         <div className="space-y-1">
-                            <Input {...form.register("notes")} placeholder="Notes (optional)" />
+                            <Input {...form.register("notes")} placeholder={ tCustomerCreate('notes') } />
                         </div>
                         {/* Submit button */}
                         <div className="flex justify-end gap-2 pt-2">
                             <Button type="button" variant="outline" className="cursor-pointer" onClick={() => onOpenChange(false)}>
-                                Cancel
+                                { tCommon('cancel') }
                             </Button>
                             <Button type="submit" className="cursor-pointer" disabled={updateCustomer.isPending}>
                                 {
                                     updateCustomer.isPending
-                                    ? "Saving..."
-                                    : "Save Changes"
+                                    ? tCustomersEdit('loading')
+                                    : tCustomersEdit('submit')
                                 }
                             </Button>
                         </div>
