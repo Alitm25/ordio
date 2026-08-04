@@ -31,7 +31,7 @@ export default function LanguageToggle() {
         <Button variant="outline" size="sm"
         onClick={toggleLanguage} disabled={isPending}
         className="cursor-pointer font-medium">
-            {locale === "en" ? "فارسی" : "English"}
+            {locale === "en" ? "FA" : "EN"}
         </Button>
     );
 }
