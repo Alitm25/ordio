@@ -14,6 +14,7 @@ import CreateCustomerDialog from "@/components/customers/CreateCustomerDialog";
 import EditCustomerDialog from "@/components/customers/EditCustomerDialog";
 import { useDeleteCustomer } from "@/features/customers/hooks/useCustomer";
 import {kMaxLength} from "node:buffer";
+import {useTranslations} from "next-intl";
 
 export default function CustomersPage()  {
     // Create Customer form open and close State
@@ -22,6 +23,12 @@ export default function CustomersPage()  {
     // Edit and Delete customer states
     const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
     const [customerToDelete, setCustomerToDelete] = useState<Customer | null>(null);
+
+    // Translation functions
+    const tCustomer = useTranslations('customers');
+    const tCommon = useTranslations('common');
+
+
 
     // Customers fetch API FN
     const { data, isLoading } = useQuery({
@@ -37,9 +44,9 @@ export default function CustomersPage()  {
             {/* Header */}
             <div className="space-y-6">
                 <div className={'flex items-center justify-between'}>
-                    <h1 className={'text-3xl font-bold'}>Customers</h1>
+                    <h1 className={'text-3xl font-bold'}>{ tCustomer('title') }</h1>
                     <Button className={'cursor-pointer'} onClick={ () => setCreateOpen(true)}>
-                        + New Customer
+                        { tCustomer('newCustomer') }
                     </Button>
                 </div>
             </div>
@@ -56,7 +63,8 @@ export default function CustomersPage()  {
                                    <div className="ml-auto flex gap-2">
                                        <Skeleton className="h-8 w-8 rounded-md" />
                                        <Skeleton className="h-8 w-8 rounded-md" />
-                                   </div>                     <Skeleton className="h-4 w-36" />
+                                   </div>
+                                   <Skeleton className="h-4 w-36" />
                                    <Skeleton className="h-4 w-28" />
                                    <Skeleton className="h-4 w-44" />
                                    <div className="ml-auto flex gap-2">
@@ -74,13 +82,13 @@ export default function CustomersPage()  {
                                  <Users className={'h-6 w-6 text-muted p-3'}/>
                              </div>
                              <div>
-                                 <p className={'font-medium'}>No customers yet</p>
+                                 <p className={'font-medium'}>{ tCustomer('empty.title') }</p>
                                  <p>
-                                     Add your first customer to get started.
+                                     { tCustomer('empty.description') }
                                  </p>
                              </div>
                              <Button className={'cursor-pointer'} onClick={ () => setCreateOpen(true)}>
-                                 + New Customer
+                                 { tCustomer('empty.cta') }
                              </Button>
                          </div>
                     ) : (
@@ -90,10 +98,10 @@ export default function CustomersPage()  {
                                 {/* Table Header */}
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Phone</TableHead>
-                                        <TableHead className="hidden md:table-cell">Notes</TableHead>
-                                        <TableHead>Actions</TableHead>
+                                        <TableHead>{ tCustomer('table.name') }</TableHead>
+                                        <TableHead>{ tCustomer('table.phone') }</TableHead>
+                                        <TableHead className="hidden md:table-cell">{ tCustomer('table.notes') }</TableHead>
+                                        <TableHead>{ tCustomer('table.actions') }</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 {/* Table body */}
@@ -168,20 +176,21 @@ export default function CustomersPage()  {
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Delete this customer?
+                                { tCustomer('delete.title') }
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                                This will permanently delete{" "}
-                                <strong>{customerToDelete?.name}</strong>. Their
-                                past orders won't be affected.
+                                { tCustomer('delete.description') }{" "}
+                                <strong>{customerToDelete?.name}</strong>.
+                                <br/>
+                                { tCustomer('delete.ordersNote') }
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel className="cursor-pointer">
-                                Cancel
+                                { tCommon('cancel') }
                             </AlertDialogCancel>
                             <AlertDialogAction
-                                className="cursor-pointer bg-destructive text-white hover:bg-destructive/90"
+                                className="cursor-pointer bg-red-800 text-white hover:bg-red-700"
                                 disabled={deleteCustomer.isPending}
                                 onClick={() => {
                                     if (customerToDelete) {
@@ -192,7 +201,7 @@ export default function CustomersPage()  {
                                     }
                                 }}
                             >
-                                Delete
+                                { tCommon('delete') }
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
