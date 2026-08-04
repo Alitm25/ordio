@@ -14,6 +14,7 @@ import { useState } from "react";
 import {Eye, EyeOff, User, Lock, Mail} from "lucide-react";
 import {useQueryClient} from "@tanstack/react-query";
 import {ChangeEmailFormValues, changeEmailSchema} from "@/features/settings/schemas/changeEmail";
+import {useTranslations} from "next-intl";
 
 export default function SettingsPage() {
     // Get the current user
@@ -37,6 +38,9 @@ export default function SettingsPage() {
                 confirmPassword: "",
             },
         });
+
+        // Translations function
+    const tSettings = useTranslations("settings");
 
         // form onSubmit handler
         const onSubmit = async (data: ChangePasswordFormValues) => {
@@ -81,20 +85,20 @@ export default function SettingsPage() {
 
     return (
         <div className="space-y-6 max-w-2xl">
-            <h1 className="text-3xl font-bold">Settings</h1>
+            <h1 className="text-3xl font-bold">{ tSettings('title') }</h1>
             {/* Account information Card START */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <User className="h-5 w-5" />
-                            Account Information
+                            { tSettings('account.title') }
                         </CardTitle>
                     </CardHeader>
 
                     <CardContent className="space-y-4">
                         <div className="flex flex-col gap-1">
                             <span className="text-sm text-muted-foreground">
-                                Email
+                                { tSettings('account.email') }
                             </span>
                             <span className="font-medium">
                                 {user?.email ?? "—"}
@@ -103,7 +107,7 @@ export default function SettingsPage() {
 
                         <div className="flex flex-col gap-1">
                             <span className="text-sm text-muted-foreground">
-                                Member since
+                                { tSettings('account.memberSince') }
                             </span>
                             <span className="font-medium">
                                 {user?.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -122,7 +126,7 @@ export default function SettingsPage() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Mail className="h-5 w-5" />
-                            Change Email
+                            { tSettings('changeEmail.title') }
                         </CardTitle>
                     </CardHeader>
 
@@ -135,7 +139,7 @@ export default function SettingsPage() {
                                 <Input
                                     {...emailForm.register("newEmail")}
                                     type="email"
-                                    placeholder="New email address"
+                                    placeholder={ tSettings('changeEmail.newEmail') }
                                 />
                                 {emailForm.formState.errors.newEmail && (
                                     <p className="text-sm text-red-500">
@@ -149,7 +153,7 @@ export default function SettingsPage() {
                                     <Input
                                         {...emailForm.register("currentPassword")}
                                         type={showEmailPassword ? "text" : "password"}
-                                        placeholder="Confirm with current password"
+                                        placeholder={ tSettings('changeEmail.currentPassword') }
                                     />
                                     <button
                                         type="button"
@@ -179,8 +183,8 @@ export default function SettingsPage() {
                                     disabled={emailForm.formState.isSubmitting}
                                 >
                                     {emailForm.formState.isSubmitting
-                                        ? "Saving..."
-                                        : "Change Email"}
+                                        ? tSettings('changeEmail.loading')
+                                        : tSettings('changeEmail.submit')  }
                                 </Button>
                             </div>
                         </form>
@@ -193,7 +197,7 @@ export default function SettingsPage() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Lock className="h-5 w-5" />
-                            Change Password
+                            { tSettings('changePassword.title') }
                         </CardTitle>
                     </CardHeader>
 
@@ -204,7 +208,7 @@ export default function SettingsPage() {
                                     <Input
                                         {...form.register("currentPassword")}
                                         type={ showCurrentPassword ? "text" : "password"}
-                                        placeholder="Current password"
+                                        placeholder={ tSettings('changePassword.currentPassword') }
                                     />
                                     <button type="button" onClick={ () => setShowCurrentPassword((prev) => !prev) }
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
@@ -231,7 +235,7 @@ export default function SettingsPage() {
                                     <Input
                                         {...form.register("newPassword")}
                                         type={showNewPassword ? "text" : "password"}
-                                        placeholder="New password"
+                                        placeholder={ tSettings('changePassword.newPassword') }
                                     />
                                     <button type="button" onClick={ () => setShowNewPassword((prev) => !prev) }
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
@@ -255,7 +259,7 @@ export default function SettingsPage() {
                                     <Input
                                         {...form.register("confirmPassword")}
                                         type={ showConfirmPassword ? "text" : "password" }
-                                        placeholder="Confirm new password"
+                                        placeholder={ tSettings('changePassword.confirmPassword') }
                                     />
                                     <button type="button" onClick={ () => setShowConfirmPassword((prev) => !prev) }
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
@@ -284,8 +288,8 @@ export default function SettingsPage() {
                                     disabled={form.formState.isSubmitting}
                                 >
                                     {form.formState.isSubmitting
-                                        ? "Saving..."
-                                        : "Change Password"}
+                                        ? tSettings('changePassword.loading')
+                                        : tSettings('changePassword.submit')  }
                                 </Button>
                             </div>
                         </form>
