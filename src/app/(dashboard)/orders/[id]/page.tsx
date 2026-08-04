@@ -21,6 +21,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import {useTranslations} from "next-intl";
 
 export default function OrderDetailsPage() {
     // Get the URL parameters (ID)
@@ -31,6 +32,11 @@ export default function OrderDetailsPage() {
     // delete and edit dialog handler states
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
+
+    // Translation Function
+    const tDetails = useTranslations('orders.details');
+    const tOrders = useTranslations('orders');
+    const tCommon = useTranslations('common');
 
     // Get the specific order fetch function
     const { data, isLoading, error } = useQuery({
@@ -68,10 +74,10 @@ export default function OrderDetailsPage() {
     if (error || !data) {
         return (
             <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed py-20 text-center">
-                <p className="font-medium">Order not found</p>
+                <p className="font-medium">{ tDetails('notFound') }</p>
                 <Link href="/orders">
                     <Button variant="outline" className="cursor-pointer">
-                        Back to Orders
+                        { tDetails('backButton') }
                     </Button>
                 </Link>
             </div>
@@ -85,18 +91,18 @@ export default function OrderDetailsPage() {
             <div className="flex items-center justify-between">
                 <Link href={'/orders'} className={'flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors'}>
                     <ArrowLeft className={'h-4 w-4'}/>
-                    <span className={'text-sm'}>Back to Orders</span>
+                    <span className={'text-sm'}>{ tDetails('backButton') }</span>
                 </Link>
 
                 {/* Edit and Delete buttons */}
                 <div className="flex gap-2">
                     <Button variant="outline" size="sm" className="cursor-pointer" onClick={() => setEditingOrder(order)}>
                         <Pencil className="h-4 w-4 mr-2" />
-                        Edit
+                        { tCommon('edit') }
                     </Button>
                     <Button variant="destructive" size="sm" className="cursor-pointer" onClick={() => setDeleteOpen(true)}>
                         <Trash2 className="h-4 w-4 mr-2" />
-                        Delete
+                        { tCommon('delete') }
                     </Button>
                 </div>
             </div>
@@ -105,7 +111,7 @@ export default function OrderDetailsPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center justify-between">
-                            <span>Order Details</span>
+                            <span>{ tDetails('title') }</span>
                             <OrderStatusBadge status={order.status} />
                         </CardTitle>
                     </CardHeader>
@@ -114,21 +120,21 @@ export default function OrderDetailsPage() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <p className="text-sm text-muted-foreground">
-                                    Product
+                                    { tDetails('product') }
                                 </p>
                                 <p className="font-medium">{order.productName}</p>
                             </div>
 
                             <div className="space-y-1">
                                 <p className="text-sm text-muted-foreground">
-                                    Quantity
+                                    { tDetails('quantity') }
                                 </p>
                                 <p className="font-medium">{order.quantity}</p>
                             </div>
 
                             <div className="space-y-1">
                                 <p className="text-sm text-muted-foreground">
-                                    Price
+                                    { tDetails('price') }
                                 </p>
                                 <p className="font-medium">
                                     {order.price.toLocaleString()}
@@ -137,7 +143,7 @@ export default function OrderDetailsPage() {
 
                             <div className="space-y-1">
                                 <p className="text-sm text-muted-foreground">
-                                    Date
+                                    { tDetails('date') }
                                 </p>
                                 <p className="font-medium">
                                     {new Date(order.createdAt).toLocaleDateString(
@@ -155,7 +161,7 @@ export default function OrderDetailsPage() {
                         <div className="border-t pt-4 grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <p className="text-sm text-muted-foreground">
-                                    Payment Status
+                                    { tDetails('paymentStatus') }
                                 </p>
                                 <span
                                     className={`inline-flex rounded border px-2 py-0.5 text-xs font-medium ${
@@ -167,20 +173,20 @@ export default function OrderDetailsPage() {
                                     }`}
                                 >
                                     {order.paymentStatus === "paid"
-                                        ? "Paid"
+                                        ? tOrders('payment.paid')
                                         : order.paymentStatus === "partial"
-                                            ? "Partial"
-                                            : "Unpaid"}
+                                            ? tOrders('payment.partial')
+                                            : tOrders('payment.unpaid') }
                                 </span>
                             </div>
 
                             {order.paymentMethod && (
                                 <div className="space-y-1">
                                     <p className="text-sm text-muted-foreground">
-                                        Payment Method
+                                        { tDetails('paymentMethod') }
                                     </p>
                                     <p className="font-medium capitalize">
-                                        {order.paymentMethod}
+                                        { tOrders(`payment.${order.paymentMethod}`) }
                                     </p>
                                 </div>
                             )}
@@ -192,7 +198,7 @@ export default function OrderDetailsPage() {
             {/* Customer Detail Card START */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Customer</CardTitle>
+                        <CardTitle>{ tDetails('customer') }</CardTitle>
                     </CardHeader>
 
                     <CardContent className={'space-y-3'}>
@@ -210,7 +216,7 @@ export default function OrderDetailsPage() {
                         {order.customerId && (
                             <Link href={`/customers`}>
                                 <Button variant="outline" size="sm" className="cursor-pointer mt-2">
-                                    View Customer Profile
+                                    { tDetails('viewCustomerProfile') }
                                 </Button>
                             </Link>
                         )}
@@ -233,17 +239,18 @@ export default function OrderDetailsPage() {
             <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete this order?</AlertDialogTitle>
+                        <AlertDialogTitle>{ tOrders('delete.title') }</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will permanently delete the order for{" "}
-                            <strong>{order.customerName}</strong>. This action
-                            cannot be undone.
+                            { tOrders('delete.description') }{" "}
+                            <strong>{order.customerName}</strong>.
+                            <br/>
+                            { tOrders('delete.cannotUndo') }
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 
                     <AlertDialogFooter>
                         <AlertDialogCancel className="cursor-pointer">
-                            Cancel
+                            { tCommon('cancel') }
                         </AlertDialogCancel>
                         <AlertDialogAction
                             className="cursor-pointer bg-red-800 text-white hover:bg-red-700"
@@ -253,8 +260,8 @@ export default function OrderDetailsPage() {
                             }
                         >
                             {deleteOrderMutation.isPending
-                                ? "Deleting..."
-                                : "Delete"}
+                                ? tCommon('deleting')
+                                : tCommon('delete') }
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
