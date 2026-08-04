@@ -156,7 +156,7 @@ export default function ProductsPage() {
                             Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
-                            className="cursor-pointer bg-destructive text-white hover:bg-destructive/90"
+                            className="cursor-pointer bg-red-800 text-white hover:bg-red-700"
                             disabled={deleteProduct.isPending}
                             onClick={() => {
                                 if (productToDelete) {
