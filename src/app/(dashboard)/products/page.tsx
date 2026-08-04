@@ -13,11 +13,16 @@ import { PackageOpen } from "lucide-react";
 import CreateProductDialog from "@/components/products/CreateProductDialog";
 import EditProductDialog from "@/components/products/EditProductDialog";
 import { useDeleteProduct } from "@/features/products/hooks/useProducts";
+import {useTranslations} from "next-intl";
 
 export default function ProductsPage() {
     const [createOpen, setCreateOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+
+    const tProducts = useTranslations('products');
+    const tCommon = useTranslations('common');
+
 
     const { data, isLoading } = useQuery({
         queryKey: ["products"],
@@ -31,9 +36,9 @@ export default function ProductsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold">Products</h1>
+                <h1 className="text-3xl font-bold">{ tProducts('title') }</h1>
                 <Button className="cursor-pointer" onClick={() => setCreateOpen(true)}>
-                    + New Product
+                    { tProducts('newProduct') }
                 </Button>
             </div>
 
@@ -57,16 +62,16 @@ export default function ProductsPage() {
                         <PackageOpen className="h-6 w-6 text-muted-foreground" />
                     </div>
                     <div>
-                        <p className="font-medium">No products yet</p>
+                        <p className="font-medium">{ tProducts('empty.title') }</p>
                         <p className="text-sm text-muted-foreground">
-                            Add your first product to the catalog.
+                            { tProducts('empty.description') }
                         </p>
                     </div>
                     <Button
                         className="cursor-pointer"
                         onClick={() => setCreateOpen(true)}
                     >
-                        + New Product
+                        { tProducts('empty.cta') }
                     </Button>
                 </div>
             ) : (
@@ -74,10 +79,10 @@ export default function ProductsPage() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead className="hidden md:table-cell">Description</TableHead>
-                                <TableHead>Actions</TableHead>
+                                <TableHead>{ tProducts('table.name') }</TableHead>
+                                <TableHead>{ tProducts('table.price') }</TableHead>
+                                <TableHead className="hidden md:table-cell">{ tProducts('table.description') }</TableHead>
+                                <TableHead>{ tProducts('table.actions') }</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -144,16 +149,17 @@ export default function ProductsPage() {
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete this product?</AlertDialogTitle>
+                        <AlertDialogTitle>{ tProducts('delete.title') }</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will permanently delete{" "}
-                            <strong>{productToDelete?.name}</strong> from your
-                            catalog. This action cannot be undone.
+                            { tProducts('delete.description') }{" "}
+                            <strong>{productToDelete?.name}</strong> { tProducts('delete.descriptionSuffix') }
+                            <br/>
+                            { tProducts('delete.cannotUndo') }
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel className="cursor-pointer">
-                            Cancel
+                            { tCommon('cancel') }
                         </AlertDialogCancel>
                         <AlertDialogAction
                             className="cursor-pointer bg-red-800 text-white hover:bg-red-700"
@@ -165,7 +171,7 @@ export default function ProductsPage() {
                                 }
                             }}
                         >
-                            Delete
+                            { tCommon('delete') }
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
