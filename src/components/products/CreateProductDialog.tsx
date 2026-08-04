@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { productSchema, ProductFormValues } from "@/features/products/schemas/productSchema";
 import { useCreateProduct } from "@/features/products/hooks/useProducts";
+import {useTranslations} from "next-intl";
 
 interface Props {
     open: boolean;
@@ -24,6 +25,8 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
         },
     });
 
+    const tProductsCreate = useTranslations('products.create');
+
     // Create Product function declaration
     const createProduct = useCreateProduct(() => {
         form.reset();
@@ -39,9 +42,9 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>New Product</DialogTitle>
+                    <DialogTitle>{ tProductsCreate('title') }</DialogTitle>
                     <DialogDescription>
-                        Add a product to your catalog.
+                        { tProductsCreate('description') }
                     </DialogDescription>
                 </DialogHeader>
 
@@ -49,7 +52,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                     <div className="space-y-1">
                         <Input
                             {...form.register("name")}
-                            placeholder="Product name"
+                            placeholder={ tProductsCreate('name') }
                         />
                         {form.formState.errors.name && (
                             <p className="text-sm text-red-500">
@@ -62,7 +65,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                         <Input
                             type="number"
                             {...form.register("price", { valueAsNumber: true })}
-                            placeholder="Price"
+                            placeholder={ tProductsCreate('price') }
                         />
                         {form.formState.errors.price && (
                             <p className="text-sm text-red-500">
@@ -74,7 +77,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                     <div className="space-y-1">
                         <Input
                             {...form.register("description")}
-                            placeholder="Description (optional)"
+                            placeholder={ tProductsCreate('descriptionField') }
                         />
                     </div>
 
@@ -92,7 +95,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                             className="cursor-pointer"
                             disabled={createProduct.isPending}
                         >
-                            {createProduct.isPending ? "Creating..." : "Create"}
+                            {createProduct.isPending ? tProductsCreate('loading') : tProductsCreate('submit') }
                         </Button>
                     </div>
                 </form>
