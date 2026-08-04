@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { customerSchema, CustomerFormValues } from "@/features/customers/schemas/customerSchema";
 import { useCreateCustomer } from "@/features/customers/hooks/useCustomer";
+import {useTranslations} from "next-intl";
 
 interface Props {
     open: boolean;
@@ -24,6 +25,11 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
         },
     });
 
+    const tCustomerCreate = useTranslations('customers.create');
+    const tCommon = useTranslations('common');
+
+
+
     // Creating customer FN
     const createCustomer = useCreateCustomer(() => {
         form.reset();
@@ -39,16 +45,16 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>New Customer</DialogTitle>
+                    <DialogTitle>{ tCustomerCreate('title') }</DialogTitle>
                     <DialogDescription>
-                        Add a new customer to your list.
+                        { tCustomerCreate('description') }
                     </DialogDescription>
                 </DialogHeader>
                 {/* Form START */}
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {/* Name input */}
                         <div className="space-y-1">
-                            <Input{...form.register("name")} placeholder="Customer name" />
+                            <Input{...form.register("name")} placeholder={ tCustomerCreate('name') } />
                             {form.formState.errors.name && (
                                 <p className="text-sm text-red-500">
                                     {form.formState.errors.name.message}
@@ -57,7 +63,7 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
                         </div>
                         {/* Phone number input */}
                         <div className="space-y-1">
-                            <Input {...form.register("phone")} placeholder="Phone number" />
+                            <Input {...form.register("phone")} placeholder={ tCustomerCreate('phone') } />
                             {form.formState.errors.phone && (
                                 <p className="text-sm text-red-500">
                                     {form.formState.errors.phone.message}
@@ -66,18 +72,18 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
                         </div>
                         {/* Notes input */}
                         <div className="space-y-1">
-                            <Input {...form.register("notes")} placeholder="Notes (optional)" />
+                            <Input {...form.register("notes")} placeholder={ tCustomerCreate('notes') } />
                         </div>
                         {/* Submit button */}
                         <div className="flex justify-end gap-2 pt-2">
                             <Button type="button" variant="outline" className="cursor-pointer" onClick={() => onOpenChange(false)}>
-                                Cancel
+                                { tCommon('cancel') }
                             </Button>
                             <Button type="submit" className="cursor-pointer" disabled={createCustomer.isPending}>
                                 {
                                     createCustomer.isPending
-                                    ? "Creating..."
-                                    : "Create"
+                                    ? tCustomerCreate('loading')
+                                    : tCustomerCreate('submit')
                                 }
                             </Button>
                         </div>
