@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { productSchema, ProductFormValues } from "@/features/products/schemas/productSchema";
 import { useUpdateProduct } from "@/features/products/hooks/useProducts";
 import { Product } from "@/types/product";
+import {useTranslations} from "next-intl";
 
 interface Props {
     product: Product | null;
@@ -24,6 +25,9 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
             description: "",
         },
     });
+
+    const tProductsCreate = useTranslations('products.create');
+    const tProductsEdit = useTranslations('products.edit');
 
     useEffect(() => {
         if (product) {
@@ -46,9 +50,9 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
         <Dialog open={!!product} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit Product</DialogTitle>
+                    <DialogTitle>{ tProductsEdit('title') }</DialogTitle>
                     <DialogDescription>
-                        Update this product's details.
+                        { tProductsEdit('description') }
                     </DialogDescription>
                 </DialogHeader>
 
@@ -56,7 +60,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                     <div className="space-y-1">
                         <Input
                             {...form.register("name")}
-                            placeholder="Product name"
+                            placeholder={ tProductsCreate('name') }
                         />
                         {form.formState.errors.name && (
                             <p className="text-sm text-red-500">
@@ -69,7 +73,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                         <Input
                             type="number"
                             {...form.register("price", { valueAsNumber: true })}
-                            placeholder="Price"
+                            placeholder={ tProductsCreate('price') }
                         />
                         {form.formState.errors.price && (
                             <p className="text-sm text-red-500">
@@ -81,7 +85,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                     <div className="space-y-1">
                         <Input
                             {...form.register("description")}
-                            placeholder="Description (optional)"
+                            placeholder={ tProductsCreate('descriptionField') }
                         />
                     </div>
 
@@ -99,7 +103,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                             className="cursor-pointer"
                             disabled={updateProduct.isPending}
                         >
-                            {updateProduct.isPending ? "Saving..." : "Save Changes"}
+                            {updateProduct.isPending ? tProductsEdit('loading') : tProductsEdit('submit')}
                         </Button>
                     </div>
                 </form>
