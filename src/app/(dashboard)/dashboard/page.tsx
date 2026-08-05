@@ -13,7 +13,7 @@ import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 import {useState} from "react";
 import {DashboardRange} from "@/types/dashboard";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 
 const STATUS_COLORS = {
     pending: "#f59e0b",
@@ -26,6 +26,9 @@ export default function DashboardPage() {
     // Time range state
     const [range, setRange] = useState<DashboardRange>('this-month');
     // Translate intl function
+    const locale = useLocale();
+    const dir = locale === 'fa' ? 'rtl' : 'ltr';
+
     const tDashboard = useTranslations('dashboard');
     const tCommon = useTranslations('common')
     const tOrders = useTranslations('orders')
@@ -91,7 +94,7 @@ export default function DashboardPage() {
                 <h1 className="text-3xl font-bold">{ tDashboard('title') }</h1>
                 {/* Range select input */}
                 <div className="flex items-center justify-between gap-3">
-                    <Select value={range}
+                    <Select value={range} dir={dir}
                         onValueChange={(value) =>
                             setRange(value as DashboardRange)
                         }
