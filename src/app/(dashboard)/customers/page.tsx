@@ -93,7 +93,7 @@ export default function CustomersPage()  {
                          </div>
                     ) : (
                         // If customers exist
-                        <div className="rounded-xl border bg-card">
+                        <div className="rounded-xl border bg-card px-4">
                             <Table>
                                 {/* Table Header */}
                                 <TableHeader>
