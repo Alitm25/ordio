@@ -19,7 +19,7 @@ export default function ProductsPage() {
     const [createOpen, setCreateOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [productToDelete, setProductToDelete] = useState<Product | null>(null);
-
+    
     const tProducts = useTranslations('products');
     const tCommon = useTranslations('common');
 
