@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Order } from "@/types/order";
 import Link from "next/link";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 
 export type { Order };
 
@@ -49,7 +49,6 @@ interface Props {
 export default function OrdersTable({ orders, onEdit }: Props) {
     const queryClient = useQueryClient();
 
-    // Translate intl function
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
 
@@ -187,7 +186,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
 
                     <TableBody>
                         {orders.map((order) => (
-                            <TableRow key={order._id}>
+                            <TableRow key={order._id} >
                                 <TableCell>
                                     <Checkbox
                                         className="cursor-pointer"
