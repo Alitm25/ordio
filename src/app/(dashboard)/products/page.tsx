@@ -75,7 +75,7 @@ export default function ProductsPage() {
                     </Button>
                 </div>
             ) : (
-                <div className="rounded-xl border bg-card">
+                <div className="rounded-xl border bg-card px-4">
                     <Table>
                         <TableHeader>
                             <TableRow>
