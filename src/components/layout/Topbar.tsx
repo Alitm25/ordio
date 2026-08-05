@@ -27,7 +27,7 @@ export default function Topbar() {
                         </Button>
                     </SheetTrigger>
 
-                    <SheetContent side={'left'} className={'p-0 w-64'}>
+                    <SheetContent side={locale === 'en' ? 'left' : 'right'} className={'p-0 w-64'}>
                         <SheetTitle className={'sr-only'}>
                             Navigation Menu
                         </SheetTitle>
