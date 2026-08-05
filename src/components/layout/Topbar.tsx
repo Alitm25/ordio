@@ -8,7 +8,7 @@ import {useState} from "react";
 import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {SidebarContent} from "@/components/layout/Sidebar";
 import LanguageToggle from "@/components/layout/LanguageToggle";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 
 export default function Topbar() {
     const { data } = useCurrentUser();
