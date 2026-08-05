@@ -141,13 +141,13 @@ export default function OrdersPage() {
                         placeholder={ tOrders('searchPlaceholder') }
                         value={search}
                         onChange={(e) => handleSearchChange(e.target.value)}
-                        className="pl-9"
+                        className="pl-9 placeholder:text-xs placeholder:md:text-base"
                     />
                 </div>
 
                 {/* Status Filter section */}
                 <Select value={status} onValueChange={handleStatusChange}>
-                    <SelectTrigger className="w-40 cursor-pointer">
+                    <SelectTrigger className="w-40 cursor-pointer text-xs md:text-base">
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -171,7 +171,7 @@ export default function OrdersPage() {
 
                 {/* Sort Section */}
                 <Select value={sort} onValueChange={handleSortChange}>
-                    <SelectTrigger className="w-44 cursor-pointer">
+                    <SelectTrigger className="w-44 cursor-pointer text-xs md:text-base">
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
