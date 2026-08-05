@@ -158,7 +158,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                 </div>
             )}
 
-            <div className="rounded-xl border bg-card">
+            <div className="rounded-xl border bg-card px-4">
                 <Table>
                     <TableHeader>
                         <TableRow>
