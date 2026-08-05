@@ -13,13 +13,13 @@ import { PackageOpen } from "lucide-react";
 import CreateProductDialog from "@/components/products/CreateProductDialog";
 import EditProductDialog from "@/components/products/EditProductDialog";
 import { useDeleteProduct } from "@/features/products/hooks/useProducts";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 
 export default function ProductsPage() {
     const [createOpen, setCreateOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [productToDelete, setProductToDelete] = useState<Product | null>(null);
-    
+
     const tProducts = useTranslations('products');
     const tCommon = useTranslations('common');
 
