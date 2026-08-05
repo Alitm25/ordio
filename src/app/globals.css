@@ -129,5 +129,7 @@
 
   html[lang="fa"] {
     font-family: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;;
+    --font-heading: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;;
   }
 }
