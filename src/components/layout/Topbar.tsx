@@ -15,6 +15,7 @@ export default function Topbar() {
     const logoutMutation = useLogout();
     const [open, setOpen] = useState(false);
 
+    const locale = useLocale();
     const t = useTranslations('topbar');
     return (
         <header className="border-b px-8 py-5 flex items-center justify-between">
