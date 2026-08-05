@@ -22,12 +22,14 @@ import EditOrderDialog from "@/components/orders/EditOrderDialog";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import {Download, Search} from "lucide-react";
 import {exportToCsv} from "@/lib/exportToCsv";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 
 export default function OrdersPage() {
     // Translate intl function
+    const locale = useLocale();
+    const dir = locale === 'fa'? 'rtl' : 'ltr';
+
     const tOrders = useTranslations('orders');
-    const tCreate = useTranslations('create');
 
     // Order action dialog open & close state
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -146,7 +148,7 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Status Filter section */}
-                <Select value={status} onValueChange={handleStatusChange}>
+                <Select value={status} onValueChange={handleStatusChange} dir={dir}>
                     <SelectTrigger className="w-40 cursor-pointer text-xs md:text-base">
                         <SelectValue />
                     </SelectTrigger>
@@ -170,7 +172,7 @@ export default function OrdersPage() {
                 </Select>
 
                 {/* Sort Section */}
-                <Select value={sort} onValueChange={handleSortChange}>
+                <Select value={sort} onValueChange={handleSortChange} dir={dir}>
                     <SelectTrigger className="w-44 cursor-pointer text-xs md:text-base">
                         <SelectValue />
                     </SelectTrigger>
