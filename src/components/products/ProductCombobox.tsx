@@ -7,6 +7,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
+import {useTranslations} from "next-intl";
 
 
 interface Props {
@@ -17,6 +18,8 @@ interface Props {
 
 export default function ProductCombobox({ products, value, onSelect }: Props) {
     const [open, setOpen] = useState(false);
+
+    const tProdcuts = useTranslations('products')
 
     const selectedProduct = products.find((p) => p.name === value);
 
@@ -36,9 +39,9 @@ export default function ProductCombobox({ products, value, onSelect }: Props) {
 
             <PopoverContent className="w-full p-0" align="start">
                 <Command>
-                    <CommandInput placeholder="Search products..." />
+                    <CommandInput placeholder={ tProdcuts('searchProducts') } />
                     <CommandList>
-                        <CommandEmpty>No product found.</CommandEmpty>
+                        <CommandEmpty>{ tProdcuts('notFound') }</CommandEmpty>
                         <CommandGroup>
                             {products.map((product) => (
                                 <CommandItem
