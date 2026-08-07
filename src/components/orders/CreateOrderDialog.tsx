@@ -96,10 +96,8 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                 customers={customers}
                                 value={form.watch("customerId") ?? ""}
                                 onSelect={handleCustomerSelect}
+                                placeholder={ tCreate('selectFromCatalog') }
                             />
-                            <p className="text-xs text-muted-foreground px-1">
-                                { tCreate('selectFromCatalog') }
-                            </p>
                         </div>
                     )}
 
@@ -133,10 +131,8 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                         form.setValue('productName', product.name);
                                         form.setValue('price', product.price)
                                     }}
+                                    placeholder={ tCreate('selectFromCatalog') }
                                 />
-                                <p className={'text-xs text-muted-foreground px-1'}>
-                                    { tCreate('selectFromCatalog') }
-                                </p>
                             </div>
                         )
                     }
