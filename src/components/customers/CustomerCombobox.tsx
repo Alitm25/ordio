@@ -13,9 +13,10 @@ interface Props {
     customers: Customer[];
     value: string;
     onSelect: (customer: Customer) => void;
+    placeholder?: string;
 }
 
-export default function CustomerCombobox({ customers, value, onSelect }: Props) {
+export default function CustomerCombobox({ customers, value, onSelect, placeholder }: Props) {
     // Open and Close dialog state
     const [open, setOpen] = useState(false);
 
@@ -36,7 +37,7 @@ export default function CustomerCombobox({ customers, value, onSelect }: Props) 
                 >
                     {selectedCustomer
                         ? `${selectedCustomer.name} — ${selectedCustomer.phone}`
-                        : "Select from customers..."}
+                        : placeholder ?? "Select from customers..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
