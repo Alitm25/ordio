@@ -129,6 +129,7 @@
       "paymentStatus": "Payment Status",
       "paymentMethod": "Payment Method",
       "selectFromCatalog": "Or fill in manually below",
+      "searchCustomers": "Search customers...",
       "submit": "Create Order",
       "loading": "Creating..."
     },
@@ -168,6 +169,8 @@
   "products": {
     "title": "Products",
     "newProduct": "+ New Product",
+    "notFound": "No product found.",
+    "searchProducts": "Search for Products...",
     "table": {
       "name": "Name",
       "price": "Price",
@@ -205,6 +208,7 @@
   "customers": {
     "title": "Customers",
     "newCustomer": "+ New Customer",
+    "notFound": "No customer found.",
     "table": {
       "name": "Name",
       "phone": "Phone",
