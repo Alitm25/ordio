@@ -129,6 +129,7 @@
       "paymentStatus": "وضعیت پرداخت",
       "paymentMethod": "روش پرداخت",
       "selectFromCatalog": "یا به صورت دستی وارد کنید",
+      "searchCustomers": "جستجوی مشتری ها...",
       "submit": "ثبت سفارش",
       "loading": "در حال ثبت..."
     },
@@ -168,6 +169,8 @@
   "products": {
     "title": "محصولات",
     "newProduct": "+ محصول جدید",
+    "notFound": "محصولی یافت نشد.",
+    "searchProducts": "جستجو برای محصولات...",
     "table": {
       "name": "نام",
       "price": "قیمت",
@@ -205,6 +208,7 @@
   "customers": {
     "title": "مشتریان",
     "newCustomer": "+ مشتری جدید",
+    "notFound": "مشتری یافت نشد.",
     "table": {
       "name": "نام",
       "phone": "تلفن",
