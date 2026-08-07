@@ -14,12 +14,13 @@ interface Props {
     products: Product[];
     value: string;
     onSelect: (product: Product) => void;
+    placeholder?: string;
 }
 
-export default function ProductCombobox({ products, value, onSelect }: Props) {
+export default function ProductCombobox({ products, value, onSelect, placeholder }: Props) {
     const [open, setOpen] = useState(false);
 
-    const tProdcuts = useTranslations('products')
+    const tProducts = useTranslations('products')
 
     const selectedProduct = products.find((p) => p.name === value);
 
@@ -32,16 +33,17 @@ export default function ProductCombobox({ products, value, onSelect }: Props) {
                     aria-expanded={open}
                     className="w-full justify-between cursor-pointer font-normal"
                 >
-                    {selectedProduct ? selectedProduct.name : "Select from catalog..."}
+                    {selectedProduct ? selectedProduct.name
+                    : placeholder ?? "Select from catalog..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
 
             <PopoverContent className="w-full p-0" align="start">
                 <Command>
-                    <CommandInput placeholder={ tProdcuts('searchProducts') } />
+                    <CommandInput placeholder={ tProducts('searchProducts') } />
                     <CommandList>
-                        <CommandEmpty>{ tProdcuts('notFound') }</CommandEmpty>
+                        <CommandEmpty>{ tProducts('notFound') }</CommandEmpty>
                         <CommandGroup>
                             {products.map((product) => (
                                 <CommandItem
