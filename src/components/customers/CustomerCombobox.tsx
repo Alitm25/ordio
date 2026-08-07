@@ -7,6 +7,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Customer } from "@/types/customer";
 import { cn } from "@/lib/utils";
+import {useTranslations} from "next-intl";
 
 interface Props {
     customers: Customer[];
@@ -17,6 +18,9 @@ interface Props {
 export default function CustomerCombobox({ customers, value, onSelect }: Props) {
     // Open and Close dialog state
     const [open, setOpen] = useState(false);
+
+    const tCreate = useTranslations('orders.create');
+    const tCustomers = useTranslations('customers');
 
     // Customer value variable ( The value which  )
     const selectedCustomer = customers.find((c) => c._id === value);
@@ -39,9 +43,9 @@ export default function CustomerCombobox({ customers, value, onSelect }: Props) 
 
             <PopoverContent className="w-full p-0" align="start">
                 <Command>
-                    <CommandInput placeholder="Search customers..." />
+                    <CommandInput placeholder={ tCreate('searchCustomers') } />
                     <CommandList>
-                        <CommandEmpty>No customer found.</CommandEmpty>
+                        <CommandEmpty>{ tCustomers('notFound') }</CommandEmpty>
                         <CommandGroup>
                             {customers.map((customer) => (
                                 <CommandItem
