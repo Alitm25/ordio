@@ -54,7 +54,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
       <html lang={locale} dir={dir}
-            className={`${geistSans.variable} ${geistMono.variable} ${vazirMatn.variable} dark`}>
+            className={`${geistSans.variable} ${geistMono.variable} ${vazirMatn.variable} dark`} suppressHydrationWarning>
       <body className={"antialiased"}>
       <NextIntlClientProvider messages={messages}>
           <QueryProvider>
