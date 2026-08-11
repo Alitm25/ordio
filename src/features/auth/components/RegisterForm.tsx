@@ -31,7 +31,9 @@ export default function RegisterForm() {
 
     const registerMutation = useRegister();
 
+    // Translation Functions
     const t = useTranslations('auth.register');
+    const tToast = useTranslations('toast.auth');
 
     const {
         register,
@@ -45,11 +47,11 @@ export default function RegisterForm() {
         try {
             await registerMutation.mutateAsync(data);
 
-            toast.success("Account created successfully");
+            toast.success( tToast('registerSuccess') );
 
             router.push("/login");
         } catch (error) {
-            toast.error(getErrorMessage(error, "Could not create account"));
+            toast.error(getErrorMessage(error, tToast('registerError') ));
         }
     };
 
