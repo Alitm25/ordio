@@ -23,6 +23,8 @@ export default function LoginForm() {
     const loginMutation = useLogin();
 
     const t = useTranslations('auth.login');
+    const tToast = useTranslations('toast.auth');
+
     const {
         register,
         handleSubmit,
@@ -35,11 +37,11 @@ export default function LoginForm() {
         try {
             await loginMutation.mutateAsync(data);
 
-            toast.success("Logged in successfully");
+            toast.success( tToast('loginSuccess') );
 
             router.push("/dashboard");
         } catch (error) {
-            toast.error(getErrorMessage(error, "Invalid email or password"));
+            toast.error(getErrorMessage(error, tToast('loginError') ));
         }
     };
 
