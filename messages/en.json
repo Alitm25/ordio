@@ -15,6 +15,39 @@
     "confirm": "Are you sure?",
     "back": "Back"
   },
+  "toast": {
+    "auth": {
+      "loginSuccess": "Logged in successfully",
+      "loginError": "Invalid email or password",
+      "registerSuccess": "Account created successfully",
+      "registerError": "Could not create account",
+      "passwordChangeSuccess": "Password changed successfully",
+      "emailChangeSuccess": "Email changed successfully",
+      "emailChangeError": "Could not change email"
+    },
+    "order": {
+      "orderDelete": "Order deleted successfully",
+      "orderDeleteError": "Could not delete order",
+      "bulkDeleteError": "Could not delete selected orders, Please try again",
+      "statusError": "Could not update status, Please try again"
+    },
+    "customer": {
+      "createSuccess": "Customer created successfully",
+      "createError": "Could not create customer",
+      "updateSuccess": "Customer updated successfully",
+      "updateError": "Could not update customer",
+      "deleteSuccess": "Customer deleted successfully",
+      "deleteError": "Could not delete customer"
+    },
+    "product": {
+      "createSuccess": "Product created successfully",
+      "createError": "Could not create product",
+      "updateSuccess": "Product updated successfully",
+      "updateError": "Could not update product",
+      "deleteSuccess": "Product deleted successfully",
+      "deleteError": "Could not delete product"
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "orders": "Orders",
