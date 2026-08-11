@@ -15,6 +15,39 @@
     "confirm": "آیا مطمئن هستید؟",
     "back": "بازگشت"
   },
+  "toast": {
+    "auth": {
+      "loginSuccess": "ورود با موفقیت انجام شد",
+      "loginError": "ایمیل یا رمز عبور اشتباه است",
+      "registerSuccess": "حساب کاربری ایجاد شد",
+      "registerError": "ایجاد حساب کاربری ناموفق بود",
+      "passwordChangeSuccess": "رمز عبور تغییر کرد",
+      "emailChangeSuccess": "ایمیل تغییر کرد",
+      "emailChangeError": "تغییر ایمیل ناموفق بود"
+    },
+    "order": {
+      "orderDelete": "سفارش حذف شد",
+      "orderDeleteError": "حذف سفارش ناموفق بود",
+      "bulkDeleteError": "حذف سفارش‌های انتخاب‌شده ناموفق بود، دوباره تلاش کنید",
+      "statusError": "تغییر وضعیت ناموفق بود، دوباره تلاش کنید"
+    },
+    "customer": {
+      "createSuccess": "مشتری اضافه شد",
+      "createError": "افزودن مشتری ناموفق بود",
+      "updateSuccess": "اطلاعات مشتری به‌روزرسانی شد",
+      "updateError": "به‌روزرسانی مشتری ناموفق بود",
+      "deleteSuccess": "مشتری حذف شد",
+      "deleteError": "حذف مشتری ناموفق بود"
+    },
+    "product": {
+      "createSuccess": "محصول اضافه شد",
+      "createError": "افزودن محصول ناموفق بود",
+      "updateSuccess": "محصول به‌روزرسانی شد",
+      "updateError": "به‌روزرسانی محصول ناموفق بود",
+      "deleteSuccess": "محصول حذف شد",
+      "deleteError": "حذف محصول ناموفق بود"
+    }
+  },
   "nav": {
     "dashboard": "داشبورد",
     "orders": "سفارش‌ها",
