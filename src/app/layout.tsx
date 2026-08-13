@@ -59,7 +59,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <NextIntlClientProvider messages={messages}>
           <QueryProvider>
                   {children}
-                  <Toaster />
+                  <Toaster style={ {fontFamily: locale === 'fa' ? "var(--font-vazirmatn)" : "var(--font-geist-sans)"} }/>
           </QueryProvider>
       </NextIntlClientProvider>
       </body>
