@@ -39,8 +39,9 @@ export default function SettingsPage() {
             },
         });
 
-        // Translations function
+    // Translations function
     const tSettings = useTranslations("settings");
+    const tToast = useTranslations("toast.auth");
 
         // form onSubmit handler
         const onSubmit = async (data: ChangePasswordFormValues) => {
@@ -50,10 +51,10 @@ export default function SettingsPage() {
                     newPassword: data.newPassword,
                 });
 
-                toast.success("Password changed successfully");
+                toast.success( tToast('passwordChangeSuccess') );
                 form.reset();
             } catch (error) {
-                toast.error(getErrorMessage(error, "Could not change password"));
+                toast.error(getErrorMessage(error, tToast('passwordChangeError') ));
             }
         };
     /* Change Password section END */
@@ -73,12 +74,12 @@ export default function SettingsPage() {
             try {
                 await api.patch("user/change-email", data);
 
-                toast.success("Email changed successfully");
+                toast.success( tToast('emailChangeSuccess') );
                 emailForm.reset();
 
                 queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             } catch (error) {
-                toast.error(getErrorMessage(error, "Could not change email"));
+                toast.error(getErrorMessage(error, tToast('emailChangeError') ));
             }
         };
     /* Change Email section END */
