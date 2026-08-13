@@ -3,6 +3,9 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {createCustomer, deleteCustomer, getCustomers, updateCustomer} from "@/features/customers/services/customerApi";
 import {toast} from "sonner";
+import {useTranslations} from "next-intl";
+
+const tToast = useTranslations('toast.customer');
 
 // GET customers Custom Hook
 export function useCustomers (){
@@ -20,11 +23,11 @@ export function useCreateCustomer(onSuccess?: () => void) {
         mutationFn: createCustomer,
         onSuccess: () => {
             queryClients.invalidateQueries({ queryKey: ['customers'] });
-            toast.success("Customers created successfully.");
+            toast.success( tToast('createSuccess') );
             onSuccess?.()
         },
         onError: () => {
-            toast.error("Could not create customer")
+            toast.error( tToast('createError') )
         }
     })
 }
@@ -37,11 +40,11 @@ export function useUpdateCustomer(onSuccess?: () => void) {
         mutationFn: updateCustomer,
         onSuccess: () => {
             queryClients.invalidateQueries({ queryKey: ['customers'] });
-            toast.success("Customers updated successfully.");
+            toast.success( tToast('updateSuccess') );
             onSuccess?.();
         },
         onError: () => {
-            toast.error("Could not update customer")
+            toast.error( tToast('updateError') )
         }
     })
 }
@@ -54,10 +57,10 @@ export function useDeleteCustomer () {
         mutationFn: deleteCustomer,
         onSuccess: () => {
             queryClients.invalidateQueries({ queryKey: ['customers'] });
-            toast.success("Customers deleted successfully.");
+            toast.success( tToast('deleteSuccess') );
         },
         onError: () => {
-            toast.error("Could not delete customer")
+            toast.error( tToast('deleteError') );
         }
     })
 }
