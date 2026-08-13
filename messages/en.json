@@ -22,6 +22,7 @@
       "registerSuccess": "Account created successfully",
       "registerError": "Could not create account",
       "passwordChangeSuccess": "Password changed successfully",
+      "passwordChangeError": "Could not change password",
       "emailChangeSuccess": "Email changed successfully",
       "emailChangeError": "Could not change email"
     },
