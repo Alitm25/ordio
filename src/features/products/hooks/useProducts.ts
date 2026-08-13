@@ -5,7 +5,6 @@ import {createProduct, deleteProduct, getProducts, updateProduct} from "../servi
 import { toast } from "sonner";
 import {useTranslations} from "next-intl";
 
-const tToast = useTranslations('toast.product');
 
 // Get the products Query
 export function useProducts() {
@@ -18,6 +17,7 @@ export function useProducts() {
 // Create a product Query (onSuccess? is for unnecessary outer function, such as closing a dialog)
 export function useCreateProduct(onSuccess?: () => void) {
     const queryClient = useQueryClient();
+    const tToast = useTranslations('toast.product');
 
     return useMutation({
         mutationFn: createProduct,
@@ -35,6 +35,7 @@ export function useCreateProduct(onSuccess?: () => void) {
 // Update a product Query (onSuccess? is for unnecessary outer function, such as closing a dialog)
 export function useUpdateProduct(onSuccess?: () => void) {
     const queryClient = useQueryClient();
+    const tToast = useTranslations('toast.product');
 
     return useMutation({
         mutationFn: updateProduct,
@@ -52,6 +53,7 @@ export function useUpdateProduct(onSuccess?: () => void) {
 // Delete a Product Query
 export function useDeleteProduct() {
     const queryClient = useQueryClient();
+    const tToast = useTranslations('toast.product');
 
     return useMutation({
         mutationFn: deleteProduct,
