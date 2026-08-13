@@ -38,6 +38,7 @@ import {
 import { Order } from "@/types/order";
 import Link from "next/link";
 import {useLocale, useTranslations} from "next-intl";
+import {formatDate} from "@/lib/formatDate";
 
 export type { Order };
 
@@ -48,6 +49,7 @@ interface Props {
 
 export default function OrdersTable({ orders, onEdit }: Props) {
     const queryClient = useQueryClient();
+    const locale = useLocale();
 
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
@@ -263,7 +265,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                     {order.price.toLocaleString()}
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {new Date(order.createdAt).toLocaleDateString()}
+                                    {formatDate(order.createdAt, locale)}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
