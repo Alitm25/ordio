@@ -88,7 +88,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                             className="cursor-pointer"
                             onClick={() => onOpenChange(false)}
                         >
-                            Cancel
+                            { tCommon('cancel') }
                         </Button>
                         <Button
                             type="submit"
