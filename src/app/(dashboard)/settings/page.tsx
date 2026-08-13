@@ -14,7 +14,8 @@ import { useState } from "react";
 import {Eye, EyeOff, User, Lock, Mail} from "lucide-react";
 import {useQueryClient} from "@tanstack/react-query";
 import {ChangeEmailFormValues, changeEmailSchema} from "@/features/settings/schemas/changeEmail";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
+import {formatDate} from "@/lib/formatDate";
 
 export default function SettingsPage() {
     // Get the current user
@@ -38,6 +39,8 @@ export default function SettingsPage() {
                 confirmPassword: "",
             },
         });
+
+    const locale = useLocale();
 
     // Translations function
     const tSettings = useTranslations("settings");
@@ -111,11 +114,7 @@ export default function SettingsPage() {
                                 { tSettings('account.memberSince') }
                             </span>
                             <span className="font-medium">
-                                {user?.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    }) : "—"}
+                                {user?.createdAt ? formatDate(user.createdAt, locale) : "—"}
                             </span>
                         </div>
                     </CardContent>
