@@ -28,8 +28,6 @@ export default function CustomersPage()  {
     const tCustomer = useTranslations('customers');
     const tCommon = useTranslations('common');
 
-
-
     // Customers fetch API FN
     const { data, isLoading } = useQuery({
         queryKey: ["customers"],
