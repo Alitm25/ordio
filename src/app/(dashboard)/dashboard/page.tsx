@@ -14,6 +14,7 @@ import {useState} from "react";
 import {DashboardRange} from "@/types/dashboard";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useLocale, useTranslations} from "next-intl";
+import {formatDate} from "@/lib/formatDate";
 
 const STATUS_COLORS = {
     pending: "#f59e0b",
@@ -171,12 +172,7 @@ export default function DashboardPage() {
 
                                 <XAxis
                                     dataKey="date"
-                                    tickFormatter={(value) =>
-                                        new Date(value).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                        })
-                                    }
+                                    tickFormatter={ (value) => formatDate(value, locale) }
                                     tickLine={false}
                                     axisLine={false}
                                     fontSize={12}
@@ -190,9 +186,7 @@ export default function DashboardPage() {
                                         border: "1px solid var(--border)",
                                         borderRadius: "8px",
                                     }}
-                                    labelFormatter={(value) =>
-                                        new Date(value).toLocaleDateString()
-                                    }
+                                    labelFormatter={ (value) => formatDate(value, locale) }
                                 />
 
                                 <Area
