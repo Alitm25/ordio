@@ -51,6 +51,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
 
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
+    const tToast = useTranslations('toast.order');
 
     // selected orders to delete States
     const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
@@ -65,7 +66,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
             setOrderToDelete(null);
         },
         onError: () => {
-            toast.error("Could not delete order");
+            toast.error( tToast('orderDeleteError') );
         },
     });
 
@@ -78,7 +79,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
             setBulkDeleteOpen(false);
         },
         onError: () => {
-            toast.error("Could not delete selected orders, Please try again");
+            toast.error( tToast('bulkDeleteError') );
         },
     });
 
@@ -89,7 +90,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
         },
         onError: () => {
-            toast.error("Could not update status, Please try again");
+            toast.error( tToast('statusError') );
         },
     });
 
