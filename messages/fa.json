@@ -22,6 +22,7 @@
       "registerSuccess": "حساب کاربری ایجاد شد",
       "registerError": "ایجاد حساب کاربری ناموفق بود",
       "passwordChangeSuccess": "رمز عبور تغییر کرد",
+      "passwordChangeError": "تغغیر رمز عبور ناموفق بود",
       "emailChangeSuccess": "ایمیل تغییر کرد",
       "emailChangeError": "تغییر ایمیل ناموفق بود"
     },
