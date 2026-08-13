@@ -5,7 +5,6 @@ import {createCustomer, deleteCustomer, getCustomers, updateCustomer} from "@/fe
 import {toast} from "sonner";
 import {useTranslations} from "next-intl";
 
-const tToast = useTranslations('toast.customer');
 
 // GET customers Custom Hook
 export function useCustomers (){
@@ -18,6 +17,7 @@ export function useCustomers (){
 // POST (create) customers Custom Hook
 export function useCreateCustomer(onSuccess?: () => void) {
     const queryClients = useQueryClient();
+    const tToast = useTranslations('toast.customer');
 
     return useMutation({
         mutationFn: createCustomer,
@@ -35,6 +35,7 @@ export function useCreateCustomer(onSuccess?: () => void) {
 // PATCH (edit) customers Custom Hook
 export function useUpdateCustomer(onSuccess?: () => void) {
     const queryClients = useQueryClient();
+    const tToast = useTranslations('toast.customer');
 
     return useMutation({
         mutationFn: updateCustomer,
@@ -52,6 +53,7 @@ export function useUpdateCustomer(onSuccess?: () => void) {
 // DELETE customer Custom Hook
 export function useDeleteCustomer () {
     const queryClients = useQueryClient();
+    const tToast = useTranslations('toast.customer');
 
     return useMutation({
         mutationFn: deleteCustomer,
