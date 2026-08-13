@@ -26,6 +26,22 @@
       "emailChangeSuccess": "Email changed successfully",
       "emailChangeError": "Could not change email"
     },
+    "validation": {
+      "invalidEmail": "Invalid email",
+      "passwordMin": "Password must be at least 6 characters",
+      "customerNameRequired": "Customer name is required",
+      "phoneMin": "Phone number must be at least 11 digits",
+      "phoneExact": "Phone number must be exactly 11 digits",
+      "productNameRequired": "Product name is required",
+      "quantityMin": "Quantity must be at least 1",
+      "priceMin": "Price must be greater than 0",
+      "priceZero": "Price must be 0 or greater",
+      "passwordRequired": "Password is required",
+      "currentPasswordRequired": "Current password is required",
+      "newPasswordMin": "New password must be at least 6 characters",
+      "confirmPasswordRequired": "Please confirm your new password",
+      "passwordsNoMatch": "Passwords don't match"
+    },
     "order": {
       "orderDelete": "Order deleted successfully",
       "orderDeleteError": "Could not delete order",
