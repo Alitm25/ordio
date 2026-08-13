@@ -21,7 +21,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
-import {useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
+import {formatDate} from "@/lib/formatDate";
 
 export default function OrderDetailsPage() {
     // Get the URL parameters (ID)
@@ -32,6 +33,9 @@ export default function OrderDetailsPage() {
     // delete and edit dialog handler states
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
+
+    // locale variable
+    const locale = useLocale();
 
     // Translation Function
     const tDetails = useTranslations('orders.details');
@@ -147,14 +151,7 @@ export default function OrderDetailsPage() {
                                     { tDetails('date') }
                                 </p>
                                 <p className="font-medium">
-                                    {new Date(order.createdAt).toLocaleDateString(
-                                        "en-US",
-                                        {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                        }
-                                    )}
+                                    {formatDate(order.createdAt, locale)}
                                 </p>
                             </div>
                         </div>
