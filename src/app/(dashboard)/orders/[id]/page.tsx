@@ -37,6 +37,7 @@ export default function OrderDetailsPage() {
     const tDetails = useTranslations('orders.details');
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
+    const tToast = useTranslations('toast.order');
 
     // Get the specific order fetch function
     const { data, isLoading, error } = useQuery({
@@ -49,11 +50,11 @@ export default function OrderDetailsPage() {
         mutationFn: deleteOrder,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
-            toast.success("Order deleted successfully");
+            toast.success( tToast('orderDelete') );
             router.push("/orders");
         },
         onError: () => {
-            toast.error("Could not delete order");
+            toast.error( tToast('orderDeleteError') );
         },
     });
 
