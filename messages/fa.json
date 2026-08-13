@@ -26,6 +26,22 @@
       "emailChangeSuccess": "ایمیل تغییر کرد",
       "emailChangeError": "تغییر ایمیل ناموفق بود"
     },
+    "validation": {
+      "invalidEmail": "ایمیل معتبر نیست",
+      "passwordMin": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+      "customerNameRequired": "نام مشتری الزامی است",
+      "phoneMin": "شماره تلفن باید حداقل ۱۱ رقم باشد",
+      "phoneExact": "شماره تلفن باید دقیقاً ۱۱ رقم باشد",
+      "productNameRequired": "نام محصول الزامی است",
+      "quantityMin": "تعداد باید حداقل ۱ باشد",
+      "priceMin": "قیمت باید بیشتر از صفر باشد",
+      "priceZero": "قیمت باید صفر یا بیشتر باشد",
+      "passwordRequired": "رمز عبور الزامی است",
+      "currentPasswordRequired": "رمز عبور فعلی الزامی است",
+      "newPasswordMin": "رمز عبور جدید باید حداقل ۶ کاراکتر باشد",
+      "confirmPasswordRequired": "لطفاً رمز عبور جدید را تأیید کنید",
+      "passwordsNoMatch": "رمزهای عبور مطابقت ندارند"
+    },
     "order": {
       "orderDelete": "سفارش حذف شد",
       "orderDeleteError": "حذف سفارش ناموفق بود",
