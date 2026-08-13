@@ -26,6 +26,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
     });
 
     const tProductsCreate = useTranslations('products.create');
+    const tCommon = useTranslations('common');
 
     // Create Product function declaration
     const createProduct = useCreateProduct(() => {
