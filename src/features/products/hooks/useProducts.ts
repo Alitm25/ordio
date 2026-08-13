@@ -3,7 +3,9 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {createProduct, deleteProduct, getProducts, updateProduct} from "../services/productApi";
 import { toast } from "sonner";
+import {useTranslations} from "next-intl";
 
+const tToast = useTranslations('toast.product');
 
 // Get the products Query
 export function useProducts() {
@@ -21,11 +23,11 @@ export function useCreateProduct(onSuccess?: () => void) {
         mutationFn: createProduct,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-            toast.success("Product created successfully");
+            toast.success( tToast('createSuccess') );
             onSuccess?.();
         },
         onError: () => {
-            toast.error("Could not create product");
+            toast.error( tToast('createError') );
         },
     });
 }
@@ -38,11 +40,11 @@ export function useUpdateProduct(onSuccess?: () => void) {
         mutationFn: updateProduct,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-            toast.success("Product updated successfully");
+            toast.success( tToast('updateSuccess') );
             onSuccess?.();
         },
         onError: () => {
-            toast.error("Could not update product");
+            toast.error( tToast('updateError') );
         },
     });
 }
@@ -55,10 +57,10 @@ export function useDeleteProduct() {
         mutationFn: deleteProduct,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-            toast.success("Product deleted successfully");
+            toast.success( tToast('deleteSuccess') );
         },
         onError: () => {
-            toast.error("Could not delete product");
+            toast.error( tToast('deleteError') );
         },
     });
 }
