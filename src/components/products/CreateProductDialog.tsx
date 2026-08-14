@@ -27,6 +27,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
 
     const tProductsCreate = useTranslations('products.create');
     const tCommon = useTranslations('common');
+    const tValid = useTranslations('validation');
 
     // Create Product function declaration
     const createProduct = useCreateProduct(() => {
@@ -57,7 +58,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                         />
                         {form.formState.errors.name && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.name.message}
+                                { tValid('productNameRequired') }
                             </p>
                         )}
                     </div>
@@ -70,7 +71,7 @@ export default function CreateProductDialog({ open, onOpenChange }: Props) {
                         />
                         {form.formState.errors.price && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.price.message}
+                                { tValid('priceZero') }
                             </p>
                         )}
                     </div>
