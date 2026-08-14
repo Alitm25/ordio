@@ -29,6 +29,13 @@ export default function SettingsPage() {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const locale = useLocale();
+
+    // Translations function
+    const tSettings = useTranslations("settings");
+    const tToast = useTranslations("toast.auth");
+    const tValid = useTranslations('validation');
+
     /* Change Password section START */
         // default for values initialization
         const form = useForm<ChangePasswordFormValues>({
@@ -39,12 +46,6 @@ export default function SettingsPage() {
                 confirmPassword: "",
             },
         });
-
-    const locale = useLocale();
-
-    // Translations function
-    const tSettings = useTranslations("settings");
-    const tToast = useTranslations("toast.auth");
 
         // form onSubmit handler
         const onSubmit = async (data: ChangePasswordFormValues) => {
@@ -143,7 +144,7 @@ export default function SettingsPage() {
                                 />
                                 {emailForm.formState.errors.newEmail && (
                                     <p className="text-sm text-red-500">
-                                        {emailForm.formState.errors.newEmail.message}
+                                        { tValid('invalidEmail') }
                                     </p>
                                 )}
                             </div>
@@ -171,7 +172,7 @@ export default function SettingsPage() {
                                 </div>
                                 {emailForm.formState.errors.currentPassword && (
                                     <p className="text-sm text-red-500">
-                                        {emailForm.formState.errors.currentPassword.message}
+                                        { tValid('currentPasswordRequired') }
                                     </p>
                                 )}
                             </div>
@@ -222,10 +223,7 @@ export default function SettingsPage() {
                                 </div>
                                 {form.formState.errors.currentPassword && (
                                     <p className="text-sm text-red-500">
-                                        {
-                                            form.formState.errors.currentPassword
-                                                .message
-                                        }
+                                        { tValid('currentPasswordRequired') }
                                     </p>
                                 )}
                             </div>
@@ -249,7 +247,7 @@ export default function SettingsPage() {
                                 </div>
                                 {form.formState.errors.newPassword && (
                                     <p className="text-sm text-red-500">
-                                        {form.formState.errors.newPassword.message}
+                                        { tValid('newPasswordMin') }
                                     </p>
                                 )}
                             </div>
@@ -273,10 +271,9 @@ export default function SettingsPage() {
                                 </div>
                                 {form.formState.errors.confirmPassword && (
                                     <p className="text-sm text-red-500">
-                                        {
-                                            form.formState.errors.confirmPassword
-                                                .message
-                                        }
+                                        {form.formState.errors.confirmPassword.type === "custom"
+                                            ? tValid("passwordsNoMatch")
+                                            : tValid("confirmPasswordRequired")}
                                     </p>
                                 )}
                             </div>
