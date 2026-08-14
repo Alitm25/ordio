@@ -27,10 +27,11 @@ interface Props {
 export default function CreateOrderDialog({open, onOpenChange}: Props) {
     const queryClient = useQueryClient();
 
+    // Translation variables
     const tCreate = useTranslations('orders.create');
     const tOrder = useTranslations('orders');
     const tCommon = useTranslations('common');
-
+    const tVal = useTranslations("validation");
 
     // Create Order mutation function declaration
     const createOrderMutation = useMutation({
@@ -106,7 +107,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                         {
                             form.formState.errors.customerName && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.customerName.message}
+                                { tVal('customerNameRequired') }
                             </p>)
                         }
                     </div>
@@ -116,7 +117,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                         {
                             form.formState.errors.customerPhone && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.customerPhone.message}
+                                    { tVal('phoneExact') }
                                 </p>)
                         }
                     </div>
@@ -142,7 +143,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                         {
                             form.formState.errors.productName && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.productName.message}
+                                    { tVal('productNameRequired') }
                                 </p>)
                         }
                     </div>
@@ -157,7 +158,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                             {
                                 form.formState.errors.quantity && (
                                     <p className="text-sm text-red-500">
-                                        {form.formState.errors.quantity.message}
+                                        { tVal('quantityMin') }
                                     </p>)
                             }
                         </div>
@@ -170,7 +171,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                             {
                                 form.formState.errors.price && (
                                     <p className="text-sm text-red-500">
-                                        {form.formState.errors.price.message}
+                                        { tVal('priceMin') }
                                     </p>)
                             }
                         </div>
