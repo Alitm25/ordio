@@ -24,6 +24,7 @@ export default function LoginForm() {
 
     const t = useTranslations('auth.login');
     const tToast = useTranslations('toast.auth');
+    const tValid = useTranslations('validation');
 
     const {
         register,
@@ -74,7 +75,7 @@ export default function LoginForm() {
                         {
                             errors.email && (
                                 <p className="text-sm text-red-500 mt-1">
-                                    {errors.email.message}
+                                    { tValid('invalidEmail') }
                                 </p>
                             )
                         }
@@ -86,7 +87,7 @@ export default function LoginForm() {
                         {
                             errors.password && (
                                 <p className="text-sm text-red-500 mt-1">
-                                    {errors.password.message}
+                                    { tValid('passwordMin') }
                                 </p>
                             )
                         }
