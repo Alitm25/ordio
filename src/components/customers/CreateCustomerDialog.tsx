@@ -25,9 +25,10 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
         },
     });
 
+    // Translation variables
     const tCustomerCreate = useTranslations('customers.create');
     const tCommon = useTranslations('common');
-
+    const tValid = useTranslations('validation');
 
 
     // Creating customer FN
@@ -57,7 +58,7 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
                             <Input{...form.register("name")} placeholder={ tCustomerCreate('name') } />
                             {form.formState.errors.name && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.name.message}
+                                    { tValid('customerNameRequired') }
                                 </p>
                             )}
                         </div>
@@ -66,7 +67,7 @@ export default function CreateCustomerDialog({ open, onOpenChange }: Props) {
                             <Input {...form.register("phone")} placeholder={ tCustomerCreate('phone') } />
                             {form.formState.errors.phone && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.phone.message}
+                                    { tValid('phoneExact') }
                                 </p>
                             )}
                         </div>
