@@ -28,6 +28,8 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
 
     const tProductsCreate = useTranslations('products.create');
     const tProductsEdit = useTranslations('products.edit');
+    const tValid = useTranslations('validation')
+
 
     useEffect(() => {
         if (product) {
@@ -64,7 +66,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                         />
                         {form.formState.errors.name && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.name.message}
+                                { tValid('productNameRequired') }
                             </p>
                         )}
                     </div>
@@ -77,7 +79,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                         />
                         {form.formState.errors.price && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.price.message}
+                                { tValid('priceZero') }
                             </p>
                         )}
                     </div>
