@@ -31,6 +31,7 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
     const tCustomersEdit = useTranslations('customers.edit')
     const tCustomerCreate = useTranslations('customers.create');
     const tCommon = useTranslations('common');
+    const tValid = useTranslations('validation');
 
 
     // Attaching customer values to the edit form (new and old values)
@@ -69,7 +70,7 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
                             <Input {...form.register("name")} placeholder={ tCustomerCreate('name') } />
                             {form.formState.errors.name && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.name.message}
+                                    { tValid('productNameRequired') }
                                 </p>
                             )}
                         </div>
@@ -78,7 +79,7 @@ export default function EditCustomerDialog({ customer, onOpenChange }: Props) {
                             <Input {...form.register("phone")} placeholder={ tCustomerCreate('phone') } />
                             {form.formState.errors.phone && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.phone.message}
+                                    { tValid('phoneExact') }
                                 </p>
                             )}
                         </div>
