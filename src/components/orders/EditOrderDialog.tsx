@@ -46,6 +46,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const tEdit = useTranslations('orders.edit');
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
+    const tVal = useTranslations("validation");
 
     // Update Order mutation function declaration
     const updateOrderMutation = useMutation({
@@ -63,8 +64,6 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
     // Get customers catalog data
     const { data: customersData } = useCustomers();
     const customers = customersData?.customers ?? [];
-
-    /*FIXME fix the bug about 'not saving' edits after catalog changes*/
 
     // Form default values initializations
     const form = useForm<CreateOrderFormValues>({
@@ -140,7 +139,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                         <Input{...form.register("customerName")} placeholder={ tCreate('customerName') } />
                         {form.formState.errors.customerName && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.customerName.message}
+                                { tVal('customerNameRequired') }
                             </p>
                         )}
                     </div>
@@ -149,7 +148,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                         <Input {...form.register("customerPhone")} placeholder={ tCreate('customerPhone') } />
                         {form.formState.errors.customerPhone && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.customerPhone.message}
+                                { tVal('phoneExact') }
                             </p>
                         )}
                     </div>
@@ -177,7 +176,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                         <Input {...form.register("productName")} placeholder={ tCreate('productName') } />
                         {form.formState.errors.productName && (
                             <p className="text-sm text-red-500">
-                                {form.formState.errors.productName.message}
+                                { tVal('productNameRequired') }
                             </p>
                         )}
                     </div>
@@ -191,7 +190,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                             />
                             {form.formState.errors.quantity && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.quantity.message}
+                                    { tVal('quantityMin') }
                                 </p>
                             )}
                         </div>
@@ -204,7 +203,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                             />
                             {form.formState.errors.price && (
                                 <p className="text-sm text-red-500">
-                                    {form.formState.errors.price.message}
+                                    { tVal('priceMin') }
                                 </p>
                             )}
                         </div>
