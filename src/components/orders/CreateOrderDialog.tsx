@@ -77,7 +77,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-137.5">
-                <DialogHeader>
+                <DialogHeader className={'space-y-3'}>
                     <DialogDescription>
                         { tCreate('description') }
                     </DialogDescription>
@@ -97,8 +97,9 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                 customers={customers}
                                 value={form.watch("customerId") ?? ""}
                                 onSelect={handleCustomerSelect}
-                                placeholder={ tCreate('selectFromCatalog') }
+                                placeholder={ tCreate('selectCustomer') }
                             />
+                            <p className={'text-muted-foreground ml-2 text-xs'}>{ tCreate('selectFromCatalog') }</p>
                         </div>
                     )}
 
@@ -132,8 +133,9 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                         form.setValue('productName', product.name);
                                         form.setValue('price', product.price)
                                     }}
-                                    placeholder={ tCreate('selectFromCatalog') }
+                                    placeholder={ tCreate('selectProduct') }
                                 />
+                                <p className={'text-muted-foreground ml-2 text-xs'}>{ tCreate('selectFromCatalog') }</p>
                             </div>
                         )
                     }
