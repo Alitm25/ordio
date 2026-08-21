@@ -178,6 +178,8 @@
       "price": "Price",
       "paymentStatus": "Payment Status",
       "paymentMethod": "Payment Method",
+      "selectCustomer": "Select Customer",
+      "selectProduct": "Select Product",
       "selectFromCatalog": "Or fill in manually below",
       "searchCustomers": "Search customers...",
       "submit": "Create Order",
