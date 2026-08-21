@@ -126,6 +126,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                         <div className="space-y-1">
                             <CustomerCombobox
                                 customers={customers}
+                                placeholder={ tCreate('selectCustomer') }
                                 value={form.watch("customerId") ?? ""}
                                 onSelect={handleCustomerSelect}
                             />
@@ -159,6 +160,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
                             <div className="space-y-1">
                                 <ProductCombobox
                                     products={products}
+                                    placeholder={ tCreate('selectProduct') }
                                     value={ form.watch('productName') }
                                     onSelect={ (product) => {
                                         form.setValue('productName', product.name);
