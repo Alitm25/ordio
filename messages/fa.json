@@ -178,6 +178,8 @@
       "price": "قیمت",
       "paymentStatus": "وضعیت پرداخت",
       "paymentMethod": "روش پرداخت",
+      "selectCustomer": "انتخاب مشتری",
+      "selectProduct": "انتخاب محصول",
       "selectFromCatalog": "یا به صورت دستی وارد کنید",
       "searchCustomers": "جستجوی مشتری ها...",
       "submit": "ثبت سفارش",
