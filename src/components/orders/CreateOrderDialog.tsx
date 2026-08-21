@@ -99,7 +99,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                                 onSelect={handleCustomerSelect}
                                 placeholder={ tCreate('selectCustomer') }
                             />
-                            <p className={'text-muted-foreground ml-2 text-xs'}>{ tCreate('selectFromCatalog') }</p>
+                            <p className={'text-xs text-muted-foreground px-1'}>{ tCreate('selectFromCatalog') }</p>
                         </div>
                     )}
 
