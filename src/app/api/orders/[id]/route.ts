@@ -2,12 +2,12 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 
-export async function GET(_req: Request, {params} :{params: Promise<{ id: string }>} ) {
+export async function GET( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         await connectDB();
 
         const user = await getCurrentUser();
-        const {id} = await params;
+        const { id } = await params;
 
         const order = await Order.findOne({
             _id: id,
@@ -16,25 +16,21 @@ export async function GET(_req: Request, {params} :{params: Promise<{ id: string
 
         if (!order) {
             return Response.json(
-                {message: "Order not found"},
-                {status: 404}
+                { message: "Order not found" },
+                { status: 404 }
             );
         }
 
-        return Response.json({order});
+        return Response.json({ order });
     } catch (error) {
         return Response.json(
-            {message: "Server error", error},
-            {status: 500}
+            { message: "Server error", error },
+            { status: 500 }
         );
     }
 }
 
-
-export async function PATCH(
-    req: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH( req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         await connectDB();
 
@@ -57,9 +53,7 @@ export async function PATCH(
         const allowedFields = [
             "customerName",
             "customerPhone",
-            "productName",
-            "quantity",
-            "price",
+            "customerId",
             "status",
             "paymentStatus",
             "paymentMethod",
@@ -71,6 +65,27 @@ export async function PATCH(
             }
         }
 
+        if (body.items && Array.isArray(body.items) && body.items.length > 0) {
+            const processedItems = body.items.map((item: {
+                productId?: string;
+                productName: string;
+                quantity: number;
+                price: number;
+            }) => ({
+                productId: item.productId ?? null,
+                productName: item.productName,
+                quantity: item.quantity,
+                price: item.price,
+                subtotal: item.quantity * item.price,
+            }));
+
+            order.items = processedItems;
+            order.totalAmount = processedItems.reduce(
+                (sum: number, item: { subtotal: number }) => sum + item.subtotal,
+                0
+            );
+        }
+
         await order.save();
 
         return Response.json({
@@ -78,49 +93,39 @@ export async function PATCH(
             order,
         });
     } catch (error) {
-        console.error("PATCH ERROR:", error);
-
         return Response.json(
-            {
-                message: "Server error",
-                error: error instanceof Error ? error.message : String(error),
-            },
+            { message: "Server error", error },
             { status: 500 }
         );
     }
 }
 
-
-export async function DELETE(
-    _req: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         await connectDB();
+
         const user = await getCurrentUser();
         const { id } = await params;
 
         const deletedOrder = await Order.findOneAndDelete({
             _id: id,
             userId: user.userId,
-        })
+        });
 
         if (!deletedOrder) {
             return Response.json(
                 { message: "Order not found" },
                 { status: 404 }
-            )
+            );
         }
 
         return Response.json({
             message: "Order deleted successfully",
-
-        })
-
+        });
     } catch (error) {
         return Response.json(
-            { message: "Server error", error: error instanceof Error ? error.message : String(error) },
+            { message: "Server error", error },
             { status: 500 }
-        )
+        );
     }
 }
