@@ -8,45 +8,60 @@ export async function POST(req: Request) {
         await connectDB();
 
         const user = await getCurrentUser();
-
         const body = await req.json();
 
         const {
             customerName,
             customerPhone,
-            productName,
-            quantity,
-            price,
+            customerId,
+            items,
             paymentStatus,
             paymentMethod,
-            customerId
         } = body;
+
+        if (!items || !Array.isArray(items) || items.length === 0) {
+            return Response.json(
+                { message: "Order must have at least one item" },
+                { status: 400 }
+            );
+        }
+
+        const processedItems = items.map((item: {
+            productId?: string;
+            productName: string;
+            quantity: number;
+            price: number;
+        }) => ({
+            productId: item.productId ?? null,
+            productName: item.productName,
+            quantity: item.quantity,
+            price: item.price,
+            subtotal: item.quantity * item.price,
+        }));
+
+        const totalAmount = processedItems.reduce(
+            (sum, item) => sum + item.subtotal,
+            0
+        );
 
         const order = await Order.create({
             customerName,
             customerPhone,
-            productName,
-            quantity,
-            price,
+            customerId: customerId ?? null,
+            items: processedItems,
+            totalAmount,
             paymentStatus,
             paymentMethod,
-            customerId: customerId ?? null,
             userId: user.userId,
         });
 
         return Response.json(
-            {
-                message: "Order created successfully",
-                order,
-            },
+            { message: "Order created successfully", order },
             { status: 201 }
         );
     } catch (error) {
         return Response.json(
-            {
-                message: "Server error",
-                error,
-            },
+            { message: "Server error", error },
             { status: 500 }
         );
     }
@@ -57,7 +72,6 @@ export async function GET(req: Request) {
         await connectDB();
 
         const user = await getCurrentUser();
-
         const { searchParams } = new URL(req.url);
 
         const search = searchParams.get("search") ?? "";
@@ -78,7 +92,7 @@ export async function GET(req: Request) {
         if (search) {
             filter.$or = [
                 { customerName: { $regex: search, $options: "i" } },
-                { productName: { $regex: search, $options: "i" } },
+                { "items.productName": { $regex: search, $options: "i" } },
             ];
         }
 
@@ -103,10 +117,7 @@ export async function GET(req: Request) {
         });
     } catch (error) {
         return Response.json(
-            {
-                message: "Unauthorized",
-                error,
-            },
+            { message: "Unauthorized", error },
             { status: 401 }
         );
     }
@@ -117,7 +128,6 @@ export async function DELETE(req: Request) {
         await connectDB();
 
         const user = await getCurrentUser();
-
         const { ids } = await req.json();
 
         if (!Array.isArray(ids) || ids.length === 0) {
@@ -138,10 +148,7 @@ export async function DELETE(req: Request) {
         });
     } catch (error) {
         return Response.json(
-            {
-                message: "Server error",
-                error: error instanceof Error ? error.message : String(error),
-            },
+            { message: "Server error", error },
             { status: 500 }
         );
     }
