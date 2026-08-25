@@ -6,7 +6,7 @@ interface updateDataParams {
     data: CreateOrderFormValues;
 }
 
-export const updateOrder = async ({id, data} :updateDataParams) => {
+export const updateOrder = async ({id, data} :{ id:string, data: Partial<CreateOrderFormValues> }) => {
     const response = await api.patch(`orders/${id}`, data);
 
     return response.data;
