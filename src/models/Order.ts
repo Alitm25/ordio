@@ -1,43 +1,67 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import mongoose from "mongoose";
 
-const OrderSchema = new Schema(
+const OrderItemSchema = new mongoose.Schema(
     {
-        customerName: {
-            type: String,
-            required: true,
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+            default: null,
         },
-
-        customerPhone: {
-            type: String,
-            required: true,
-        },
-
         productName: {
             type: String,
             required: true,
         },
-
         quantity: {
             type: Number,
             required: true,
-            default: 1,
+            min: 1,
         },
-
         price: {
             type: Number,
             required: true,
+            min: 0,
         },
+        subtotal: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
+    }
+);
 
+const OrderSchema = new mongoose.Schema(
+    {
+        customerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Customer",
+            required: false,
+            default: null,
+        },
+        customerName: {
+            type: String,
+            required: true,
+        },
+        customerPhone: {
+            type: String,
+            required: true,
+        },
+        items: {
+            type: [OrderItemSchema],
+            required: true,
+            validate: {
+                validator: (items: unknown[]) => items.length > 0,
+                message: "Order must have at least one item",
+            },
+        },
+        totalAmount: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
         status: {
             type: String,
-            enum: ["pending", "processing", "completed", 'cancelled'],
+            enum: ["pending", "processing", "completed", "cancelled"],
             default: "pending",
-        },
-
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
         },
         paymentStatus: {
             type: String,
@@ -49,19 +73,15 @@ const OrderSchema = new Schema(
             enum: ["cash", "card", "transfer"],
             default: null,
         },
-        customerId: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Customer",
-            required: false,
-            default: null,
-        }
+            ref: "User",
+            required: true,
+        },
     },
-    {
-        timestamps: true,
-    }
+    { timestamps: true }
 );
 
-const Order =
-    models.Order || model("Order", OrderSchema);
+const Order = mongoose.models.Order || mongoose.model("Order", OrderSchema);
 
 export default Order;
