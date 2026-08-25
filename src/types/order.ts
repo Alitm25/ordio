@@ -1,3 +1,12 @@
+export interface OrderItem {
+    _id?: string;
+    productId?: string | null;
+    productName: string;
+    quantity: number;
+    price: number;
+    subtotal: number;
+}
+
 export interface OrderCustomer {
     _id: string;
     name: string;
@@ -6,14 +15,13 @@ export interface OrderCustomer {
 
 export interface Order {
     _id: string;
+    customerId: OrderCustomer | null;
     customerName: string;
     customerPhone: string;
-    productName: string;
-    quantity: number;
-    price: number;
+    items: OrderItem[];
+    totalAmount: number;
     status: string;
     paymentStatus: string;
     paymentMethod: string | null;
-    customerId: OrderCustomer | null;
     createdAt: string;
 }
