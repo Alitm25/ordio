@@ -189,7 +189,10 @@ export default function OrdersTable({ orders, onEdit }: Props) {
 
                     <TableBody>
                         {orders.map((order) => (
-                            <TableRow key={order._id} >
+                            <TableRow key={order._id}
+                                className={`cursor-pointer ${ selectedOrderId === order._id ? 'bg-muted/50' : "" }`}
+                                onClick={() => onSelect(order)}
+                            >
                                 <TableCell>
                                     <Checkbox
                                         className="cursor-pointer"
