@@ -3,10 +3,10 @@ import {api} from "@/services/api";
 
 interface updateDataParams {
     id: string;
-    data: CreateOrderFormValues;
+    data: Partial<CreateOrderFormValues>;
 }
 
-export const updateOrder = async ({id, data} :{ id:string, data: Partial<CreateOrderFormValues> }) => {
+export const updateOrder = async ({id, data} :updateDataParams) => {
     const response = await api.patch(`orders/${id}`, data);
 
     return response.data;
