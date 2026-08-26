@@ -45,12 +45,15 @@ export type { Order };
 interface Props {
     orders: Order[];
     onEdit: (order: Order) => void;
+    onSelect: (order: Order) => void;
+    selectedOrderId: string;
 }
 
-export default function OrdersTable({ orders, onEdit }: Props) {
+export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId }: Props) {
     const queryClient = useQueryClient();
     const locale = useLocale();
 
+    // Translation variable
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
     const tToast = useTranslations('toast.order');
@@ -267,11 +270,23 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        <Button className="cursor-pointer" variant="outline" size="icon" onClick={() => onEdit(order)}>
+                                        <Button className="cursor-pointer" variant="outline" size="icon"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onEdit(order);
+                                            }
+                                        }
+                                        >
                                             <Pencil className="h-4 w-4" />
                                         </Button>
 
-                                        <Button className="cursor-pointer" variant="destructive" size="icon" onClick={() => setOrderToDelete(order)}>
+                                        <Button className="cursor-pointer" variant="destructive" size="icon"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setOrderToDelete(order);
+                                            }
+                                        }
+                                        >
                                             <Trash2 className="h-4 w-4" />
                                         </Button>
                                     </div>
