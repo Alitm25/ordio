@@ -165,15 +165,8 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-10">
-                                <Checkbox
-                                    className="cursor-pointer"
-                                    checked={
-                                        allOnPageSelected
-                                            ? true
-                                            : someOnPageSelected
-                                                ? "indeterminate"
-                                                : false
-                                    }
+                                <Checkbox className="cursor-pointer"
+                                    checked={ allOnPageSelected ? true : someOnPageSelected ? "indeterminate" : false }
                                     onCheckedChange={toggleSelectAll}
                                 />
                             </TableHead>
