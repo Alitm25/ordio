@@ -200,7 +200,7 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                         className={'hover:underline underline-offset-4 font-medium text-start cursor-pointer'}
                                     >
                                         {order.customerName}
-                                    </Link>
+                                    </button>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">{order.productName}</TableCell>
                                 <TableCell>
