@@ -196,7 +196,9 @@ export default function OrdersTable({ orders, onEdit }: Props) {
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    <Link href={`/orders/${order._id}`} className={'hover:underline underline-offset-4 font-medium'}>
+                                    <button onClick={ () => onSelect(order)}
+                                        className={'hover:underline underline-offset-4 font-medium text-start cursor-pointer'}
+                                    >
                                         {order.customerName}
                                     </Link>
                                 </TableCell>
