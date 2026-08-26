@@ -77,7 +77,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
         },
     });
 
-    // useFieldArray of RHF for controllinh dynamic arrays of create order form
+    // useFieldArray of RHF for controlling dynamic arrays of create order form
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: 'items'
