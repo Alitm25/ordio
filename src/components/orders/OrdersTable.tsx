@@ -205,7 +205,14 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
                                         {order.customerName}
                                     </button>
                                 </TableCell>
-                                <TableCell className="hidden md:table-cell">{order.productName}</TableCell>
+                                <TableCell className="hidden md:table-cell">
+                                    <span className="font-medium">{order.items[0]?.productName}</span>
+                                    {order.items.length > 1 && (
+                                        <span className="text-xs text-muted-foreground ms-1">
+                                            +{order.items.length - 1}
+                                        </span>
+                                    )}
+                                </TableCell>
                                 <TableCell>
                                     <Select value={order.status}
                                         onValueChange={(value) =>
