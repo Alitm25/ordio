@@ -36,7 +36,6 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Order } from "@/types/order";
-import Link from "next/link";
 import {useLocale, useTranslations} from "next-intl";
 import {formatDate} from "@/lib/formatDate";
 
