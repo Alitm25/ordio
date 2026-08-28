@@ -22,6 +22,7 @@ export default function OrderDetailPanel({ orderId, onClose, onEdit, onDelete }:
     // Translation variable
     const locale = useLocale();
     const tOrder = useTranslations("orders");
+    const tCreate = useTranslations("orders.create");
     const tDetails = useTranslations("orders.details");
     const tCommon = useTranslations("common");
 
@@ -77,7 +78,7 @@ export default function OrderDetailPanel({ orderId, onClose, onEdit, onDelete }:
             </div>
 
             {/* Order content */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-6">
+            <div className="flex-1 overflow-y-auto p-4">
                 {/* Skeleton Loading */}
                 {isLoading ? (
                     <div className="space-y-4">
@@ -90,7 +91,7 @@ export default function OrderDetailPanel({ orderId, onClose, onEdit, onDelete }:
                         {tDetails("notFound")}
                     </p>
                 ) : (
-                    <div>
+                    <div className={'space-y-4'}>
                         {/* Customer details */}
                         <div className="space-y-2">
                             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
@@ -160,7 +161,7 @@ export default function OrderDetailPanel({ orderId, onClose, onEdit, onDelete }:
                             {/* Sub Total */}
                             <div className="flex items-center justify-between rounded-lg bg-muted/50 px-4 py-3">
                                 <span className="font-medium">
-                                    {tOrder("total")}
+                                    {tCreate("total")}
                                 </span>
                                 <span className="text-lg font-bold">
                                     {order.totalAmount.toLocaleString()}
