@@ -112,7 +112,7 @@ export async function GET(req: Request) {
             if (entry) {
                 entry.orders += 1;
                 if (order.status === "completed") {
-                    entry.revenue += order.price;
+                    entry.revenue += order.totalAmount;
                 }
             }
         }
