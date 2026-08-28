@@ -282,7 +282,10 @@ export default function DashboardPage() {
                                 <div>
                                     <p className="font-medium">{order.customerName}</p>
                                     <p className="text-sm text-muted-foreground">
-                                        {order.productName}
+                                        {order.items[0]?.productName}
+                                        {order.items.length > 1 && (
+                                            <span className="ms-1">+{order.items.length - 1}</span>
+                                        )}
                                     </p>
                                 </div>
                             </div>
