@@ -208,7 +208,7 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
                                 <TableCell className="hidden md:table-cell">
                                     <span className="font-medium">{order.items[0]?.productName}</span>
                                     {order.items.length > 1 && (
-                                        <span className="text-xs text-muted-foreground ms-1">
+                                        <span className={`text-xs text-muted-foreground me-1 ${locale === 'fa' ? 'me-1' : 'ms-1'}`}>
                                             +{order.items.length - 1}
                                         </span>
                                     )}
