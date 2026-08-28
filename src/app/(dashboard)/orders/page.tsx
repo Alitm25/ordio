@@ -228,7 +228,7 @@ export default function OrdersPage() {
                                     value={option.value}
                                     className="cursor-pointer"
                                 >
-                                    {tOrders(option.label as any)}
+                                    {option.label}
                                 </SelectItem>
                             ))}
                         </SelectContent>
