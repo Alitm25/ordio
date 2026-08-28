@@ -134,19 +134,17 @@ export default function OrdersPage() {
         };
 
         const handleExport = () => {
-            const rows = orders.map(order => (
-                {
-                    "Customer Name": order.customerName,
-                    "Customer Phone": order.customerPhone,
-                    "Product": order.productName,
-                    "Quantity": order.quantity,
-                    "Price": order.price,
-                    "Status": order.status,
-                    "Payment Status": order.paymentStatus,
-                    "Payment Method": order.paymentMethod ?? "",
-                    "Date": new Date(order.createdAt).toLocaleDateString("en-US"),
-                }
-            ))
+            const rows = orders.map((order) => ({
+                [tOrders("table.customer")]: order.customerName,
+                "Phone": order.customerPhone,
+                [tOrders("table.product")]: order.items
+                    .map((item) => `${item.productName} x${item.quantity}`)
+                    .join(" | "),
+                [tOrders("table.price")]: order.totalAmount,
+                [tOrders("table.status")]: order.status,
+                [tOrders("table.payment")]: order.paymentStatus,
+                [tOrders("table.date")]: new Date(order.createdAt).toLocaleDateString(),
+            }));
 
             const dateStr = new Date().toISOString().split("T")[0];
             exportToCsv(`orders-${dateStr}`, rows)
