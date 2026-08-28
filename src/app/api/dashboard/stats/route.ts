@@ -81,17 +81,20 @@ export async function GET(req: Request) {
             Order.countDocuments({ userId: user.userId, status: 'cancelled' })
         ]);
 
+        // Render complete orders
         const completedInRange = rangeOrders.filter(
             (order) => order.status === "completed"
         );
 
         const totalOrdersInRange = rangeOrders.length;
 
+        // Render total revenue of all orders
         const totalRevenueInRange = completedInRange.reduce(
             (sum, order) => sum + order.totalAmount,
             0
         );
 
+        // Calculate average order values
         const averageOrderValue = completedInRange.length > 0 ? totalRevenueInRange / completedInRange.length : 0;
 
         const trendMap = new Map<string, { orders: number; revenue: number }>();
