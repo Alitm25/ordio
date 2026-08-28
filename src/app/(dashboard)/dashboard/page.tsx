@@ -293,7 +293,7 @@ export default function DashboardPage() {
                             <div className="flex items-center gap-4">
                                 <OrderStatusBadge status={order.status} />
                                 <span className="font-medium">
-                                    {order.price.toLocaleString()}
+                                    {order.totalAmount.toLocaleString()}
                                 </span>
                             </div>
                         </div>
