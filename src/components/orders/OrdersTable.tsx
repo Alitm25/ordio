@@ -270,7 +270,7 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
                                     </span>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {order.price.toLocaleString()}
+                                    {order.totalAmount.toLocaleString()}
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
                                     {formatDate(order.createdAt, locale)}
