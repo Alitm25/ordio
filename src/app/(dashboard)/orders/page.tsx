@@ -190,7 +190,7 @@ export default function OrdersPage() {
                             placeholder={tOrders("searchPlaceholder")}
                             value={search}
                             onChange={(e) => handleSearchChange(e.target.value)}
-                            className="ps-9"
+                            className="ps-9 placeholder:text-sm"
                         />
                     </div>
 
