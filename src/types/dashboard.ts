@@ -7,12 +7,16 @@ export interface DashboardTrendPoint {
 export interface DashboardRecentOrder {
     _id: string;
     customerName: string;
-    productName: string;
-    price: number;
+    items: {
+        productName: string;
+        quantity: number;
+        price: number;
+        subtotal: number;
+    }[];
+    totalAmount: number;
     status: string;
     createdAt: string;
 }
-
 export type DashboardRange = '7d' | '30d' | '90d' | 'this-month'
 
 export interface DashboardStats {
