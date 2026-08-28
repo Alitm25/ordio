@@ -88,7 +88,7 @@ export async function GET(req: Request) {
         const totalOrdersInRange = rangeOrders.length;
 
         const totalRevenueInRange = completedInRange.reduce(
-            (sum, order) => sum + order.price,
+            (sum, order) => sum + order.totalAmount,
             0
         );
 
