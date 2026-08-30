@@ -32,5 +32,10 @@ export interface DashboardStats {
         completed: number;
         cancelled: number;
     };
+    lowStockProducts: {
+        _id: string;
+        name: string;
+        stock: number;
+    }[];
     range: DashboardRange;
 }
