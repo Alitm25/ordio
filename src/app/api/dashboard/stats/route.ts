@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import Product from "@/models/Product";
 
 //  a getDataRange function in order to show the stats based on the various period of times
 function getDateRange(range: string):{ start: Date, end: Date } {
@@ -65,7 +66,7 @@ export async function GET(req: Request) {
         trendStart.setHours(0, 0, 0, 0);
 
         // Declare each stats variables with finding the exact order with given filters
-        const [ rangeOrders, trendOrders, recentOrders, pendingCount, processingCount, completedCount, cancelledCount ] = await Promise.all([
+        const [ rangeOrders, trendOrders, recentOrders, pendingCount, processingCount, completedCount, cancelledCount, lowStockProducts ] = await Promise.all([
             Order.find({
                 userId: user.userId,
                 createdAt: { $gte: start, $lte: end },
@@ -78,7 +79,8 @@ export async function GET(req: Request) {
             Order.countDocuments({ userId: user.userId, status: "pending" }),
             Order.countDocuments({ userId: user.userId, status: "processing" }),
             Order.countDocuments({ userId: user.userId, status: "completed" }),
-            Order.countDocuments({ userId: user.userId, status: 'cancelled' })
+            Order.countDocuments({ userId: user.userId, status: 'cancelled' }),
+            Product.find({ userId: user.userId, stock: { $ne: null, $lte: null }  }).select("name stock")
         ]);
 
         // Render complete orders
@@ -139,6 +141,7 @@ export async function GET(req: Request) {
                 cancelled: cancelledCount,
             },
             range,
+            lowStockProducts
         });
     } catch (error) {
         return Response.json(
