@@ -15,6 +15,11 @@ const ProductSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        stock: {
+          type: Number,
+          default: null,
+          min: 0,
+        },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
