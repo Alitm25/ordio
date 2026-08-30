@@ -11,7 +11,7 @@ export async function PATCH(
 
         const user = await getCurrentUser();
         const { id } = await params;
-        const { name, price, description } = await req.json();
+        const { name, price, description, stock } = await req.json();
 
         const product = await Product.findOne({
             _id: id,
@@ -28,6 +28,7 @@ export async function PATCH(
         if (name !== undefined) product.name = name;
         if (price !== undefined) product.price = price;
         if (description !== undefined) product.description = description;
+        if (stock !== undefined) product.stock = stock;
 
         await product.save();
 
