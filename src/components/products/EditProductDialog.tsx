@@ -37,6 +37,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                 name: product.name,
                 price: product.price,
                 description: product.description,
+                stock: product.stock,
             });
         }
     }, [product, form]);
