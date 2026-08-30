@@ -103,6 +103,9 @@
     "orderStatus": "Order Status",
     "orders": "orders",
     "trend": "Trend",
+    "lowStock": {
+      "title": "Low Stock Alert"
+    },
     "kpi": {
       "orders": "Orders",
       "revenue": "Revenue",
@@ -236,7 +239,8 @@
       "name": "Name",
       "price": "Price",
       "description": "Description",
-      "actions": "Actions"
+      "actions": "Actions",
+      "stock": "Stock"
     },
     "empty": {
       "title": "No products yet",
