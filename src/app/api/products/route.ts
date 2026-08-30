@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
         const user = await getCurrentUser();
 
-        const { name, price, description } = await req.json();
+        const { name, price, description, stock } = await req.json();
 
         if (!name || !price) {
             return Response.json(
@@ -41,6 +41,7 @@ export async function POST(req: Request) {
             name,
             price,
             description,
+            stock: stock ?? null,
             userId: user.userId,
         });
 
