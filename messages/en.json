@@ -227,6 +227,11 @@
     "newProduct": "+ New Product",
     "notFound": "No product found.",
     "searchProducts": "Search for Products...",
+    "stockField": "Stock quantity (optional)",
+    "stockHint": "Leave empty to disable inventory tracking for this product",
+    "inStock": "In stock",
+    "lowStock": "Low stock",
+    "outOfStock": "Out of stock",
     "table": {
       "name": "Name",
       "price": "Price",
