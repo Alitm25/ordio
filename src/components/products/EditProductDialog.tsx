@@ -27,6 +27,7 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
     });
 
     const tProductsCreate = useTranslations('products.create');
+    const tProduct = useTranslations('products');
     const tProductsEdit = useTranslations('products.edit');
     const tValid = useTranslations('validation')
 
