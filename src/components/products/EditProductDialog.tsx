@@ -93,6 +93,20 @@ export default function EditProductDialog({ product, onOpenChange }: Props) {
                         />
                     </div>
 
+                    <div className="space-y-1">
+                        <Input
+                            type="number"
+                            placeholder={tProduct("stockField")}
+                            {...form.register("stock", {
+                                setValueAs: (value) =>
+                                    value === "" ? null : Number(value),
+                            })}
+                        />
+                        <p className="text-xs text-muted-foreground px-1">
+                            {tProduct("stockHint")}
+                        </p>
+                    </div>
+
                     <div className="flex justify-end gap-2 pt-2">
                         <Button
                             type="button"
