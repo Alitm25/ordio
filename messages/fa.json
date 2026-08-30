@@ -103,6 +103,9 @@
     "orderStatus": "وضعیت سفارش‌ها",
     "orders": "سفارش",
     "trend": "روند",
+    "lowStock": {
+      "title": "هشدار موجودی کم"
+    },
     "kpi": {
       "orders": "سفارش‌ها",
       "revenue": "درآمد",
@@ -236,7 +239,8 @@
       "name": "نام",
       "price": "قیمت",
       "description": "توضیحات",
-      "actions": "عملیات"
+      "actions": "عملیات",
+      "stock": "موجودی"
     },
     "empty": {
       "title": "هنوز محصولی ندارید",
