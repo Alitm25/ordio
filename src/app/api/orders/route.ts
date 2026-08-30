@@ -2,13 +2,13 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Customer from "@/models/Customer";
+import Product from "@/models/Product";
 
 export async function POST(req: Request) {
     try {
         await connectDB();
 
         const user = await getCurrentUser();
-        const body = await req.json();
 
         const {
             customerName,
@@ -17,8 +17,9 @@ export async function POST(req: Request) {
             items,
             paymentStatus,
             paymentMethod,
-        } = body;
+        } = await req.json();
 
+        // Check if data has any order or not
         if (!items || !Array.isArray(items) || items.length === 0) {
             return Response.json(
                 { message: "Order must have at least one item" },
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
             );
         }
 
+        // Declaration of each Order
         const processedItems = items.map((item: {
             productId?: string;
             productName: string;
@@ -39,11 +41,13 @@ export async function POST(req: Request) {
             subtotal: item.quantity * item.price,
         }));
 
+        // Calculating total amount of items
         const totalAmount = processedItems.reduce(
             (sum, item) => sum + item.subtotal,
             0
         );
 
+        // Creating Order
         const order = await Order.create({
             customerName,
             customerPhone,
@@ -54,6 +58,20 @@ export async function POST(req: Request) {
             paymentMethod,
             userId: user.userId,
         });
+
+        // Inventory deduction for each item
+        for (const item of processedItems) {
+            if (item.productId) {
+                await Product.findByIdAndUpdate(
+                    {
+                        _id: item.productId,
+                        userId: user.userId,
+                        stock: { $ne: null },
+                    },
+                    { $inc: { stock: -item.quantity } }
+                )
+            }
+        }
 
         return Response.json(
             { message: "Order created successfully", order },
