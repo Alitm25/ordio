@@ -3,12 +3,15 @@ import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Customer from "@/models/Customer";
 import Product from "@/models/Product";
+import mongoose from "mongoose";
 
 export async function POST(req: Request) {
-    try {
-        await connectDB();
+    const connection = await connectDB();
+    const session = await mongoose.startSession();
 
+    try {
         const user = await getCurrentUser();
+        const body = await req.json();
 
         const {
             customerName,
@@ -17,7 +20,7 @@ export async function POST(req: Request) {
             items,
             paymentStatus,
             paymentMethod,
-        } = await req.json();
+        } = body;
 
         // Check if data has any order or not
         if (!items || !Array.isArray(items) || items.length === 0) {
@@ -47,50 +50,86 @@ export async function POST(req: Request) {
             0
         );
 
-        // Creating Order
-        const order = await Order.create({
-            customerName,
-            customerPhone,
-            customerId: customerId ?? null,
-            items: processedItems,
-            totalAmount,
-            paymentStatus,
-            paymentMethod,
-            userId: user.userId,
-        });
+        let order;
 
-        // Inventory deduction for each item
-        for (const item of processedItems) {
-            if (item.productId) {
-                const updatedProduct = await Product.findOneAndUpdate(
+        await session.withTransaction(async () => {
+            // Checking each item stock before any changes
+            const itemsWithProduct = processedItems.filter(
+                (item) => item.productId
+            );
+
+            for (const item of itemsWithProduct) {
+                const product = await Product.findOne({
+                    _id: item.productId,
+                    userId: user.userId,
+                    stock: { $ne: null },
+                }).session(session);
+
+                if (product && product.stock < item.quantity) {
+                    throw new Error(
+                        `INSUFFICIENT_STOCK:${item.productName}:${product.stock}`
+                    );
+                }
+            }
+
+            // Creating the order after checking each item stock
+            const created = await Order.create(
+                [
+                    {
+                        customerName,
+                        customerPhone,
+                        customerId: customerId ?? null,
+                        items: processedItems,
+                        totalAmount,
+                        paymentStatus,
+                        paymentMethod,
+                        userId: user.userId,
+                    },
+                ],
+                { session }
+            );
+
+            order = created[0];
+
+            // Deduction of all items stock after checking
+            for (const item of itemsWithProduct) {
+                await Product.findOneAndUpdate(
                     {
                         _id: item.productId,
                         userId: user.userId,
-                        stock: { $gte: item.quantity },
+                        stock: { $ne: null },
                     },
-                    {
-                        $inc: { stock: -item.quantity },
-                    },
-                )
-
-                if (!updatedProduct) {
-                    return Response.json(
-                        { message: 'Insufficient stock' },
-                        { status: 400 }
-                    )
-                }
+                    { $inc: { stock: -item.quantity } },
+                    { session }
+                );
             }
-        }
+        });
 
         return Response.json(
             { message: "Order created successfully", order },
             { status: 201 }
         );
     } catch (error) {
+        // Insufficient inventory error
+        if (
+            error instanceof Error &&
+            error.message.startsWith("INSUFFICIENT_STOCK:")
+        ) {
+            const [, productName, currentStock] = error.message.split(":");
+            return Response.json(
+                {
+                    message: `Insufficient stock for "${productName}". Available: ${currentStock}`,
+                },
+                { status: 400 }
+            );
+        }
+
         return Response.json(
             { message: "Server error", error },
             { status: 500 }
         );
+    } finally {
+        session.endSession();
     }
 }
 
