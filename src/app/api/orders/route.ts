@@ -62,14 +62,23 @@ export async function POST(req: Request) {
         // Inventory deduction for each item
         for (const item of processedItems) {
             if (item.productId) {
-                await Product.findByIdAndUpdate(
+                const updatedProduct = await Product.findOneAndUpdate(
                     {
                         _id: item.productId,
                         userId: user.userId,
-                        stock: { $ne: null },
+                        stock: { $gte: item.quantity },
                     },
-                    { $inc: { stock: -item.quantity } }
+                    {
+                        $inc: { stock: -item.quantity },
+                    },
                 )
+
+                if (!updatedProduct) {
+                    return Response.json(
+                        { message: 'Insufficient stock' },
+                        { status: 400 }
+                    )
+                }
             }
         }
 
