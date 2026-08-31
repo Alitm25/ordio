@@ -15,6 +15,7 @@ import {DashboardRange} from "@/types/dashboard";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useLocale, useTranslations} from "next-intl";
 import {formatDate} from "@/lib/formatDate";
+import StockBadge from "@/components/products/StockBadge";
 
 const STATUS_COLORS = {
     pending: "#f59e0b",
@@ -309,6 +310,29 @@ export default function DashboardPage() {
                     </div>
                 </CardContent>
             </Card>
+
+            {data.lowStockProducts.length > 0 && (
+                <Card className="border-amber-500/30">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-amber-500">
+                            <AlertCircle className="h-5 w-5" />
+                            {tDashboard("lowStock.title")}
+                        </CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="space-y-2">
+                        {data.lowStockProducts.map((product) => (
+                            <div
+                                key={product._id}
+                                className="flex items-center justify-between text-sm"
+                            >
+                                <span>{product.name}</span>
+                                <StockBadge stock={product.stock} />
+                            </div>
+                        ))}
+                    </CardContent>
+                </Card>
+            )}
         </div>
     );
 }
