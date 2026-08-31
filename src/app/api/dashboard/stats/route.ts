@@ -80,7 +80,7 @@ export async function GET(req: Request) {
             Order.countDocuments({ userId: user.userId, status: "processing" }),
             Order.countDocuments({ userId: user.userId, status: "completed" }),
             Order.countDocuments({ userId: user.userId, status: 'cancelled' }),
-            Product.find({ userId: user.userId, stock: { $ne: null, $lte: null }  }).select("name stock")
+            Product.find({ userId: user.userId, stock: { $ne: null, $lte: 5 }  }).select("name stock")
         ]);
 
         // Render complete orders
