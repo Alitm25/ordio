@@ -14,6 +14,7 @@ import CreateProductDialog from "@/components/products/CreateProductDialog";
 import EditProductDialog from "@/components/products/EditProductDialog";
 import { useDeleteProduct } from "@/features/products/hooks/useProducts";
 import {useLocale, useTranslations} from "next-intl";
+import StockBadge from "@/components/products/StockBadge";
 
 export default function ProductsPage() {
     const [createOpen, setCreateOpen] = useState(false);
@@ -82,6 +83,7 @@ export default function ProductsPage() {
                                 <TableHead>{ tProducts('table.name') }</TableHead>
                                 <TableHead>{ tProducts('table.price') }</TableHead>
                                 <TableHead className="hidden md:table-cell">{ tProducts('table.description') }</TableHead>
+                                <TableHead>{ tProducts('table.stock') }</TableHead>
                                 <TableHead>{ tProducts('table.actions') }</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -96,6 +98,9 @@ export default function ProductsPage() {
                                     </TableCell>
                                     <TableCell className="text-muted-foreground hidden md:table-cell">
                                         {product.description || "—"}
+                                    </TableCell>
+                                    <TableCell>
+                                        <StockBadge stock={product.stock} />
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex gap-2">
