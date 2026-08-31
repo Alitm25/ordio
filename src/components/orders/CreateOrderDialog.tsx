@@ -163,7 +163,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                         </div>
                     </div>
 
-                    {/* Orer Items section */}
+                    {/* Order Items section */}
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
                             <p className="text-sm font-medium">
@@ -292,7 +292,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                             </p>
                         )}
 
-                        {/* جمع کل */}
+                        {/* total amount section */}
                         <div className="flex items-center justify-between rounded-lg bg-muted/50 px-4 py-3">
                             <span className="font-medium">
                                 {tCreate("total")}
@@ -303,7 +303,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
                         </div>
                     </div>
 
-                    {/* بخش پرداخت */}
+                    {/* payment section */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
                             <Controller
