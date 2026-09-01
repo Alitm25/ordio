@@ -1,12 +1,11 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import Customer from "@/models/Customer";
 import Product from "@/models/Product";
 import mongoose from "mongoose";
 
 export async function POST(req: Request) {
-    const connection = await connectDB();
+    await connectDB();
     const session = await mongoose.startSession();
 
     try {
