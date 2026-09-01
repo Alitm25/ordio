@@ -43,7 +43,8 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
     const createOrderMutation = useMutation({
         mutationFn: createOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['orders'] });
+            queryClient.invalidateQueries({ queryKey: ['orders'] }); // <= update orders
+            queryClient.invalidateQueries({ queryKey: ["products"] }); // <= update products (stock)
             form.reset();
             onOpenChange(false);
         }
