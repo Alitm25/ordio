@@ -27,6 +27,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import {toast} from "sonner";
 
 export default function OrdersPage() {
     // Router variables for URL syncing
@@ -39,8 +40,10 @@ export default function OrdersPage() {
     const locale = useLocale();
     const dir = locale === 'fa'? 'rtl' : 'ltr';
 
+    // Translation Variables
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations("common");
+    const tNotif = useTranslations("orders.notifications");
 
     // Order action dialog open & close state
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -89,9 +92,13 @@ export default function OrdersPage() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             setOrderToDelete(null);
+            toast.success(tNotif("deleteSuccess"));
             if (selectedOrderId) {
                 router.push("/orders");
             }
+        },
+        onError: () => {
+            toast.error(tNotif("deleteError"));
         },
     });
 
