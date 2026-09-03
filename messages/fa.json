@@ -223,6 +223,19 @@
     "error": {
       "title": "خطا در بارگذاری سفارش‌ها",
       "description": "مشکلی در دریافت اطلاعات پیش آمد."
+    },
+    "notifications": {
+      "createSuccess": "سفارش با موفقیت ثبت شد",
+      "createError": "خطا در ثبت سفارش",
+      "updateSuccess": "سفارش با موفقیت ویرایش شد",
+      "updateError": "خطا در ویرایش سفارش",
+      "deleteSuccess": "سفارش با موفقیت حذف شد",
+      "deleteError": "خطا در حذف سفارش",
+      "bulkDeleteSuccess": "سفارش‌ها با موفقیت حذف شدند",
+      "bulkDeleteError": "خطا در حذف سفارش‌های انتخابی",
+      "statusUpdateSuccess": "وضعیت به‌روز شد",
+      "statusUpdateError": "خطا در به‌روزرسانی وضعیت",
+      "insufficientStock": "موجودی کافی نیست"
     }
   },
   "products": {
