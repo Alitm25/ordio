@@ -35,6 +35,8 @@ import CustomerCombobox from "@/components/customers/CustomerCombobox";
 import {useLocale, useTranslations} from "next-intl";
 import {Product} from "@/types/product";
 import {Plus, Trash2} from "lucide-react";
+import {toast} from "sonner";
+import {getErrorMessage} from "@/lib/getErrorMessage";
 
 interface Props {
     order: Order | null;
@@ -54,14 +56,20 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const tVal = useTranslations("validation");
     const tCustomers = useTranslations("customers");
     const tProducts = useTranslations("products");
+    const tNotif = useTranslations("orders.notifications");
 
     // Update Order mutation function declaration
     const updateOrderMutation = useMutation({
         mutationFn: updateOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            queryClient.invalidateQueries({ queryKey: ["orders"] }); // <== refresh all orders cache
+            queryClient.invalidateQueries({ queryKey: ["order", order?._id] }); // <== refresh the specific order cache
+            toast.success(tNotif("updateSuccess"));
             onOpenChange(false);
         },
+        onError: (error) => {
+            toast.error(getErrorMessage(error, tNotif("updateError")));
+        }
     });
 
     // Get products catalog data
