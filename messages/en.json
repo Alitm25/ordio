@@ -223,6 +223,19 @@
     "error": {
       "title": "Couldn't load orders",
       "description": "Something went wrong while fetching your orders."
+    },
+    "notifications": {
+      "createSuccess": "Order created successfully",
+      "createError": "Could not create order",
+      "updateSuccess": "Order updated successfully",
+      "updateError": "Could not update order",
+      "deleteSuccess": "Order deleted successfully",
+      "deleteError": "Could not delete order",
+      "bulkDeleteSuccess": "Orders deleted successfully",
+      "bulkDeleteError": "Could not delete selected orders",
+      "statusUpdateSuccess": "Status updated",
+      "statusUpdateError": "Could not update status",
+      "insufficientStock": "Insufficient stock"
     }
   },
   "products": {
