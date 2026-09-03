@@ -19,6 +19,8 @@ import CustomerCombobox from "@/components/customers/CustomerCombobox";
 import {useLocale, useTranslations} from "next-intl";
 import {Product} from "@/types/product";
 import {Plus, Trash2} from "lucide-react";
+import {toast} from "sonner";
+import {getErrorMessage} from "@/lib/getErrorMessage";
 
 
 interface Props {
@@ -38,6 +40,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
     const tVal = useTranslations("validation");
     const tCustomers = useTranslations("customers");
     const tProducts = useTranslations("products");
+    const tNotif = useTranslations("orders.notifications");
 
     // Create Order mutation function declaration
     const createOrderMutation = useMutation({
@@ -45,8 +48,18 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['orders'] }); // <= update orders
             queryClient.invalidateQueries({ queryKey: ["products"] }); // <= update products (stock)
+            toast.success(tNotif("createSuccess"));
             form.reset();
             onOpenChange(false);
+        },
+        onError: (error) => {
+            const message = getErrorMessage(error, tNotif("createError"));
+
+            if (message.includes("Insufficient stock")) {
+                toast.error(`${tNotif("insufficientStock")}: ${message.split('"')[1]}`);
+            } else {
+                toast.error(message);
+            }
         }
     });
 
