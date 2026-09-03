@@ -1,40 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteOrder } from "@/features/orders/services/deleteOrder";
 import { bulkDeleteOrders } from "@/features/orders/services/bulkDeleteOrders";
 import { updateOrderStatus } from "@/features/orders/services/updateOrderStatus";
 import { orderStatusColors } from "@/lib/orderStatusColors";
 import { toast } from "sonner";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Order } from "@/types/order";
 import {useLocale, useTranslations} from "next-intl";
 import {formatDate} from "@/lib/formatDate";
@@ -55,7 +33,7 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
     // Translation variable
     const tOrders = useTranslations('orders');
     const tCommon = useTranslations('common');
-    const tToast = useTranslations('toast.order');
+    const tNotif = useTranslations("orders.notifications");
 
     // selected orders to delete States
     const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
@@ -68,9 +46,10 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             setOrderToDelete(null);
+            toast.success(tNotif("deleteSuccess"));
         },
         onError: () => {
-            toast.error( tToast('orderDeleteError') );
+            toast.error(tNotif("deleteError"));
         },
     });
 
@@ -81,9 +60,10 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             setSelectedIds([]);
             setBulkDeleteOpen(false);
+            toast.success(tNotif("bulkDeleteSuccess"));
         },
         onError: () => {
-            toast.error( tToast('bulkDeleteError') );
+            toast.error(tNotif("bulkDeleteError"));
         },
     });
 
@@ -92,10 +72,10 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
         mutationFn: updateOrderStatus,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
+            toast.success(tNotif("statusUpdateSuccess"));
         },
         onError: () => {
-            toast.error( tToast('statusError') );
-        },
+            toast.error(tNotif("statusUpdateError"));        },
     });
 
     const currentPageIds = orders.map((order) => order._id);
