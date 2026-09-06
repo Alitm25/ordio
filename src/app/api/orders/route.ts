@@ -2,13 +2,11 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
-import mongoose from "mongoose";
 
 export async function POST(req: Request) {
-    await connectDB();
-    const session = await mongoose.startSession();
-
     try {
+        await connectDB();
+
         const user = await getCurrentUser();
         const body = await req.json();
 
@@ -49,59 +47,79 @@ export async function POST(req: Request) {
             0
         );
 
-        let order;
+        // Check the items with productId
+        const trackedItems = processedItems.filter(
+            (item) => item.productId
+        );
 
-        await session.withTransaction(async () => {
-            // Checking each item stock before any changes
-            const itemsWithProduct = processedItems.filter(
-                (item) => item.productId
-            );
+        // Check for each item products stock
+        for (const item of trackedItems) {
+            const product = await Product.findOne({
+                _id: item.productId,
+                userId: user.userId,
+                stock: { $ne: null },
+            });
 
-            for (const item of itemsWithProduct) {
-                const product = await Product.findOne({
-                    _id: item.productId,
-                    userId: user.userId,
-                    stock: { $ne: null },
-                }).session(session);
-
-                if (product && product.stock < item.quantity) {
-                    throw new Error(
-                        `INSUFFICIENT_STOCK:${item.productName}:${product.stock}`
-                    );
-                }
-            }
-
-            // Creating the order after checking each item stock
-            const created = await Order.create(
-                [
+            if (product && product.stock < item.quantity) {
+                return Response.json(
                     {
-                        customerName,
-                        customerPhone,
-                        customerId: customerId ?? null,
-                        items: processedItems,
-                        totalAmount,
-                        paymentStatus,
-                        paymentMethod,
-                        userId: user.userId,
+                        message: `Insufficient stock for "${item.productName}". Available: ${product.stock}`,
                     },
-                ],
-                { session }
-            );
-
-            order = created[0];
-
-            // Deduction of all items stock after checking
-            for (const item of itemsWithProduct) {
-                await Product.findOneAndUpdate(
-                    {
-                        _id: item.productId,
-                        userId: user.userId,
-                        stock: { $ne: null },
-                    },
-                    { $inc: { stock: -item.quantity } },
-                    { session }
+                    { status: 400 }
                 );
             }
+        }
+
+        // Atomic conditional decrement
+        const successfulDecrements: { productId: string; quantity: number }[] = [];
+
+        for (const item of trackedItems) {
+            const result = await Product.findOneAndUpdate(
+                {
+                    _id: item.productId,
+                    userId: user.userId,
+                    stock: { $ne: null, $gte: item.quantity },
+                },
+                { $inc: { stock: -item.quantity } },
+            );
+
+            if (!result) {
+                // if this item fails => get the items stock information again
+                const product = await Product.findById(item.productId);
+                const available = product?.stock ?? 0;
+
+                // abort the previous items stock
+                for (const prev of successfulDecrements) {
+                    await Product.findByIdAndUpdate(prev.productId, {
+                        $inc: { stock: prev.quantity },
+                    });
+                }
+
+                return Response.json(
+                    {
+                        message: `Insufficient stock for "${item.productName}". Available: ${available}`,
+                    },
+                    { status: 400 }
+                );
+            }
+
+            // if all checks were ok, add the items
+            successfulDecrements.push({
+                productId: item.productId!,
+                quantity: item.quantity,
+            });
+        }
+
+        // create the order after all checks done
+        const order = await Order.create({
+            customerName,
+            customerPhone,
+            customerId: customerId ?? null,
+            items: processedItems,
+            totalAmount,
+            paymentStatus,
+            paymentMethod,
+            userId: user.userId,
         });
 
         return Response.json(
@@ -109,26 +127,10 @@ export async function POST(req: Request) {
             { status: 201 }
         );
     } catch (error) {
-        // Insufficient inventory error
-        if (
-            error instanceof Error &&
-            error.message.startsWith("INSUFFICIENT_STOCK:")
-        ) {
-            const [, productName, currentStock] = error.message.split(":");
-            return Response.json(
-                {
-                    message: `Insufficient stock for "${productName}". Available: ${currentStock}`,
-                },
-                { status: 400 }
-            );
-        }
-
         return Response.json(
             { message: "Server error", error },
             { status: 500 }
         );
-    } finally {
-        session.endSession();
     }
 }
 
