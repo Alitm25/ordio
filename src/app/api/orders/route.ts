@@ -111,7 +111,9 @@ export async function POST(req: Request) {
         }
 
         // create the order after all checks done
-        const order = await Order.create({
+        let order;
+
+        order = await Order.create({
             customerName,
             customerPhone,
             customerId: customerId ?? null,
@@ -120,6 +122,14 @@ export async function POST(req: Request) {
             paymentStatus,
             paymentMethod,
             userId: user.userId,
+        }).catch(async (createError) => {
+            // Order.create failed — restore all deducted stock
+            for (const prev of successfulDecrements) {
+                await Product.findByIdAndUpdate(prev.productId, {
+                    $inc: { stock: prev.quantity },
+                });
+            }
+            throw createError;
         });
 
         return Response.json(
