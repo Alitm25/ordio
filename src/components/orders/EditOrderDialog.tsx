@@ -64,12 +64,18 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] }); // <== refresh all orders cache
             queryClient.invalidateQueries({ queryKey: ["order", order?._id] }); // <== refresh the specific order cache
+            queryClient.invalidateQueries({ queryKey: ["product"] });
             toast.success(tNotif("updateSuccess"));
             onOpenChange(false);
         },
         onError: (error) => {
-            toast.error(getErrorMessage(error, tNotif("updateError")));
-        }
+            const message = getErrorMessage(error, tNotif("createError"));
+
+            if (message.includes("Insufficient stock")) {
+                toast.error(`${tNotif("insufficientStock")}: ${message.split('"')[1]}`);
+            } else {
+                toast.error(message);
+            }        }
     });
 
     // Get products catalog data
