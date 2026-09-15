@@ -93,11 +93,11 @@ JWT_SECRET=your_super_secret_key
 - [x] CSV Exports
 - [x] Change Email in settings
 - [x] Details Page for Each Order
+- [x] Multi-Item Orders
+- [x] Inventory Management
 - [ ] UI updates
 - [ ] Home Page (Landing page)
-- [ ] Multi-Item Orders
 - [ ] Notifications
-- [ ] Inventory Management
       
 
 ## Contributing
