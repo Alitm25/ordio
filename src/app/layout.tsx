@@ -1,5 +1,5 @@
 import QueryProvider from "@/providers/QueryProvider";
-import {Geist, Geist_Mono} from "next/font/google";
+import {Geist, Geist_Mono, JetBrains_Mono} from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import {Metadata} from "next";
@@ -22,6 +22,12 @@ export const metadata: Metadata = {
     title: "Ordio",
     description: "Order Management System",
 };
+
+const jetbrainsMono = JetBrains_Mono({
+    variable: "--font-jetbrains-mono",
+    subsets: ["latin"],
+    weight: ["400", "500", "600"],
+})
 
 // Persian fonts
 const vazirMatn = localFont({
@@ -54,7 +60,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
       <html lang={locale} dir={dir}
-            className={`${geistSans.variable} ${geistMono.variable} ${vazirMatn.variable} dark`} suppressHydrationWarning>
+            className={`${geistSans.variable} ${geistMono.variable} ${vazirMatn.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className={"antialiased"}>
       <NextIntlClientProvider messages={messages}>
           <QueryProvider>
