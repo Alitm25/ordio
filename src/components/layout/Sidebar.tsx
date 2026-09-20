@@ -47,10 +47,10 @@ export function SidebarContent({ onNavigate } :Props) {
                     return (
                         <Link key={link.href} href={link.href}
                               className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                                pathname === link.href
-                                    ? "bg-primary text-primary-foreground"
-                                    : "hover:bg-muted"
-                                }`}
+                                  pathname === link.href
+                                      ? "border-s-2 border-primary bg-primary/5 text-primary font-medium"
+                                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                              }`}
                               onClick={onNavigate}
                         >
                             <Icon size={18} />
