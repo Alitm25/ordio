@@ -5,8 +5,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-jetbrains-mono);
   --font-heading: var(--font-sans);
@@ -23,22 +21,24 @@
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
   --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
+  --color-primary: #5B5BD6;
+  --color-primary-foreground: #ffffff;
+  --color-ring: #5B5BD6;
+  --color-background: #FAFAFA;
+  --color-foreground: #1a1b22;
+  --color-border: #E4E4E7;
+  --color-input: #E4E4E7;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717A;
+  --color-card: #ffffff;
+  --color-card-foreground: #1a1b22;
+  --color-secondary: #f4f2fd;
+  --color-secondary-foreground: #1a1b22;
+  --color-accent: #f4f2fd;
+  --color-accent-foreground: #1a1b22;
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
