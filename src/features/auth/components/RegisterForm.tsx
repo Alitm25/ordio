@@ -58,7 +58,7 @@ export default function RegisterForm() {
 
     return (
         <Card className="w-full max-w-md border-border/50 shadow-xl p-8 rounded-3xl">
-            <CardHeader className={'space-y-2 flex items-center justify-center flex-col'}>
+            <CardHeader className={'space-y-2 pb-5 flex items-center justify-center flex-col'}>
                 <div className="flex justify-center mb-6">
                     <div className="text-3xl font-bold">
                         Ordio
