@@ -57,8 +57,8 @@ export default function RegisterForm() {
     };
 
     return (
-        <Card className="w-full max-w-md border-border/50 shadow-xl">
-            <CardHeader className={'space-y-2'}>
+        <Card className="w-full max-w-md border-border/50 shadow-xl p-8 rounded-3xl">
+            <CardHeader className={'space-y-2 flex items-center justify-center flex-col'}>
                 <div className="flex justify-center mb-6">
                     <div className="text-3xl font-bold">
                         Ordio
@@ -74,45 +74,53 @@ export default function RegisterForm() {
                 </CardDescription>
             </CardHeader>
 
-            <CardContent className={'space-y-4'}>
+            <CardContent className="pt-0">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div>
-                        <Input type="email" placeholder={ t('email') }{...register("email")} />
-
-                        {
-                            errors.email && (
-                                <p className="text-sm text-red-500 mt-1">
-                                    { tValid('invalidEmail') }
-                                </p>
-                            )
-                        }
+                    <div className="space-y-2">
+                        <Input
+                            id="email"
+                            type="email"
+                            className={'p-5'}
+                            placeholder={t('email')}
+                            aria-invalid={Boolean(errors.email)}
+                            {...register("email")}
+                        />
+                        {errors.email && (
+                            <p className="text-sm text-destructive">
+                                {tValid("invalidEmail")}
+                            </p>
+                        )}
                     </div>
 
-                    <div>
-                        <Input type="password" placeholder={ t('password') } {...register("password")} />
-
-                        {
-                            errors.password && (
-                                <p className="text-sm text-red-500 mt-1">
-                                    { tValid('passwordMin') }
-                                </p>
-                            )
-                        }
+                    <div className="space-y-2">
+                        <Input
+                            id="password"
+                            type="password"
+                            className={'p-5'}
+                            placeholder={t('password')}
+                            aria-invalid={Boolean(errors.password)}
+                            {...register("password")}
+                        />
+                        {errors.password && (
+                            <p className="text-sm text-destructive">
+                                {tValid("passwordMin")}
+                            </p>
+                        )}
                     </div>
 
-                    <Button type="submit" className="w-full cursor-pointer" disabled={registerMutation.isPending}>
-                        {
-                            registerMutation.isPending
-                                ? `${ t('loading') }`
-                                : `${ t('submit') }`
-                        }
+                    <Button
+                        type="submit"
+                        className="w-full cursor-pointer p-6 text-base rounded-2xl"
+                        disabled={registerMutation.isPending}
+                    >
+                        {registerMutation.isPending ? t("loading") : t("submit")}
                     </Button>
                 </form>
-                {/* Back to login form */}
-                <p className="text-sm text-center text-muted-foreground mt-4">
-                    { t('hasAccount') }{" "}
+
+                <p className="text-sm text-center text-muted-foreground mt-6">
+                    {t("hasAccount")} {" "}
                     <Link href="/login" className="text-primary underline-offset-4 hover:underline">
-                        { t('login') }
+                        {t("login")}
                     </Link>
                 </p>
             </CardContent>
