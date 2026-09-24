@@ -161,7 +161,7 @@ export default function SettingsPage() {
                                         onClick={() =>
                                             setShowEmailPassword((prev) => !prev)
                                         }
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                        className="absolute inset-e-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                                     >
                                         {showEmailPassword ? (
                                             <EyeOff className="h-4 w-4" />
@@ -212,7 +212,7 @@ export default function SettingsPage() {
                                         placeholder={ tSettings('changePassword.currentPassword') }
                                     />
                                     <button type="button" onClick={ () => setShowCurrentPassword((prev) => !prev) }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                                            className="absolute inset-e-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
                                     >
                                         {showCurrentPassword ? (
                                             <EyeOff className="h-4 w-4" />
@@ -236,7 +236,7 @@ export default function SettingsPage() {
                                         placeholder={ tSettings('changePassword.newPassword') }
                                     />
                                     <button type="button" onClick={ () => setShowNewPassword((prev) => !prev) }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                                            className="absolute inset-e-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
                                     >
                                         {showNewPassword ? (
                                             <EyeOff className="h-4 w-4" />
@@ -260,7 +260,7 @@ export default function SettingsPage() {
                                         placeholder={ tSettings('changePassword.confirmPassword') }
                                     />
                                     <button type="button" onClick={ () => setShowConfirmPassword((prev) => !prev) }
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                                            className="absolute inset-e-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
                                     >
                                         {showConfirmPassword ? (
                                             <EyeOff className="h-4 w-4" />
