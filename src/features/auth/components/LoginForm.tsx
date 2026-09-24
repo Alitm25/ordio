@@ -43,7 +43,7 @@ export default function LoginForm() {
     };
 
     return (
-        <Card className="w-full max-w-md border-border/50 shadow-xl p-8">
+        <Card className="w-full max-w-md border-border/50 shadow-xl p-8 rounded-3xl">
             <CardHeader className="space-y-3 pb-5 flex items-center justify-center flex-col">
                 <div className="flex justify-center pb-3">
                     <div className="text-3xl font-bold tracking-tight text-foreground">
@@ -91,7 +91,7 @@ export default function LoginForm() {
 
                     <Button
                         type="submit"
-                        className="w-full cursor-pointer"
+                        className="w-full cursor-pointer p-6 text-base rounded-2xl"
                         disabled={loginMutation.isPending}
                     >
                         {loginMutation.isPending ? t("loading") : t("submit")}
