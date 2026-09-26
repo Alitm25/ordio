@@ -15,6 +15,71 @@
     "confirm": "Are you sure?",
     "back": "Back"
   },
+  "landing": {
+    "nav": {
+      "product": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "signIn": "Sign in",
+      "startFree": "Start for free"
+    },
+    "hero": {
+      "badge": "Order tracking for people who don't have time for spreadsheets",
+      "title": "Every order. Every payment. One place.",
+      "description": "Ordio replaces the notebook, the spreadsheet, and the scattered chats small businesses use to track orders — so you always know what's been ordered, who's paid, and what's next.",
+      "cta": "Start for free",
+      "secondary": "See how it works"
+    },
+    "features": {
+      "title": "Everything you're already doing, just not on paper",
+      "items": {
+        "orders": {
+          "title": "Log orders as they happen",
+          "description": "Record customer, product, quantity, and price in seconds; move status from pending to processing to completed with one click."
+        },
+        "payments": {
+          "title": "Know who's actually paid",
+          "description": "Every order tracks payment status (unpaid, paid, partial) and payment method (cash, card, transfer)."
+        },
+        "customers": {
+          "title": "A customer list that remembers",
+          "description": "Every customer's contact info, notes, and full order history live in one place."
+        },
+        "dashboard": {
+          "title": "A dashboard that's actually useful",
+          "description": "This month's orders and revenue, a 7-day trend, and a status breakdown, visible the moment you log in."
+        }
+      }
+    },
+    "steps": {
+      "title": "From first order to paid, in three steps",
+      "items": {
+        "one": {
+          "title": "Add what you sell",
+          "description": "List your products once, with a name and a price."
+        },
+        "two": {
+          "title": "Log the order",
+          "description": "Add the customer, what they ordered, and how they're paying."
+        },
+        "three": {
+          "title": "Track it to done",
+          "description": "Move the status along, and mark it paid when it's settled."
+        }
+      }
+    },
+    "cta": {
+      "title": "Stop tracking orders in three different places.",
+      "subtitle": "Bring them into one.",
+      "button": "Start for free"
+    },
+    "footer": {
+      "tagline": "Built for small businesses and solo sellers",
+      "product": "Product",
+      "login": "Login",
+      "copyright": "© 2026 Ordio. All rights reserved."
+    }
+  },
   "toast": {
     "auth": {
       "loginSuccess": "Logged in successfully",
