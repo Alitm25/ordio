@@ -19,9 +19,8 @@ export function proxy(request: NextRequest) {
     if (pathname === "/" || pathname === "") {
         if (token) {
             return NextResponse.redirect(new URL("/dashboard", request.url));
-        } else {
-            return NextResponse.redirect(new URL("/login", request.url));
         }
+        return NextResponse.next();
     }
 
     if (isProtectedRoute && !token) {
