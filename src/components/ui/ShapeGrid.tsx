@@ -112,7 +112,6 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
             if (alpha) {
               ctx.globalAlpha = alpha;
               drawHex(cx, cy, squareSize);
-              ctx.fillStyle = hoverFillColor;
               ctx.fill();
               ctx.globalAlpha = 1;
             }
@@ -206,20 +205,6 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
           }
         }
       }
-
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        0,
-        canvas.width / 2,
-        canvas.height / 2,
-        Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
-      );
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(1, '#120F17');
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
     const updateAnimation = () => {
