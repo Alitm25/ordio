@@ -11,33 +11,7 @@ export default async function LandingPage() {
   return (
       <div dir={dir} className="min-h-screen bg-white">
         {/* Navbar */}
-        <header className="sticky top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-sm border-b border-border px-10">
-          <div className="h-14 flex items-center justify-between">
-            <span className="font-semibold text-primary text-lg">Ordio</span>
-
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t("nav.product")}
-              </a>
-              <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t("nav.features")}
-              </a>
-              <a href="#steps" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t("nav.pricing")}
-              </a>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t("nav.signIn")}
-              </Link>
-              <Link href="/register" className="text-sm bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                {t("nav.startFree")}
-              </Link>
-            </div>
-          </div>
-        </header>
-
+        <LandingNavbar />
         {/* Hero — Client Component (CursorGrid) */}
         <HeroSection />
 
