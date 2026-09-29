@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { Sun, Moon } from "lucide-react";
+import ThemeToggleButton from "@/components/shared/ThemeToggleButton";
 
 export default function LandingNavbar() {
     // Translation and locale variables
@@ -12,30 +13,6 @@ export default function LandingNavbar() {
 
     // Viewport active section state
     const [activeSection, setActiveSection] = useState<string>("");
-    // Theme state
-    const [isDark, setIsDark] = useState(false);
-
-    // Dark mode — initialize from localStorage
-    useEffect(() => {
-        const saved = localStorage.getItem("ordio-theme");
-        if (saved === "dark") {
-            document.documentElement.classList.add("dark");
-            setIsDark(true);
-        }
-    }, []);
-
-    // Theme handler function
-    const toggleDark = () => {
-        const html = document.documentElement;
-        if (isDark) {
-            html.classList.remove("dark");
-            localStorage.setItem("ordio-theme", "light");
-        } else {
-            html.classList.add("dark");
-            localStorage.setItem("ordio-theme", "dark");
-        }
-        setIsDark(!isDark);
-    };
 
     // Language toggle handler function
     const toggleLanguage = async () => {
@@ -119,16 +96,7 @@ export default function LandingNavbar() {
                     </button>
 
                     {/* Dark Mode Toggle */}
-                    <button
-                        onClick={toggleDark}
-                        className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                        aria-label="Toggle dark mode"
-                    >
-                        {isDark
-                            ? <Sun className="h-4 w-4" />
-                            : <Moon className="h-4 w-4" />
-                        }
-                    </button>
+                    <ThemeToggleButton />
 
                     <Link
                         href="/login"
