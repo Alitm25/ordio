@@ -1,4 +1,5 @@
 import { verifyToken } from "@/lib/auth";
+import { ApiError } from "@/lib/apiError";
 import {cookies} from "next/headers";
 
 export interface JwtPayload {
@@ -11,10 +12,13 @@ export async function getCurrentUser(): Promise<JwtPayload> {
     const token = cookieStore.get('token')?.value;
 
     if (!token) {
-        throw new Error("Unauthorized");
+        throw new ApiError(401, "Unauthorized");
     }
 
-    const decoded = verifyToken(token) as JwtPayload;
-
-    return decoded;
+    // jwt.verify throws when the token is expired or tampered with
+    try {
+        return verifyToken(token) as JwtPayload;
+    } catch {
+        throw new ApiError(401, "Unauthorized");
+    }
 }
