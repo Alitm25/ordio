@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { handleApiError } from "@/lib/apiError";
 
 export async function GET() {
     try {
@@ -25,9 +26,6 @@ export async function GET() {
             },
         });
     } catch (error) {
-        return Response.json(
-            { message: "Unauthorized", error },
-            { status: 401 }
-        );
+        return handleApiError(error);
     }
 }

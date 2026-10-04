@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { handleApiError } from "@/lib/apiError";
 
 export async function POST(req: Request) {
     try {
@@ -49,9 +50,6 @@ export async function POST(req: Request) {
             { status: 201 }
         );
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }

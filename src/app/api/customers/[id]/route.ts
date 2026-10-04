@@ -1,6 +1,7 @@
 import {connectDB} from "@/lib/db";
 import {getCurrentUser} from "@/lib/getCurrentUser";
 import Customer from "@/models/Customer";
+import { handleApiError } from "@/lib/apiError";
 
 export async function PATCH(
     req: Request,
@@ -38,10 +39,7 @@ export async function PATCH(
         )
 
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }
 
@@ -71,9 +69,6 @@ export async function DELETE(
             message: "Customer deleted successfully",
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }

@@ -3,6 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
 import {NextResponse} from "next/server";
+import { handleApiError } from "@/lib/apiError";
 
 export async function POST(req: Request) {
     try {
@@ -69,10 +70,7 @@ export async function POST(req: Request) {
         return response;
 
     } catch (error) {
-        return NextResponse.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 
 }

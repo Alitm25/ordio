@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import bcrypt from "bcryptjs";
+import { handleApiError } from "@/lib/apiError";
 
 export async function PATCH(req: Request) {
     try {
@@ -71,9 +72,6 @@ export async function PATCH(req: Request) {
             },
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }

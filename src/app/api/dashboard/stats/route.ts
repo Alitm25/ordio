@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
+import { handleApiError } from "@/lib/apiError";
 
 //  a getDataRange function in order to show the stats based on the various period of times
 function getDateRange(range: string):{ start: Date, end: Date } {
@@ -144,9 +145,6 @@ export async function GET(req: Request) {
             lowStockProducts
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 401 }
-        );
+        return handleApiError(error);
     }
 }

@@ -1,6 +1,7 @@
 import {connectDB} from "@/lib/db";
 import {getCurrentUser} from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
+import { handleApiError } from "@/lib/apiError";
 
 export async function GET() {
     try {
@@ -14,10 +15,7 @@ export async function GET() {
 
         return Response.json({ products });
     } catch (error) {
-        return Response.json(
-            { message: "Unauthorized", error },
-            { status: 401 }
-        );
+        return handleApiError(error);
     }
 }
 
@@ -51,9 +49,6 @@ export async function POST(req: Request) {
         );
 
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }

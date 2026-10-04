@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
+import { handleApiError } from "@/lib/apiError";
 
 export async function GET( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -24,10 +25,7 @@ export async function GET( _req: Request, { params }: { params: Promise<{ id: st
 
         return Response.json({ order });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }
 
@@ -202,10 +200,7 @@ export async function PATCH( req: Request, { params }: { params: Promise<{ id: s
             order,
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }
 export async function DELETE( _req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -231,9 +226,6 @@ export async function DELETE( _req: Request, { params }: { params: Promise<{ id:
             message: "Order deleted successfully",
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }

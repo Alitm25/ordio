@@ -2,6 +2,7 @@ import {connectDB} from "@/lib/db";
 import {getCurrentUser} from "@/lib/getCurrentUser";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { handleApiError } from "@/lib/apiError";
 
 export async function PATCH(req: Request) {
     try {
@@ -56,9 +57,6 @@ export async function PATCH(req: Request) {
             message: "Password changed successfully",
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }

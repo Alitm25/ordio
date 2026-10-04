@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
+import { handleApiError } from "@/lib/apiError";
 
 export async function POST(req: Request) {
     try {
@@ -137,10 +138,7 @@ export async function POST(req: Request) {
             { status: 201 }
         );
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }
 
@@ -193,10 +191,7 @@ export async function GET(req: Request) {
             page,
         });
     } catch (error) {
-        return Response.json(
-            { message: "Unauthorized", error },
-            { status: 401 }
-        );
+        return handleApiError(error);
     }
 }
 
@@ -224,9 +219,6 @@ export async function DELETE(req: Request) {
             deletedCount: result.deletedCount,
         });
     } catch (error) {
-        return Response.json(
-            { message: "Server error", error },
-            { status: 500 }
-        );
+        return handleApiError(error);
     }
 }
