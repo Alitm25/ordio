@@ -17,6 +17,11 @@ export function handleApiError(error: unknown) {
         return Response.json({ message: error.message }, { status: error.status });
     }
 
+    // A broken request body, e.g. req.json() on "{oops"
+    if (error instanceof SyntaxError) {
+        return Response.json({ message: "Invalid JSON" }, { status: 400 });
+    }
+
     // A malformed id, e.g. /api/orders/banana
     if (error instanceof mongoose.Error.CastError) {
         return Response.json({ message: "Invalid id" }, { status: 400 });
