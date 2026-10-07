@@ -3,6 +3,8 @@ import { getTranslations, getLocale } from "next-intl/server";
 import {ChartNoAxesColumn, CreditCard, ShoppingBag, Users} from "lucide-react";
 import HeroSection from "@/components/landing/HeroSection";
 import LandingNavbar from "@/components/landing/LandingNavbar";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import Cta from "@/components/landing/Cta";
 
 export default async function LandingPage() {
   const t = await getTranslations("landing");
@@ -25,22 +27,34 @@ export default async function LandingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
-                { key: "orders", icon: <ShoppingBag color={"purple"} />, color: "bg-primary/10" },
-                { key: "payments", icon: <CreditCard color={"purple"} />, color: "bg-primary/10" },
-                { key: "customers", icon: <Users color={"purple"} />, color: "bg-primary/10" },
-                { key: "dashboard", icon: <ChartNoAxesColumn color={"purple"} />, color: "bg-primary/10" },
+                { key: "orders", icon: <ShoppingBag color={"#5B5BD6"} />, color: "bg-primary/10" },
+                { key: "payments", icon: <CreditCard color={"#5B5BD6"} />, color: "bg-primary/10" },
+                { key: "customers", icon: <Users color={"#5B5BD6"} />, color: "bg-primary/10" },
+                { key: "dashboard", icon: <ChartNoAxesColumn color={"#5B5BD6"} />, color: "bg-primary/10" },
               ].map((feature) => (
-                  <div key={feature.key}   className="bg-card border border-border rounded-xl p-6 hover:shadow-sm transition-shadow">
-                    <div className={`w-10 h-10 ${feature.color} rounded-lg flex items-center justify-center text-lg mb-4`}>
-                      {feature.icon}
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-2">
-                      {t(`features.items.${feature.key}.title`)}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {t(`features.items.${feature.key}.description`)}
-                    </p>
-                  </div>
+                  // <div key={feature.key}   className="bg-card border border-border rounded-xl p-6 hover:shadow-sm transition-shadow">
+                  //   <div className={`w-10 h-10 ${feature.color} rounded-lg flex items-center justify-center text-lg mb-4`}>
+                  //     {feature.icon}
+                  //   </div>
+                  //   <h3 className="font-semibold text-foreground mb-2">
+                  //     {t(`features.items.${feature.key}.title`)}
+                  //   </h3>
+                  //   <p className="text-sm text-muted-foreground leading-relaxed">
+                  //     {t(`features.items.${feature.key}.description`)}
+                  //   </p>
+                  // </div>
+                  <SpotlightCard spotlightColor={'rgba(91, 91, 214, 0.5)'} key={feature.key}
+                  className={'bg-card border border-border rounded-xl p-6 hover:shadow-sm hover:scale-105 hover:bg-secondary transition-all'}>
+                      <div className={`w-10 h-10 ${feature.color} rounded-lg flex items-center justify-center text-lg mb-4`}>
+                          {feature.icon}
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-2 cursor-default">
+                          {t(`features.items.${feature.key}.title`)}
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed cursor-default" >
+                        {t(`features.items.${feature.key}.description`)}
+                      </p>
+                  </SpotlightCard>
               ))}
             </div>
           </div>
@@ -76,19 +90,7 @@ export default async function LandingPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-24 px-6 bg-secondary">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-foreground mb-3">
-              {t("cta.title")}
-            </h2>
-            <p className="text-xl text-muted-foreground mb-10">
-              {t("cta.subtitle")}
-            </p>
-            <Link href="/register" className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-medium text-lg hover:bg-primary/90 transition-colors">
-              {t("cta.button")} →
-            </Link>
-          </div>
-        </section>
+        <Cta />
 
         {/* Footer */}
         <footer className="py-12 px-6 border-t border-border bg-background">

@@ -28,6 +28,7 @@ import {
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import {toast} from "sonner";
+import { OrderSortField } from "@/features/orders/schemas/createOrderSchema";
 
 export default function OrdersPage() {
     // Router variables for URL syncing
@@ -63,12 +64,13 @@ export default function OrdersPage() {
     const debouncedSearch = useDebouncedValue(search, 400);
 
     // sort variables
-    const [sortBy, sortOrder] = sort.split(":") as [string, "asc" | "desc"];
-    const SORT_OPTIONS = [
+    const [sortBy, sortOrder] = sort.split(":") as [OrderSortField, "asc" | "desc"];
+    // The type only allows "<real sort field>:<asc|desc>", so a typo like "price:desc" is a compile error
+    const SORT_OPTIONS: { value: `${OrderSortField}:${"asc" | "desc"}`; label: string }[] = [
         { value: `createdAt:desc`, label: `${ tOrders('sort.newestFirst') }` },
         { value: "createdAt:asc", label: `${ tOrders('sort.oldestFirst') }` },
-        { value: "price:desc", label: `${ tOrders('sort.priceHighToLow') }` },
-        { value: "price:asc", label: `${ tOrders('sort.priceLowToHigh') }` },
+        { value: "totalAmount:desc", label: `${ tOrders('sort.priceHighToLow') }` },
+        { value: "totalAmount:asc", label: `${ tOrders('sort.priceLowToHigh') }` },
     ];
 
     // Get orders query fetch

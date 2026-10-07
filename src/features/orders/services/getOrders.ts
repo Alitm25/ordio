@@ -1,11 +1,12 @@
 import { api } from "@/services/api";
 import {Order} from "@/types/order";
+import { OrderSortField } from "@/features/orders/schemas/createOrderSchema";
 
 
 export interface GetOrdersParams {
     search?: string;
     status?: string;
-    sortBy?: string;
+    sortBy?: OrderSortField;
     sortOrder?: "asc" | "desc";
     page?: number;
     limit?: number;
