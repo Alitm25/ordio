@@ -3,29 +3,16 @@ import {getCurrentUser} from "@/lib/getCurrentUser";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { changePasswordRequestSchema } from "@/features/settings/schemas/changePasswordSchema";
 
 export async function PATCH(req: Request) {
     try {
         await connectDB();
 
         const user = await getCurrentUser();
-        const {currentPassword, newPassword} = await req.json();
-
-        // Return Error when new and current passwrod missing
-        if (!currentPassword || !newPassword) {
-            return Response.json(
-                { message: 'All fields are required.' },
-                { status: 400 }
-            )
-        }
-
-        // Return error when password is less than 6 characters
-        if (newPassword.length < 6) {
-            return Response.json(
-                { message: 'Password must be at least 6 characters' },
-                { status: 400 }
-            );
-        }
+        // Both passwords must be strings, and the new one at least 6 characters
+        const {currentPassword, newPassword} = validate(changePasswordRequestSchema, await req.json());
 
         const dbUser = await User.findById(user.userId);
 

@@ -2,22 +2,16 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { registerSchema } from "@/features/auth/schemas/registerSchema";
 
 export async function POST(req: Request) {
     try {
         // connecting to DataBase
         await connectDB();
 
-        // getting data from request
-        const { email, password } = await req.json();
-
-        // simple check
-        if (!email || !password) {
-            return Response.json(
-                { message: "Email and password required" },
-                { status: 400 }
-            );
-        }
+        // getting data from request (checked with the same schema as the register form)
+        const { email, password } = validate(registerSchema, await req.json());
 
         // check that the user not existed before
         const existingUser = await User.findOne({ email });

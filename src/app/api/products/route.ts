@@ -2,6 +2,8 @@ import {connectDB} from "@/lib/db";
 import {getCurrentUser} from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { productSchema } from "@/features/products/schemas/productSchema";
 
 export async function GET() {
     try {
@@ -26,14 +28,8 @@ export async function POST(req: Request) {
 
         const user = await getCurrentUser();
 
-        const { name, price, description, stock } = await req.json();
-
-        if (!name || !price) {
-            return Response.json(
-                { message: 'Name and price are required' },
-                { status: 400 }
-            )
-        }
+        // price: 0 is allowed now (the old `!price` check treated 0 as "missing")
+        const { name, price, description, stock } = validate(productSchema, await req.json());
 
         const product = await Product.create({
             name,

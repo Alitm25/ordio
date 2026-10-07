@@ -1,7 +1,9 @@
 import {connectDB} from "@/lib/db";
 import {getCurrentUser} from "@/lib/getCurrentUser";
 import Customer from "@/models/Customer";
-import { handleApiError } from "@/lib/apiError";
+import { ApiError, handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { customerSchema } from "@/features/customers/schemas/customerSchema";
 
 export async function PATCH(
     req: Request,
@@ -12,7 +14,7 @@ export async function PATCH(
 
         const user = await getCurrentUser();
         const { id } = await params;
-        const { name, phone, notes } = await req.json();
+        const data = validate(customerSchema.partial(), await req.json());
 
         const customer = await Customer.findOne({
             _id: id,
@@ -20,15 +22,10 @@ export async function PATCH(
         });
 
         if (!customer) {
-            return Response.json(
-                { message: "Customer not found" },
-                { status: 404 }
-            );
+            throw new ApiError(404, "Customer not found");
         }
 
-        if (name !== undefined) customer.name = name;
-        if (phone !== undefined) customer.phone = phone;
-        if (notes !== undefined) customer.notes = notes;
+        customer.set(data);
 
         await customer.save();
 

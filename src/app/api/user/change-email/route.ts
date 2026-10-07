@@ -3,29 +3,16 @@ import User from "@/models/User";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import bcrypt from "bcryptjs";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { changeEmailSchema } from "@/features/settings/schemas/changeEmail";
 
 export async function PATCH(req: Request) {
     try {
         await connectDB();
 
         const user = await getCurrentUser();
-        const { newEmail, currentPassword } = await req.json();
-
-        if (!newEmail || !currentPassword) {
-            return Response.json(
-                { message: "All fields are required" },
-                { status: 400 }
-            );
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(newEmail)) {
-            return Response.json(
-                { message: "Invalid email format" },
-                { status: 400 }
-            );
-        }
+        // Same schema as the change-email form (also checks the email format)
+        const { newEmail, currentPassword } = validate(changeEmailSchema, await req.json());
 
         // Find User
         const dbUser = await User.findById(user.userId);

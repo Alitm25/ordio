@@ -3,14 +3,20 @@ import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { bulkDeleteOrdersSchema, createOrderSchema, ordersQuerySchema } from "@/features/orders/schemas/createOrderSchema";
+
+// Turn every regex special character into a literal one: "a(b" -> "a\(b"
+function escapeRegex(text: string) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 export async function POST(req: Request) {
     try {
         await connectDB();
 
         const user = await getCurrentUser();
-        const body = await req.json();
-
+        // Same rules as the create-order form: at least one item, quantity is a whole number ≥ 1, etc.
         const {
             customerName,
             customerPhone,
@@ -18,23 +24,10 @@ export async function POST(req: Request) {
             items,
             paymentStatus,
             paymentMethod,
-        } = body;
-
-        // Check if data has any order or not
-        if (!items || !Array.isArray(items) || items.length === 0) {
-            return Response.json(
-                { message: "Order must have at least one item" },
-                { status: 400 }
-            );
-        }
+        } = validate(createOrderSchema, await req.json());
 
         // Declaration of each Order
-        const processedItems = items.map((item: {
-            productId?: string;
-            productName: string;
-            quantity: number;
-            price: number;
-        }) => ({
+        const processedItems = items.map((item) => ({
             productId: item.productId ?? null,
             productName: item.productName,
             quantity: item.quantity,
@@ -149,12 +142,11 @@ export async function GET(req: Request) {
         const user = await getCurrentUser();
         const { searchParams } = new URL(req.url);
 
-        const search = searchParams.get("search") ?? "";
-        const status = searchParams.get("status") ?? "all";
-        const sortBy = searchParams.get("sortBy") ?? "createdAt";
-        const sortOrder = searchParams.get("sortOrder") ?? "desc";
-        const page = Number(searchParams.get("page") ?? "1");
-        const limit = Number(searchParams.get("limit") ?? "10");
+        // sortBy can only be a real field, limit is between 1 and 100, page is a whole number ≥ 1...
+        const { search, status, sortBy, sortOrder, page, limit } = validate(
+            ordersQuerySchema,
+            Object.fromEntries(searchParams)
+        );
 
         const filter: Record<string, unknown> = {
             userId: user.userId,
@@ -165,9 +157,12 @@ export async function GET(req: Request) {
         }
 
         if (search) {
+            // Escape regex symbols so "(" or ".*" are searched as plain text, not as regex commands
+            const safeSearch = escapeRegex(search);
+
             filter.$or = [
-                { customerName: { $regex: search, $options: "i" } },
-                { "items.productName": { $regex: search, $options: "i" } },
+                { customerName: { $regex: safeSearch, $options: "i" } },
+                { "items.productName": { $regex: safeSearch, $options: "i" } },
             ];
         }
 
@@ -200,14 +195,7 @@ export async function DELETE(req: Request) {
         await connectDB();
 
         const user = await getCurrentUser();
-        const { ids } = await req.json();
-
-        if (!Array.isArray(ids) || ids.length === 0) {
-            return Response.json(
-                { message: "No order ids provided" },
-                { status: 400 }
-            );
-        }
+        const { ids } = validate(bulkDeleteOrdersSchema, await req.json());
 
         const result = await Order.deleteMany({
             _id: { $in: ids },

@@ -2,6 +2,8 @@ import {connectDB} from "@/lib/db";
 import {getCurrentUser} from "@/lib/getCurrentUser";
 import Customer from "@/models/Customer";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { customerSchema } from "@/features/customers/schemas/customerSchema";
 
 export async function GET() {
     try {
@@ -25,14 +27,7 @@ export async function POST(req: Request) {
 
         const user = await getCurrentUser();
 
-        const { name, phone, notes } = await req.json();
-
-        if (!name || !phone) {
-            return Response.json(
-                { message: 'Name and Phone are required' },
-                { status: 400 }
-            );
-        }
+        const { name, phone, notes } = validate(customerSchema, await req.json());
 
         const customer = await Customer.create({
             name,

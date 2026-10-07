@@ -1,7 +1,9 @@
 import { connectDB } from "@/lib/db";
 import Product from "@/models/Product";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import { handleApiError } from "@/lib/apiError";
+import { ApiError, handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { productSchema } from "@/features/products/schemas/productSchema";
 
 export async function PATCH(
     req: Request,
@@ -12,7 +14,8 @@ export async function PATCH(
 
         const user = await getCurrentUser();
         const { id } = await params;
-        const { name, price, description, stock } = await req.json();
+        // partial(): every field is optional, but any field that IS sent must follow the rules
+        const data = validate(productSchema.partial(), await req.json());
 
         const product = await Product.findOne({
             _id: id,
@@ -20,16 +23,11 @@ export async function PATCH(
         });
 
         if (!product) {
-            return Response.json(
-                { message: "Product not found" },
-                { status: 404 }
-            );
+            throw new ApiError(404, "Product not found");
         }
 
-        if (name !== undefined) product.name = name;
-        if (price !== undefined) product.price = price;
-        if (description !== undefined) product.description = description;
-        if (stock !== undefined) product.stock = stock;
+        // only the validated fields are copied onto the product
+        product.set(data);
 
         await product.save();
 

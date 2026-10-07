@@ -4,19 +4,15 @@ import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
 import {NextResponse} from "next/server";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { loginSchema } from "@/features/auth/schemas/loginSchema";
 
 export async function POST(req: Request) {
     try {
         await connectDB();
 
-        const { email, password } = await req.json();
-
-        if (!email || !password) {
-            return NextResponse.json(
-                { message: "Email and password are required" },
-                { status: 400 }
-            );
-        }
+        // email & password are guaranteed to be strings (not database operators)
+        const { email, password } = validate(loginSchema, await req.json());
 
         const user = await User.findOne({ email });
 

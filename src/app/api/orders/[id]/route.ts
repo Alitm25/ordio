@@ -2,7 +2,9 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
-import { handleApiError } from "@/lib/apiError";
+import { ApiError, handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { OrderItemFormValues, updateOrderSchema } from "@/features/orders/schemas/createOrderSchema";
 
 export async function GET( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -17,10 +19,7 @@ export async function GET( _req: Request, { params }: { params: Promise<{ id: st
         }).populate("customerId", "name phone");
 
         if (!order) {
-            return Response.json(
-                { message: "Order not found" },
-                { status: 404 }
-            );
+            throw new ApiError(404, "Order not found");
         }
 
         return Response.json({ order });
@@ -35,7 +34,8 @@ export async function PATCH( req: Request, { params }: { params: Promise<{ id: s
 
         const user = await getCurrentUser();
         const { id } = await params;
-        const body = await req.json();
+        // Only known fields with valid values survive (e.g. status: "flying" is rejected here)
+        const { items, ...fields } = validate(updateOrderSchema, await req.json());
 
         const order = await Order.findOne({
             _id: id,
@@ -43,36 +43,15 @@ export async function PATCH( req: Request, { params }: { params: Promise<{ id: s
         });
 
         if (!order) {
-            return Response.json(
-                { message: "Order not found" },
-                { status: 404 }
-            );
+            throw new ApiError(404, "Order not found");
         }
 
-        // Fields that can be edited
-        const allowedFields = [
-            "customerName",
-            "customerPhone",
-            "customerId",
-            "status",
-            "paymentStatus",
-            "paymentMethod",
-        ] as const;
-
-        for (const field of allowedFields) {
-            if (body[field] !== undefined) {
-                order[field] = body[field];
-            }
-        }
+        // Copy the validated simple fields (customer info, status, payment...)
+        order.set(fields);
 
         // Get each item of the order that is going to be edited
-        if (body.items && Array.isArray(body.items) && body.items.length > 0) {
-            const processedItems = body.items.map((item: {
-                productId?: string;
-                productName: string;
-                quantity: number;
-                price: number;
-            }) => ({
+        if (items) {
+            const processedItems = items.map((item) => ({
                 productId: item.productId ?? null,
                 productName: item.productName,
                 quantity: item.quantity,
@@ -82,17 +61,12 @@ export async function PATCH( req: Request, { params }: { params: Promise<{ id: s
 
             // Old items (with productId)
             const oldTrackedItems = order.items.filter(
-                (item: any) => item.productId
+                (item: OrderItemFormValues) => item.productId
             );
 
             // New items (with prodcutId)
             const newTrackedItems = processedItems.filter(
-                (item : {
-                    productId?: string;
-                    productName: string;
-                    quantity: number;
-                    price: number;
-                }) => item.productId
+                (item) => item.productId
             );
 
             // Restore the old items stock
@@ -216,10 +190,7 @@ export async function DELETE( _req: Request, { params }: { params: Promise<{ id:
         });
 
         if (!deletedOrder) {
-            return Response.json(
-                { message: "Order not found" },
-                { status: 404 }
-            );
+            throw new ApiError(404, "Order not found");
         }
 
         return Response.json({
