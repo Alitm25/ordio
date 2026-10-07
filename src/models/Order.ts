@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES } from "@/features/orders/schemas/createOrderSchema";
 
 const OrderItemSchema = new mongoose.Schema(
     {
@@ -60,17 +61,17 @@ const OrderSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["pending", "processing", "completed", "cancelled"],
+            enum: ORDER_STATUSES,
             default: "pending",
         },
         paymentStatus: {
             type: String,
-            enum: ["unpaid", "paid", "partial"],
+            enum: PAYMENT_STATUSES,
             default: "unpaid",
         },
         paymentMethod: {
             type: String,
-            enum: ["cash", "card", "transfer"],
+            enum: PAYMENT_METHODS,
             default: null,
         },
         userId: {
