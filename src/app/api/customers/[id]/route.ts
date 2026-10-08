@@ -10,9 +10,8 @@ export async function PATCH(
     { params } : { params: Promise<{id: String}> }
 ) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { id } = await params;
         const data = validate(customerSchema.partial(), await req.json());
 
@@ -45,9 +44,8 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { id } = await params;
 
         const deleted = await Customer.findOneAndDelete({

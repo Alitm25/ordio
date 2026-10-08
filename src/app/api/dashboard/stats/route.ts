@@ -49,9 +49,8 @@ function getTrendDays(range: string): number {
 
 export async function GET(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
 
         // Get the range param from URL
         const { searchParams } = new URL(req.url);

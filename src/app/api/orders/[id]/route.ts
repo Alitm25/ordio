@@ -8,9 +8,8 @@ import { OrderItemFormValues, updateOrderSchema } from "@/features/orders/schema
 
 export async function GET( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { id } = await params;
 
         const order = await Order.findOne({
@@ -30,9 +29,8 @@ export async function GET( _req: Request, { params }: { params: Promise<{ id: st
 
 export async function PATCH( req: Request, { params }: { params: Promise<{ id: string }> } ) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { id } = await params;
         // Only known fields with valid values survive (e.g. status: "flying" is rejected here)
         const { items, ...fields } = validate(updateOrderSchema, await req.json());
@@ -179,9 +177,8 @@ export async function PATCH( req: Request, { params }: { params: Promise<{ id: s
 }
 export async function DELETE( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { id } = await params;
 
         const deletedOrder = await Order.findOneAndDelete({

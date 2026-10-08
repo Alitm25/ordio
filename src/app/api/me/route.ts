@@ -5,9 +5,8 @@ import { handleApiError } from "@/lib/apiError";
 
 export async function GET() {
     try {
-        await connectDB();
-
         const decoded = await getCurrentUser();
+        await connectDB();
 
         const user = await User.findById(decoded.userId);
 

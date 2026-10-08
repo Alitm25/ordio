@@ -7,9 +7,8 @@ import { customerSchema } from "@/features/customers/schemas/customerSchema";
 
 export async function GET() {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
 
         const customers = await Customer.find({
             userId: user.userId,
@@ -23,9 +22,8 @@ export async function GET() {
 
 export async function POST(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
 
         const { name, phone, notes } = validate(customerSchema, await req.json());
 

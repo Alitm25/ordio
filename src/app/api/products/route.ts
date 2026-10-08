@@ -7,9 +7,8 @@ import { productSchema } from "@/features/products/schemas/productSchema";
 
 export async function GET() {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
 
         const products = await Product.find({ userId: user.userId }).sort({
             createdAt: -1,
@@ -24,9 +23,8 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
 
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
 
         // price: 0 is allowed now (the old `!price` check treated 0 as "missing")
         const { name, price, description, stock } = validate(productSchema, await req.json());
