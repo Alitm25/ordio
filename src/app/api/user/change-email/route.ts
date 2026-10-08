@@ -8,9 +8,8 @@ import { changeEmailSchema } from "@/features/settings/schemas/changeEmail";
 
 export async function PATCH(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         // Same schema as the change-email form (also checks the email format)
         const { newEmail, currentPassword } = validate(changeEmailSchema, await req.json());
 
@@ -30,10 +29,11 @@ export async function PATCH(req: Request) {
             dbUser.password
         );
 
+        // 400, not 401: we know who the user is, they just typed a wrong password in the form
         if (!isPasswordCorrect) {
             return Response.json(
                 { message: "Current password is incorrect" },
-                { status: 401 }
+                { status: 400 }
             );
         }
 

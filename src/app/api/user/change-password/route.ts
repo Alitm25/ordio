@@ -8,9 +8,8 @@ import { changePasswordRequestSchema } from "@/features/settings/schemas/changeP
 
 export async function PATCH(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         // Both passwords must be strings, and the new one at least 6 characters
         const {currentPassword, newPassword} = validate(changePasswordRequestSchema, await req.json());
 
