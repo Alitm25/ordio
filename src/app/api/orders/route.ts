@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
-import { handleApiError } from "@/lib/apiError";
+import { ApiError, handleApiError } from "@/lib/apiError";
 import { validate } from "@/lib/validate";
 import { bulkDeleteOrdersSchema, createOrderSchema, ordersQuerySchema } from "@/features/orders/schemas/createOrderSchema";
 
@@ -13,9 +13,8 @@ function escapeRegex(text: string) {
 
 export async function POST(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         // Same rules as the create-order form: at least one item, quantity is a whole number ≥ 1, etc.
         const {
             customerName,
@@ -55,12 +54,8 @@ export async function POST(req: Request) {
             });
 
             if (product && product.stock < item.quantity) {
-                return Response.json(
-                    {
-                        message: `Insufficient stock for "${item.productName}". Available: ${product.stock}`,
-                    },
-                    { status: 400 }
-                );
+                // nothing was taken yet, so we can stop right away
+                throw new ApiError(400, `Insufficient stock for "${item.productName}". Available: ${product.stock}`);
             }
         }
 
@@ -89,12 +84,8 @@ export async function POST(req: Request) {
                     });
                 }
 
-                return Response.json(
-                    {
-                        message: `Insufficient stock for "${item.productName}". Available: ${available}`,
-                    },
-                    { status: 400 }
-                );
+                // throw only AFTER the stock above was given back (code after a throw never runs)
+                throw new ApiError(400, `Insufficient stock for "${item.productName}". Available: ${available}`);
             }
 
             // if all checks were ok, add the items
@@ -105,9 +96,7 @@ export async function POST(req: Request) {
         }
 
         // create the order after all checks done
-        let order;
-
-        order = await Order.create({
+        const order = await Order.create({
             customerName,
             customerPhone,
             customerId: customerId ?? null,
@@ -137,9 +126,8 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { searchParams } = new URL(req.url);
 
         // sortBy can only be a real field, limit is between 1 and 100, page is a whole number ≥ 1...
@@ -192,9 +180,8 @@ export async function GET(req: Request) {
 
 export async function DELETE(req: Request) {
     try {
-        await connectDB();
-
         const user = await getCurrentUser();
+        await connectDB();
         const { ids } = validate(bulkDeleteOrdersSchema, await req.json());
 
         const result = await Order.deleteMany({
