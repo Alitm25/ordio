@@ -16,11 +16,13 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { getErrorMessage } from "@/lib/getErrorMessage";
 import {useTranslations} from "next-intl";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LoginForm() {
     const router = useRouter();
 
     const loginMutation = useLogin();
+    const queryClient = useQueryClient();
 
     const t = useTranslations('auth.login');
     const tToast = useTranslations('toast.auth');
@@ -33,6 +35,9 @@ export default function LoginForm() {
     const onSubmit = async (data: LoginFormData) => {
         try {
             await loginMutation.mutateAsync(data);
+
+            // Safety net: drop any cached data left over from a previous user before entering the app
+            queryClient.clear();
 
             toast.success( tToast('loginSuccess') );
 
