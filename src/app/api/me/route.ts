@@ -1,7 +1,7 @@
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import { handleApiError } from "@/lib/apiError";
+import { ApiError, handleApiError } from "@/lib/apiError";
 
 export async function GET() {
     try {
@@ -10,11 +10,9 @@ export async function GET() {
 
         const user = await User.findById(decoded.userId);
 
+        // A valid token for a deleted user: we don't know who this is anymore -> 401
         if (!user) {
-            return Response.json(
-                { message: "User not found" },
-                { status: 404 }
-            );
+            throw new ApiError(401, "Unauthorized");
         }
 
         return Response.json({
