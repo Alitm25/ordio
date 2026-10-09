@@ -162,6 +162,12 @@
   html {
     font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   }
+  /* Smooth jumps to #sections, but only for people who haven't asked their OS to reduce motion */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
   html[lang="fa"] {
     font-family: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
     --font-sans: var(--font-vazirmatn);
