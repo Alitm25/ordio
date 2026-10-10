@@ -25,6 +25,7 @@
     "nav": {
       "features": "Features",
       "howItWorks": "How it works",
+      "faq": "FAQ",
       "signIn": "Sign in",
       "startFree": "Start for free",
       "home": "Ordio home"
@@ -59,6 +60,17 @@
     },
     "steps": {
       "title": "From first order to paid, in three steps",
+      "hint": "Click a step to see it in action.",
+      "next": "Next step",
+      "again": "Play again",
+      "stepOf": "Step {current} of {total}: {title}",
+      "demo": {
+        "bread": "Bread",
+        "cheese": "Cheese",
+        "cake": "Cake",
+        "customer": "Sara",
+        "orderDone": "Order done"
+      },
       "items": {
         "one": {
           "title": "Add what you sell",
@@ -74,6 +86,36 @@
         }
       }
     },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Everything you need to know before logging your first order.",
+      "items": {
+        "what": {
+          "question": "What is Ordio, and who is it for?",
+          "answer": "Ordio is a simple order manager for small businesses and solo sellers who take orders by phone, Instagram or Telegram. It replaces the notebook and the spreadsheet: every order, customer and payment lives in one place."
+        },
+        "free": {
+          "question": "Is Ordio free?",
+          "answer": "Yes. You can create an account and start logging orders for free, with no credit card required."
+        },
+        "install": {
+          "question": "Do I need to install anything?",
+          "answer": "No. Ordio runs in your browser on your phone, tablet or computer. It works in English and Persian, with Jalali dates in Persian."
+        },
+        "stock": {
+          "question": "Can Ordio keep track of my stock?",
+          "answer": "Yes, if you want it to. Give a product a stock number and it goes down automatically with every order, and the dashboard warns you when only 5 or fewer are left. Leave it empty for products you don't need to count."
+        },
+        "payments": {
+          "question": "What if a customer pays only part of the price?",
+          "answer": "Mark the order as partially paid. Every order shows whether it is unpaid, partially paid or paid, and how it was paid: cash, card or bank transfer."
+        },
+        "data": {
+          "question": "Is my data private, and can I take it with me?",
+          "answer": "Your orders, customers and products are visible only to your account, and your password is never stored as plain text. You can export your orders to a CSV file (Excel compatible) at any time."
+        }
+      }
+    },
     "cta": {
       "title": "Stop tracking orders in three different places.",
       "subtitle": "Bring them into one.",
@@ -82,6 +124,7 @@
     "footer": {
       "tagline": "Built for small businesses and solo sellers",
       "features": "Features",
+      "faq": "FAQ",
       "login": "Login",
       "copyright": "© {year} Ordio. All rights reserved."
     }
