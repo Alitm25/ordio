@@ -180,3 +180,33 @@
     font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   }
 }
+/* ---------- Landing: "How it works" mini scenes ----------
+   Performance: only opacity + transform are animated (GPU-friendly, no layout work),
+   and animations only exist while their step is active ([data-active="true"]).
+   Each element picks its start time with --d (delay), so React never runs timers. */
+@keyframes hiw-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hiw-out {
+  to { opacity: 0; }
+}
+/* appears, stays a moment, then disappears (e.g. the "Processing" badge) */
+@keyframes hiw-flash {
+  0%, 100% { opacity: 0; }
+  20%, 80% { opacity: 1; }
+}
+
+.hiw-reveal { opacity: 0; }
+.hiw-flash { opacity: 0; }
+
+[data-active="true"] .hiw-reveal { animation: hiw-in 400ms ease-out var(--d, 0ms) both; }
+[data-active="true"] .hiw-hide { animation: hiw-out 250ms ease-out var(--d, 0ms) both; }
+[data-active="true"] .hiw-flash { animation: hiw-flash 900ms ease-in-out var(--d, 0ms) both; }
+
+/* "Reduce motion": skip the story and show every scene in its final state */
+@media (prefers-reduced-motion: reduce) {
+  [data-active="true"] .hiw-reveal { animation: none; opacity: 1; }
+  [data-active="true"] .hiw-hide,
+  [data-active="true"] .hiw-flash { animation: none; opacity: 0; }
+}
