@@ -16,6 +16,8 @@ import {useQueryClient} from "@tanstack/react-query";
 import {ChangeEmailFormValues, changeEmailSchema} from "@/features/settings/schemas/changeEmail";
 import {useLocale, useTranslations} from "next-intl";
 import {formatDate} from "@/lib/formatDate";
+import PreferencesCard from "@/features/settings/components/PreferencesCard";
+import LogoutCard from "@/features/settings/components/LogoutCard";
 
 export default function SettingsPage() {
     // Get the current user
@@ -92,7 +94,8 @@ export default function SettingsPage() {
         <div className="space-y-6 max-w-2xl">
             <h1 className="text-3xl font-bold">{ tSettings('title') }</h1>
             {/* Account information Card START */}
-                <Card>
+                {/* id="account": the email link in the topbar jumps here (/settings#account) */}
+                <Card id="account" className="scroll-mt-6">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <User className="h-5 w-5" />
@@ -105,7 +108,7 @@ export default function SettingsPage() {
                             <span className="text-sm text-muted-foreground">
                                 { tSettings('account.email') }
                             </span>
-                            <span className="font-medium">
+                            <span className="font-medium latin-value self-start">
                                 {user?.email ?? "—"}
                             </span>
                         </div>
@@ -293,6 +296,12 @@ export default function SettingsPage() {
                     </CardContent>
                 </Card>
             {/* Change Password Card END */}
+
+            {/* Theme + language (moved here from the topbar) */}
+            <PreferencesCard />
+
+            {/* Log out (moved here from the topbar) */}
+            <LogoutCard />
         </div>
     );
 }
