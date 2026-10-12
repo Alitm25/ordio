@@ -8,8 +8,8 @@ import {
     Package,
     Settings, ShoppingBag, Users,
 } from "lucide-react";
-import {useTransition} from "react";
 import {useTranslations} from "next-intl";
+import Logo from "@/components/shared/Logo";
 
 interface Props {
     onNavigate?: () => void;
@@ -33,10 +33,12 @@ export function SidebarContent({ onNavigate } :Props) {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="p-4.5 border-b">
-                <h1 className="text-2xl font-bold">
-                    Ordio
-                </h1>
+            {/* h-17: the same height as the topbar. flex: the logo is a flex item, so no extra "descender" gap below it */}
+            <div className="h-17 px-4.5 border-b flex items-center">
+                {/* Not an <h1>: each page already has its own title as the h1 */}
+                <Link href="/dashboard" onClick={onNavigate} className="inline-flex">
+                    <Logo size={28} textClassName="text-2xl" />
+                </Link>
             </div>
 
             <nav className="flex-1 p-4 space-y-2">
