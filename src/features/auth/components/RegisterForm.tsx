@@ -23,6 +23,7 @@ import {
 import { useRegister } from "../hooks/useRegister";
 import { toast } from "sonner";
 import Link from "next/link";
+import Logo from "@/components/shared/Logo";
 import {getErrorMessage} from "@/lib/getErrorMessage";
 import {useTranslations} from "next-intl";
 
@@ -60,9 +61,10 @@ export default function RegisterForm() {
         <Card className="w-full max-w-md border-border/50 shadow-xl p-8 rounded-3xl">
             <CardHeader className={'space-y-2 pb-5 flex items-center justify-center flex-col'}>
                 <div className="flex justify-center mb-6">
-                    <div className="text-3xl font-bold">
-                        Ordio
-                    </div>
+                    {/* back to the landing page */}
+                    <Link href="/">
+                        <Logo size={36} textClassName="text-3xl text-foreground" />
+                    </Link>
                 </div>
 
                 <CardTitle className="text-2xl">

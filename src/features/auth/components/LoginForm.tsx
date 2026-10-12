@@ -14,6 +14,7 @@ import { loginSchema, LoginFormData } from "../schemas/loginSchema";
 import { useLogin } from "../hooks/useLogin";
 import { toast } from "sonner";
 import Link from "next/link";
+import Logo from "@/components/shared/Logo";
 import { getErrorMessage } from "@/lib/getErrorMessage";
 import {useTranslations} from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
@@ -51,9 +52,10 @@ export default function LoginForm() {
         <Card className="w-full max-w-md border-border/50 shadow-xl p-8 rounded-3xl">
             <CardHeader className="space-y-3 pb-5 flex items-center justify-center flex-col">
                 <div className="flex justify-center pb-3">
-                    <div className="text-3xl font-bold tracking-tight text-foreground">
-                        Ordio
-                    </div>
+                    {/* back to the landing page */}
+                    <Link href="/">
+                        <Logo size={36} textClassName="text-3xl text-foreground" />
+                    </Link>
                 </div>
 
                 <CardTitle className="text-2xl tracking-tight">{t("title")}</CardTitle>
