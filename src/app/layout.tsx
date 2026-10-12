@@ -1,6 +1,6 @@
 import QueryProvider from "@/providers/QueryProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Metadata } from "next";
@@ -11,11 +11,6 @@ import localFont from "next/font/local";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
     subsets: ["latin"],
 });
 
@@ -48,7 +43,8 @@ const vazirMatn = localFont({
 });
 
 export const metadata: Metadata = {
-    title: "Ordio",
+    // Pages can set their own title; "%s" is replaced by it, e.g. "Orders | Ordio"
+    title: { default: "Ordio", template: "%s | Ordio" },
     description: "Order Management System",
 };
 
@@ -65,7 +61,9 @@ export default async function RootLayout({
         <html
             lang={locale}
             dir={dir}
-            className={`${geistSans.variable} ${geistMono.variable} ${vazirMatn.variable} ${jetbrainsMono.variable}`}
+            // lets Next.js turn smooth scrolling off while changing pages (it stays on for #section links)
+            data-scroll-behavior="smooth"
+            className={`${geistSans.variable} ${vazirMatn.variable} ${jetbrainsMono.variable}`}
             suppressHydrationWarning
         >
         <body className="antialiased">
