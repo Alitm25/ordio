@@ -1,24 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {LogOut, Menu} from "lucide-react";
+import {Menu, UserRound} from "lucide-react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { useLogout } from "@/features/auth/hooks/useLogout";
 import {useState} from "react";
 import {Sheet, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {SidebarContent} from "@/components/layout/Sidebar";
-import LanguageToggle from "@/components/layout/LanguageToggle";
 import {useLocale, useTranslations} from "next-intl";
+import Link from "next/link";
+import Logo from "@/components/shared/Logo";
 
 export default function Topbar() {
     const { data } = useCurrentUser();
-    const logoutMutation = useLogout();
     const [open, setOpen] = useState(false);
 
     const locale = useLocale();
     const t = useTranslations('topbar');
+    // h-17: the SAME height as the sidebar header, so their bottom borders always line up
     return (
-        <header className="border-b px-8 py-5 flex items-center justify-between">
+        <header className="h-17 border-b px-4 md:px-8 flex items-center justify-between">
         {/* SideBar Menu */}
             <div className={'flex items-center gap-4'}>
                 <Sheet open={open} onOpenChange={setOpen}>
@@ -35,28 +35,24 @@ export default function Topbar() {
                         <SidebarContent onNavigate={ () => setOpen(false)}/>
                     </SheetContent>
                 </Sheet>
+                {/* phones only: on desktop the sidebar already shows the logo */}
+                <Link href="/dashboard" className="lg:hidden">
+                    <Logo size={24} textClassName="text-lg" />
+                </Link>
             </div>
-        {/* Logout and Language Toggle section */}
-            <div className="flex items-center gap-4">
-                {data?.user.email && (
-                    <span className={'text-sm text-muted-foreground hidden sm:block'}>
-                        {data.user.email}
-                    </span>
-                )}
-                {/* language Toggle */}
-                <LanguageToggle />
-                {/* logout */}
-                <Button
-                    variant={'outline'}
-                    size={'sm'}
-                    onClick={() => logoutMutation.mutate()}
-                    disabled={logoutMutation.isPending}
-                    className={'cursor-pointer group'}
+        {/* Account: one link to the settings page (language, theme and logout live there now) */}
+            {data?.user.email && (
+                <Link
+                    href="/settings#account"
+                    aria-label={`${t("accountSettings")} (${data.user.email})`}
+                    title={t("accountSettings")}
+                    className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
-                    <LogOut className={'h-4 w-4 mr-2 group-hover:text-red-600'}/>
-                    {logoutMutation.isPending ? `${t('loggingOut')}` : `${t('logout')}`}
-                </Button>
-            </div>
+                    <UserRound className="h-4 w-4" aria-hidden="true" />
+                    {/* phones: just the icon */}
+                    <span className="hidden sm:inline latin-value">{data.user.email}</span>
+                </Link>
+            )}
         </header>
     );
 }
