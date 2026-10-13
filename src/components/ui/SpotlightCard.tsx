@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Position {
   x: number;
@@ -55,7 +56,8 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative rounded-3xl overflow-hidden p-8 ${className}`}
+      // cn() lets the caller's classes REPLACE the defaults (p-6 wins over p-8) instead of both fighting
+      className={cn('relative rounded-3xl overflow-hidden p-8', className)}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"
