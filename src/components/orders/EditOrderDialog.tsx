@@ -64,7 +64,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] }); // <== refresh all orders cache
             queryClient.invalidateQueries({ queryKey: ["order", order?._id] }); // <== refresh the specific order cache
-            queryClient.invalidateQueries({ queryKey: ["product"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
             toast.success(tNotif("updateSuccess"));
             onOpenChange(false);
         },
