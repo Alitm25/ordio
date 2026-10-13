@@ -75,21 +75,25 @@ const CursorGrid = ({
   const propsRef = useRef<GridConfig>({} as GridConfig);
   const wakeRef = useRef<(() => void) | null>(null);
 
-  propsRef.current = {
-    cellSize,
-    color,
-    radius,
-    falloff,
-    holdTime,
-    fadeDuration,
-    lineWidth,
-    maxOpacity,
-    fillOpacity,
-    gridOpacity,
-    cellRadius,
-    clickPulse,
-    pulseSpeed
-  };
+  // Keep the latest props in a ref for the animation loop. Updated in an effect (after render),
+  // because React forbids writing to refs while rendering. Declared first, so it runs before the setup effect.
+  useEffect(() => {
+    propsRef.current = {
+      cellSize,
+      color,
+      radius,
+      falloff,
+      holdTime,
+      fadeDuration,
+      lineWidth,
+      maxOpacity,
+      fillOpacity,
+      gridOpacity,
+      cellRadius,
+      clickPulse,
+      pulseSpeed
+    };
+  });
 
   useEffect(() => {
     const container = containerRef.current;
@@ -308,7 +312,6 @@ const CursorGrid = ({
       container.removeEventListener('pointermove', onPointerMove);
       container.removeEventListener('pointerdown', onPointerDown);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellSize]);
 
   // Repaint static layers when visual props change while idle
