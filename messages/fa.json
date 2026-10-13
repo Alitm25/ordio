@@ -455,11 +455,25 @@
       "currentPassword": "تأیید با رمز عبور فعلی",
       "submit": "تغییر ایمیل",
       "loading": "در حال ذخیره..."
+    },
+    "preferences": {
+      "title": "ترجیحات",
+      "theme": "پوسته",
+      "themeDescription": "ظاهر اردیو را در این دستگاه انتخاب کنید.",
+      "light": "روشن",
+      "dark": "تاریک",
+      "language": "زبان",
+      "languageDescription": "زبان برنامه را انتخاب کنید."
+    },
+    "logout": {
+      "title": "خروج از حساب",
+      "description": "از حساب کاربری اردیو در این دستگاه خارج شوید.",
+      "button": "خروج",
+      "loading": "در حال خروج..."
     }
   },
   "topbar": {
-    "logout": "خروج",
-    "loggingOut": "در حال خروج..."
+    "accountSettings": "تنظیمات حساب"
   },
   "notFound": {
     "title": "صفحه یافت نشد",

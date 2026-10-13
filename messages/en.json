@@ -455,11 +455,25 @@
       "currentPassword": "Confirm with current password",
       "submit": "Change Email",
       "loading": "Saving..."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "theme": "Theme",
+      "themeDescription": "Choose how Ordio looks on this device.",
+      "light": "Light",
+      "dark": "Dark",
+      "language": "Language",
+      "languageDescription": "Choose the language of the app."
+    },
+    "logout": {
+      "title": "Log out",
+      "description": "Log out of your Ordio account on this device.",
+      "button": "Log out",
+      "loading": "Logging out..."
     }
   },
   "topbar": {
-    "logout": "Logout",
-    "loggingOut": "Logging out..."
+    "accountSettings": "Account settings"
   },
   "notFound": {
     "title": "Page not found",
