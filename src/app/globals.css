@@ -210,3 +210,11 @@
   [data-active="true"] .hiw-hide,
   [data-active="true"] .hiw-flash { animation: none; opacity: 0; }
 }
+
+/* Emails and similar values: always left-to-right with Latin digits, even on Persian pages.
+   (The Persian font draws every digit as a Persian digit, and RTL can move "@" or "-" around.) */
+.latin-value {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
