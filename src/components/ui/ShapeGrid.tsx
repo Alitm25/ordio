@@ -45,14 +45,28 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
     const hexHoriz = squareSize * 1.5;
     const hexVert = squareSize * Math.sqrt(3);
 
+    // Users who asked their OS to "reduce motion" get a still grid (it still reacts to their own pointer)
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Draw at the screen's real pixel density so lines stay sharp on Retina displays.
+    // width/height are in CSS pixels; the canvas buffer is dpr times bigger.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = 0;
+    let height = 0;
+
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
-      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 1;
+      width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+      numSquaresX.current = Math.ceil(width / squareSize) + 1;
+      numSquaresY.current = Math.ceil(height / squareSize) + 1;
     };
 
-    window.addEventListener('resize', resizeCanvas);
+    // Re-measure whenever the canvas itself changes size (not only when the window does)
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+    resizeObserver.observe(canvas);
     resizeCanvas();
 
     const drawHex = (cx: number, cy: number, size: number) => {
@@ -92,15 +106,15 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
     const drawGrid = () => {
       if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, width, height);
 
       if (isHex) {
         const colShift = Math.floor(gridOffset.current.x / hexHoriz);
         const offsetX = ((gridOffset.current.x % hexHoriz) + hexHoriz) % hexHoriz;
         const offsetY = ((gridOffset.current.y % hexVert) + hexVert) % hexVert;
 
-        const cols = Math.ceil(canvas.width / hexHoriz) + 3;
-        const rows = Math.ceil(canvas.height / hexVert) + 3;
+        const cols = Math.ceil(width / hexHoriz) + 3;
+        const rows = Math.ceil(height / hexVert) + 3;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -128,8 +142,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         const offsetX = ((gridOffset.current.x % halfW) + halfW) % halfW;
         const offsetY = ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const cols = Math.ceil(canvas.width / halfW) + 4;
-        const rows = Math.ceil(canvas.height / squareSize) + 4;
+        const cols = Math.ceil(width / halfW) + 4;
+        const rows = Math.ceil(height / squareSize) + 4;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -156,8 +170,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         const offsetX = ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
         const offsetY = ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const cols = Math.ceil(canvas.width / squareSize) + 3;
-        const rows = Math.ceil(canvas.height / squareSize) + 3;
+        const cols = Math.ceil(width / squareSize) + 3;
+        const rows = Math.ceil(height / squareSize) + 3;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -183,13 +197,14 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         const offsetX = ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
         const offsetY = ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const cols = Math.ceil(canvas.width / squareSize) + 3;
-        const rows = Math.ceil(canvas.height / squareSize) + 3;
+        const cols = Math.ceil(width / squareSize) + 3;
+        const rows = Math.ceil(height / squareSize) + 3;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
-            const sx = col * squareSize + offsetX;
-            const sy = row * squareSize + offsetY;
+            // snap to the pixel grid (+0.5 = centre of a pixel) so 1px lines stay crisp while moving
+            const sx = Math.round(col * squareSize + offsetX) + 0.5;
+            const sy = Math.round(row * squareSize + offsetY) + 0.5;
 
             const cellKey = `${col},${row}`;
             const alpha = cellOpacities.current.get(cellKey);
@@ -212,7 +227,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       const wrapX = isHex ? hexHoriz * 2 : squareSize;
       const wrapY = isHex ? hexVert : isTri ? squareSize * 2 : squareSize;
 
-      switch (direction) {
+      switch (reduceMotion ? null : direction) {
         case 'right':
           gridOffset.current.x = (gridOffset.current.x - effectiveSpeed + wrapX) % wrapX;
           break;
@@ -394,7 +409,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
     const io = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry.isIntersecting;
-        isVisible ? tryStart() : tryStop();
+        if (isVisible) tryStart();
+        else tryStop();
       },
       { threshold: 0 }
     );
@@ -402,14 +418,15 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
     const onVisibility = () => {
       isPageVisible = !document.hidden;
-      isPageVisible ? tryStart() : tryStop();
+      if (isPageVisible) tryStart();
+      else tryStop();
     };
     document.addEventListener('visibilitychange', onVisibility);
 
     tryStart();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      resizeObserver.disconnect();
       tryStop();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
