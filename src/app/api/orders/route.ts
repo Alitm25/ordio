@@ -1,8 +1,8 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import Product from "@/models/Product";
-import { ApiError, handleApiError } from "@/lib/apiError";
+import { handleApiError } from "@/lib/apiError";
+import { giveStock, holdsStock, takeStock, toStockLines } from "@/lib/stock";
 import { validate } from "@/lib/validate";
 import { bulkDeleteOrdersSchema, createOrderSchema, ordersQuerySchema } from "@/features/orders/schemas/createOrderSchema";
 
@@ -40,80 +40,26 @@ export async function POST(req: Request) {
             0
         );
 
-        // Check the items with productId
-        const trackedItems = processedItems.filter(
-            (item) => item.productId
-        );
+        // Take the stock first (all or nothing: if one product is short, nothing is taken)
+        const taken = await takeStock(user.userId, toStockLines(processedItems));
 
-        // Check for each item products stock
-        for (const item of trackedItems) {
-            const product = await Product.findOne({
-                _id: item.productId,
+        let order;
+        try {
+            order = await Order.create({
+                customerName,
+                customerPhone,
+                customerId: customerId ?? null,
+                items: processedItems,
+                totalAmount,
+                paymentStatus,
+                paymentMethod,
                 userId: user.userId,
-                stock: { $ne: null },
             });
-
-            if (product && product.stock < item.quantity) {
-                // nothing was taken yet, so we can stop right away
-                throw new ApiError(400, `Insufficient stock for "${item.productName}". Available: ${product.stock}`);
-            }
+        } catch (error) {
+            // The order couldn't be saved -> give back exactly what we took
+            await giveStock(user.userId, taken);
+            throw error;
         }
-
-        // Atomic conditional decrement
-        const successfulDecrements: { productId: string; quantity: number }[] = [];
-
-        for (const item of trackedItems) {
-            const result = await Product.findOneAndUpdate(
-                {
-                    _id: item.productId,
-                    userId: user.userId,
-                    stock: { $ne: null, $gte: item.quantity },
-                },
-                { $inc: { stock: -item.quantity } },
-            );
-
-            if (!result) {
-                // if this item fails => get the items stock information again
-                const product = await Product.findById(item.productId);
-                const available = product?.stock ?? 0;
-
-                // abort the previous items stock
-                for (const prev of successfulDecrements) {
-                    await Product.findByIdAndUpdate(prev.productId, {
-                        $inc: { stock: prev.quantity },
-                    });
-                }
-
-                // throw only AFTER the stock above was given back (code after a throw never runs)
-                throw new ApiError(400, `Insufficient stock for "${item.productName}". Available: ${available}`);
-            }
-
-            // if all checks were ok, add the items
-            successfulDecrements.push({
-                productId: item.productId!,
-                quantity: item.quantity,
-            });
-        }
-
-        // create the order after all checks done
-        const order = await Order.create({
-            customerName,
-            customerPhone,
-            customerId: customerId ?? null,
-            items: processedItems,
-            totalAmount,
-            paymentStatus,
-            paymentMethod,
-            userId: user.userId,
-        }).catch(async (createError) => {
-            // Order.create failed — restore all deducted stock
-            for (const prev of successfulDecrements) {
-                await Product.findByIdAndUpdate(prev.productId, {
-                    $inc: { stock: prev.quantity },
-                });
-            }
-            throw createError;
-        });
 
         return Response.json(
             { message: "Order created successfully", order },
@@ -184,14 +130,21 @@ export async function DELETE(req: Request) {
         await connectDB();
         const { ids } = validate(bulkDeleteOrdersSchema, await req.json());
 
-        const result = await Order.deleteMany({
-            _id: { $in: ids },
-            userId: user.userId,
-        });
+        // One by one: each order we actually delete gives ITS stock back (cancelled orders already did)
+        let deletedCount = 0;
+        for (const id of ids) {
+            const order = await Order.findOneAndDelete({ _id: id, userId: user.userId });
+            if (!order) continue;
+
+            deletedCount++;
+            if (holdsStock(order.status)) {
+                await giveStock(user.userId, toStockLines(order.items));
+            }
+        }
 
         return Response.json({
             message: "Orders deleted successfully",
-            deletedCount: result.deletedCount,
+            deletedCount,
         });
     } catch (error) {
         return handleApiError(error);
