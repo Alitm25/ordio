@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import Logo from "@/components/shared/Logo";
 import { getErrorMessage } from "@/lib/getErrorMessage";
+import { isAxiosError } from "axios";
 import {useTranslations} from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -44,6 +45,12 @@ export default function LoginForm() {
 
             router.push("/dashboard");
         } catch (error) {
+            // 429 = too many failed attempts: tell the user (in their language) how long to wait
+            if (isAxiosError(error) && error.response?.status === 429) {
+                const minutes = Math.ceil((error.response.data?.retryAfter ?? 900) / 60);
+                toast.error(tToast('tooManyAttempts', { minutes }));
+                return;
+            }
             toast.error(getErrorMessage(error, tToast('loginError') ));
         }
     };
