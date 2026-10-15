@@ -8,8 +8,11 @@ export const ORDER_SORT_FIELDS = ["createdAt", "totalAmount"] as const;
 
 export type OrderSortField = (typeof ORDER_SORT_FIELDS)[number];
 
+// A MongoDB id: 24 hex characters. Checked up front so a bad id can't fail halfway through a stock update.
+const objectId = z.string().regex(/^[a-f\d]{24}$/i, "Invalid id");
+
 export const orderItemSchema = z.object({
-    productId: z.string().optional(),
+    productId: objectId.optional(),
     productName: z.string().min(2, "Product name is required"),
     quantity: z.number().int().min(1, "Quantity must be at least 1"),
     price: z.number().min(0, "Price must be 0 or greater"),
@@ -18,7 +21,7 @@ export const orderItemSchema = z.object({
 export const createOrderSchema = z.object({
     customerName: z.string().min(2, "Customer name is required"),
     customerPhone: z.string().min(11, "Phone number is invalid"),
-    customerId: z.string().optional(),
+    customerId: objectId.optional(),
     items: z.array(orderItemSchema).min(1, "Order must have at least one item"),
     paymentStatus: z.enum(PAYMENT_STATUSES),
     // unpaid orders are stored with paymentMethod: null
@@ -41,7 +44,7 @@ export const ordersQuerySchema = z.object({
 });
 
 export const bulkDeleteOrdersSchema = z.object({
-    ids: z.array(z.string()).min(1, "No order ids provided").max(100),
+    ids: z.array(objectId).min(1, "No order ids provided").max(100),
 });
 
 export type OrderItemFormValues = z.infer<typeof orderItemSchema>;
