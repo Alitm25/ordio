@@ -1,7 +1,8 @@
 import {z} from "zod";
+import { emailField } from "@/features/auth/schemas/emailField";
 
 export const changeEmailSchema = z.object({
-    newEmail: z.email("Invalid email format"),
+    newEmail: emailField("Invalid email format"),
     currentPassword: z.string().min(1, 'Password is required'),
 })
 
