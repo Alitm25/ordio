@@ -13,7 +13,6 @@ import { Users } from "lucide-react";
 import CreateCustomerDialog from "@/components/customers/CreateCustomerDialog";
 import EditCustomerDialog from "@/components/customers/EditCustomerDialog";
 import { useDeleteCustomer } from "@/features/customers/hooks/useCustomer";
-import {kMaxLength} from "node:buffer";
 import {useTranslations} from "next-intl";
 
 export default function CustomersPage()  {
