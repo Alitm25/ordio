@@ -6,6 +6,9 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true,
+            // safety net: any email written to the DB is stored trimmed and lowercase
+            lowercase: true,
+            trim: true,
         },
         password: {
             type: String,
