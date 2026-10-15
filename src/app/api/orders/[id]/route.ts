@@ -1,10 +1,10 @@
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import Product from "@/models/Product";
 import { ApiError, handleApiError } from "@/lib/apiError";
 import { validate } from "@/lib/validate";
-import { OrderItemFormValues, updateOrderSchema } from "@/features/orders/schemas/createOrderSchema";
+import { updateOrderSchema } from "@/features/orders/schemas/createOrderSchema";
+import { diffStockLines, giveStock, holdsStock, takeStock, toStockLines } from "@/lib/stock";
 
 export async function GET( _req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -44,128 +44,47 @@ export async function PATCH( req: Request, { params }: { params: Promise<{ id: s
             throw new ApiError(404, "Order not found");
         }
 
+        // What this order holds in stock BEFORE the edit (read it before changing the status!)
+        const stockBefore = holdsStock(order.status) ? toStockLines(order.items) : [];
+
         // Copy the validated simple fields (customer info, status, payment...)
         order.set(fields);
 
-        // Get each item of the order that is going to be edited
+        // New items: recalculate subtotals and the total on the server (never trust the client's math)
         if (items) {
-            const processedItems = items.map((item) => ({
+            order.items = items.map((item) => ({
                 productId: item.productId ?? null,
                 productName: item.productName,
                 quantity: item.quantity,
                 price: item.price,
                 subtotal: item.quantity * item.price,
             }));
-
-            // Old items (with productId)
-            const oldTrackedItems = order.items.filter(
-                (item: OrderItemFormValues) => item.productId
-            );
-
-            // New items (with prodcutId)
-            const newTrackedItems = processedItems.filter(
-                (item) => item.productId
-            );
-
-            // Restore the old items stock
-            for (const oldItem of oldTrackedItems) {
-                await Product.findOneAndUpdate(
-                    {
-                        _id: oldItem.productId,
-                        userId: user.userId,
-                        stock: { $ne: null },
-                    },
-                    { $inc: { stock: oldItem.quantity } }
-                );
-            }
-
-            // Checking new items stock
-            for (const newItem of newTrackedItems) {
-                const product = await Product.findOne({
-                    _id: newItem.productId,
-                    userId: user.userId,
-                    stock: { $ne: null },
-                });
-                // Abort the old items stock restoring to the old one if the process fails
-                if (product && product.stock < newItem.quantity) {
-                    for (const oldItem of oldTrackedItems) {
-                        await Product.findOneAndUpdate(
-                            {
-                                _id: oldItem.productId,
-                                userId: user.userId,
-                                stock: { $ne: null },
-                            },
-                            { $inc: { stock: -oldItem.quantity } }
-                        );
-                    }
-
-                    return Response.json(
-                        {
-                            message: `Insufficient stock for "${newItem.productName}". Available: ${product.stock}`,
-                        },
-                        { status: 400 }
-                    );
-                }
-            }
-
-            // Atomic decrement for new items after pass
-            const successfulDecrements: {
-                productId: string;
-                quantity: number;
-            }[] = [];
-
-            for (const newItem of newTrackedItems) {
-                const result = await Product.findOneAndUpdate(
-                    {
-                        _id: newItem.productId,
-                        userId: user.userId,
-                        stock: { $ne: null, $gte: newItem.quantity },
-                    },
-                    { $inc: { stock: -newItem.quantity } },
-                );
-
-                if (!result) {
-                    const product = await Product.findById(newItem.productId);
-                    const available = product?.stock ?? 0;
-
-                    // Compensating for successful deductions
-                    for (const prev of successfulDecrements) {
-                        await Product.findByIdAndUpdate(prev.productId, {
-                            $inc: { stock: prev.quantity },
-                        });
-                    }
-
-                    // Decrement the old items stock again after pass
-                    for (const oldItem of oldTrackedItems) {
-                        await Product.findOneAndUpdate(
-                            {
-                                _id: oldItem.productId,
-                                userId: user.userId,
-                                stock: { $ne: null },
-                            },
-                            { $inc: { stock: -oldItem.quantity } }
-                        );
-                    }
-
-                    return Response.json(
-                        { message: `Insufficient stock for "${newItem.productName}". Available: ${available}` },
-                        { status: 400 }
-                    );
-                }
-
-                successfulDecrements.push({
-                    productId: newItem.productId!,
-                    quantity: newItem.quantity,
-                });
-            }
-
-            order.items = processedItems;
-            order.totalAmount = processedItems.reduce(
+            order.totalAmount = order.items.reduce(
                 (sum: number, item: { subtotal: number }) => sum + item.subtotal, 0
             );
         }
 
-        await order.save();
+        // Catch schema problems BEFORE touching any stock
+        await order.validate();
+
+        // What it should hold AFTER (a cancelled order holds nothing). Only the difference is applied:
+        // 3 -> 5 cakes takes 2 more; cancelling gives everything back; un-cancelling takes it again.
+        const stockAfter = holdsStock(order.status) ? toStockLines(order.items) : [];
+        const { take, give } = diffStockLines(stockBefore, stockAfter);
+
+        // 1. take (all or nothing, may answer 400 "Insufficient stock" with nothing changed)
+        const taken = await takeStock(user.userId, take);
+
+        // 2. save the order; if that fails, give back what step 1 took
+        try {
+            await order.save();
+        } catch (error) {
+            await giveStock(user.userId, taken);
+            throw error;
+        }
+
+        // 3. only now give stock back (if we gave it earlier and the save failed, it would be "double stock")
+        await giveStock(user.userId, give);
 
         return Response.json({
             message: "Order updated successfully",
@@ -188,6 +107,11 @@ export async function DELETE( _req: Request, { params }: { params: Promise<{ id:
 
         if (!deletedOrder) {
             throw new ApiError(404, "Order not found");
+        }
+
+        // An active order gives its stock back (a cancelled one already did when it was cancelled)
+        if (holdsStock(deletedOrder.status)) {
+            await giveStock(user.userId, toStockLines(deletedOrder.items));
         }
 
         return Response.json({
