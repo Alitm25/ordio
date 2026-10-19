@@ -17,7 +17,9 @@ export interface DashboardRecentOrder {
     status: string;
     createdAt: string;
 }
-export type DashboardRange = '7d' | '30d' | '90d' | 'this-month'
+// The ranges live next to the API's validation, so the page and the server can't drift apart
+import type { DashboardRange } from "@/features/dashboard/schemas/dashboardRange";
+export type { DashboardRange };
 
 export interface DashboardStats {
     totalOrdersInRange: number;
