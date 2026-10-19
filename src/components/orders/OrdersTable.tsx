@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { refreshOrderQueries } from "@/features/orders/refreshOrderQueries";
 import { deleteOrder } from "@/features/orders/services/deleteOrder";
 import { bulkDeleteOrders } from "@/features/orders/services/bulkDeleteOrders";
 import { updateOrderStatus } from "@/features/orders/services/updateOrderStatus";
@@ -44,7 +45,7 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
     const deleteOrderMutation = useMutation({
         mutationFn: deleteOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            refreshOrderQueries(queryClient);
             setOrderToDelete(null);
             toast.success(tNotif("deleteSuccess"));
         },
@@ -57,7 +58,7 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
     const bulkDeleteMutation = useMutation({
         mutationFn: bulkDeleteOrders,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            refreshOrderQueries(queryClient);
             setSelectedIds([]);
             setBulkDeleteOpen(false);
             toast.success(tNotif("bulkDeleteSuccess"));
@@ -71,7 +72,7 @@ export default function OrdersTable({ orders, onEdit, onSelect, selectedOrderId 
     const updateStatusMutation = useMutation({
         mutationFn: updateOrderStatus,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            refreshOrderQueries(queryClient);
             toast.success(tNotif("statusUpdateSuccess"));
         },
         onError: () => {
