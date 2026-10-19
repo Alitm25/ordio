@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {keepPreviousData, useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import { refreshOrderQueries } from "@/features/orders/refreshOrderQueries";
 import { getOrders } from "@/features/orders/services/getOrders";
 import { deleteOrder } from "@/features/orders/services/deleteOrder";
 import OrdersTable, { Order } from "@/components/orders/OrdersTable";
@@ -92,7 +93,7 @@ export default function OrdersPage() {
     const deleteOrderMutation = useMutation({
         mutationFn: deleteOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            refreshOrderQueries(queryClient); // the deleted order's stock comes back
             setOrderToDelete(null);
             toast.success(tNotif("deleteSuccess"));
             if (selectedOrderId) {
