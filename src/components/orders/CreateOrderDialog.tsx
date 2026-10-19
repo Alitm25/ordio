@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createOrderSchema, CreateOrderFormValues } from "@/features/orders/schemas/createOrderSchema";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import { refreshOrderQueries } from "@/features/orders/refreshOrderQueries";
 import {createOrder} from "@/features/orders/services/createOrders";
 import {Button} from "@/components/ui/button";
 import {useCustomers} from "@/features/customers/hooks/useCustomer";
@@ -46,8 +47,7 @@ export default function CreateOrderDialog({open, onOpenChange}: Props) {
     const createOrderMutation = useMutation({
         mutationFn: createOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['orders'] }); // <= update orders
-            queryClient.invalidateQueries({ queryKey: ["products"] }); // <= update products (stock)
+            refreshOrderQueries(queryClient); // orders, stock and dashboard
             toast.success(tNotif("createSuccess"));
             form.reset();
             onOpenChange(false);
