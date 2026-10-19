@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="322 330 610 610" role="img" aria-label="Logo">
+  <defs>
+    <!-- Ring outline: outer circle with notch at top-right, squircle hole -->
+    <path id="ring" d="M843 436
+      A293 293 0 1 0 919 600
+      C916 552 906 512 893 478
+      Q887 461 869 467
+      L757 522
+      Q744 530 752 540
+      L775 553
+      C779 572 780 600 780 625
+      C780 726 712 797 626 797
+      C535 797 472 726 472 625
+      C472 521 540 453 626 453
+      C668 453 704 468 734 490
+      Q741 497 751 493
+      L838 450
+      Q849 444 843 436 Z"/>
+    <clipPath id="ringClip"><use href="#ring"/></clipPath>
+
+    <!-- Fold lines of the ribbon -->
+    <path id="foldTop" d="M322 728 L336 656 C352 574 442 500 602 458"/>
+    <path id="foldBottom" d="M300 823 L410 852 C530 884 712 832 920 646 L980 592"/>
+
+    <!-- Middle band (base) -->
+    <linearGradient id="gMid" gradientUnits="userSpaceOnUse" x1="870" y1="450" x2="620" y2="820">
+      <stop offset="0" stop-color="#7F78F8"/>
+      <stop offset="0.5" stop-color="#5F57E7"/>
+      <stop offset="1" stop-color="#6C64F1"/>
+    </linearGradient>
+    <!-- Upper band -->
+    <linearGradient id="gTop" gradientUnits="userSpaceOnUse" x1="340" y1="640" x2="850" y2="400">
+      <stop offset="0" stop-color="#5850DF"/>
+      <stop offset="0.5" stop-color="#6C64EF"/>
+      <stop offset="1" stop-color="#938DFC"/>
+    </linearGradient>
+    <!-- Lower band -->
+    <linearGradient id="gBottom" gradientUnits="userSpaceOnUse" x1="420" y1="880" x2="920" y2="650">
+      <stop offset="0" stop-color="#9893FF"/>
+      <stop offset="0.55" stop-color="#7770F5"/>
+      <stop offset="1" stop-color="#8781FC"/>
+    </linearGradient>
+
+    <!-- Soft blur for the fold shadows -->
+    <filter id="blurTop" filterUnits="userSpaceOnUse" x="280" y="380" width="420" height="420">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="blurBottom" filterUnits="userSpaceOnUse" x="300" y="560" width="680" height="380">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+  </defs>
+
+  <g clip-path="url(#ringClip)">
+    <!-- Middle band -->
+    <rect x="300" y="300" width="680" height="680" fill="url(#gMid)"/>
+
+    <!-- Shadow cast by the upper band -->
+    <use href="#foldTop" fill="none" stroke="#2C24A4" stroke-opacity="0.75" stroke-width="56" filter="url(#blurTop)"/>
+    <!-- Shadow cast by the lower band -->
+    <use href="#foldBottom" fill="none" stroke="#2C24A4" stroke-opacity="0.75" stroke-width="84" filter="url(#blurBottom)"/>
+
+    <!-- Upper band (wraps over the top to the notch) -->
+    <path fill="url(#gTop)" d="M300 300 L300 728 L322 728 L336 656 C352 574 442 500 602 458
+      L650 560 L742 505 L800 484 L960 420 L960 300 Z"/>
+    <!-- Lower band -->
+    <path fill="url(#gBottom)" d="M300 823 L410 852 C530 884 712 832 920 646 L980 592 L980 980 L300 980 Z"/>
+  </g>
+
+  <!-- Dots -->
+  <circle cx="407" cy="614" r="43" fill="#C2BFFE"/>
+  <circle cx="801" cy="784" r="43" fill="#BAB6FD"/>
+</svg>
