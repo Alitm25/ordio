@@ -24,6 +24,7 @@ import {
     CreateOrderFormValues,
 } from "@/features/orders/schemas/createOrderSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { refreshOrderQueries } from "@/features/orders/refreshOrderQueries";
 import { updateOrder } from "@/features/orders/services/updateOrder";
 import { Button } from "@/components/ui/button";
 import { Order } from "@/components/orders/OrdersTable";
@@ -62,9 +63,7 @@ export default function EditOrderDialog({ order, onOpenChange }: Props) {
     const updateOrderMutation = useMutation({
         mutationFn: updateOrder,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] }); // <== refresh all orders cache
-            queryClient.invalidateQueries({ queryKey: ["order", order?._id] }); // <== refresh the specific order cache
-            queryClient.invalidateQueries({ queryKey: ["products"] });
+            refreshOrderQueries(queryClient); // orders, this order, stock and dashboard
             toast.success(tNotif("updateSuccess"));
             onOpenChange(false);
         },
