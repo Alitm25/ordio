@@ -3,48 +3,25 @@ import Order from "@/models/Order";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import Product from "@/models/Product";
 import { handleApiError } from "@/lib/apiError";
+import { validate } from "@/lib/validate";
+import { addDays, dayKey, startOfDay } from "@/lib/businessTime";
+import { DashboardRange, dashboardQuerySchema } from "@/features/dashboard/schemas/dashboardRange";
 
-//  a getDataRange function in order to show the stats based on the various period of times
-function getDateRange(range: string):{ start: Date, end: Date } {
-    // declare today and end of the date variables
-    const now = new Date();
-    const end = new Date(now)
-    let start :Date;
+const RANGE_DAYS: Record<Exclude<DashboardRange, "this_month">, number> = { "7d": 7, "30d": 30, "90d": 90 };
 
-    // Initialize the 'range' param to start date and calculate end of the time range
-    switch (range) {
-        case "7d":
-            start = new Date(now);
-            start.setDate(start.getDate() - 6);
-            start.setHours(0, 0, 0, 0);
-            break;
-        case "30d":
-            start = new Date(now);
-            start.setDate(start.getDate() - 29);
-            start.setHours(0, 0, 0, 0);
-            break;
-        case "90d":
-            start = new Date(now);
-            start.setDate(start.getDate() - 89);
-            start.setHours(0, 0, 0, 0);
-            break;
-        case "this_month":
-        default:
-            start = new Date(now.getFullYear(), now.getMonth(), 1);
-            break;
+// The calendar days a range covers, in the shop's time zone, oldest first, ending today.
+// "this_month" = from the 1st of this month until today. The KPI cards AND the chart both use this list.
+function getRangeDays(range: DashboardRange): string[] {
+    const today = dayKey(new Date());
+    const firstDay = range === "this_month"
+        ? `${today.slice(0, 8)}01`
+        : addDays(today, -(RANGE_DAYS[range] - 1));
+
+    const days: string[] = [];
+    for (let day = firstDay; day <= today; day = addDays(day, 1)) {
+        days.push(day);
     }
-
-    return { start, end };
-}
-
-// Declare a function for changing 'range' param to Days
-function getTrendDays(range: string): number {
-    switch (range) {
-        case "7d": return 7;
-        case "30d": return 30;
-        case "90d": return 90;
-        default: return 30;
-    }
+    return days;
 }
 
 export async function GET(req: Request) {
@@ -52,28 +29,19 @@ export async function GET(req: Request) {
         const user = await getCurrentUser();
         await connectDB();
 
-        // Get the range param from URL
+        // Only known ranges are accepted ("banana" -> 400 instead of silently meaning "this month")
         const { searchParams } = new URL(req.url);
-        const range = searchParams.get("range") ?? "this_month";
+        const { range } = validate(dashboardQuerySchema, Object.fromEntries(searchParams));
 
-        // Get the range time and change it to days
-        const { start, end } = getDateRange(range);
-        const trendDays = getTrendDays(range);
-
-        // set the Start day and End day
-        const trendStart = new Date(end);
-        trendStart.setDate(trendStart.getDate() - (trendDays - 1));
-        trendStart.setHours(0, 0, 0, 0);
+        const days = getRangeDays(range);
+        // the moment the first day of the range begins in the shop's time zone
+        const start = startOfDay(days[0]);
 
         // Declare each stats variables with finding the exact order with given filters
-        const [ rangeOrders, trendOrders, recentOrders, pendingCount, processingCount, completedCount, cancelledCount, lowStockProducts ] = await Promise.all([
+        const [ rangeOrders, recentOrders, pendingCount, processingCount, completedCount, cancelledCount, lowStockProducts ] = await Promise.all([
             Order.find({
                 userId: user.userId,
-                createdAt: { $gte: start, $lte: end },
-            }),
-            Order.find({
-                userId: user.userId,
-                createdAt: { $gte: trendStart, $lte: end },
+                createdAt: { $gte: start },
             }),
             Order.find({ userId: user.userId }).sort({ createdAt: -1 }).limit(5),
             Order.countDocuments({ userId: user.userId, status: "pending" }),
@@ -99,20 +67,14 @@ export async function GET(req: Request) {
         // Calculate average order values
         const averageOrderValue = completedInRange.length > 0 ? totalRevenueInRange / completedInRange.length : 0;
 
-        const trendMap = new Map<string, { orders: number; revenue: number }>();
+        // One bucket per day of the range (days without orders stay at 0)
+        const trendMap = new Map<string, { orders: number; revenue: number }>(
+            days.map((day) => [day, { orders: 0, revenue: 0 }])
+        );
 
-        for (let i = 0; i < trendDays; i++) {
-            const d = new Date(trendStart);
-            d.setDate(d.getDate() + i);
-            trendMap.set(d.toISOString().split("T")[0], {
-                orders: 0,
-                revenue: 0,
-            });
-        }
-
-        for (const order of trendOrders) {
-            const key = new Date(order.createdAt).toISOString().split("T")[0];
-            const entry = trendMap.get(key);
+        for (const order of rangeOrders) {
+            // the shop's calendar day, NOT toISOString() (UTC would move late-night orders to the day before)
+            const entry = trendMap.get(dayKey(order.createdAt));
 
             if (entry) {
                 entry.orders += 1;
