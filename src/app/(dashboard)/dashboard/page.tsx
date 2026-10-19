@@ -26,7 +26,7 @@ const STATUS_COLORS = {
 
 export default function DashboardPage() {
     // Time range state
-    const [range, setRange] = useState<DashboardRange>('this-month');
+    const [range, setRange] = useState<DashboardRange>('this_month');
     // Translate intl function
     const locale = useLocale();
     const dir = locale === 'fa' ? 'rtl' : 'ltr';
@@ -40,7 +40,7 @@ export default function DashboardPage() {
         "7d": `${tDashboard('range.7d')}`,
         "30d": `${tDashboard('range.30d')}`,
         "90d": `${tDashboard('range.90d')}`,
-        'this-month': `${tDashboard('range.this_month')}`,
+        this_month: `${tDashboard('range.this_month')}`,
     }
 
     // Dashboard API Fetch
@@ -156,7 +156,7 @@ export default function DashboardPage() {
             <div className="grid gap-4 lg:grid-cols-3">
                 <Card className="lg:col-span-2">
                     <CardHeader>
-                        <CardTitle>{ tDashboard('range.7d') }</CardTitle>
+                        <CardTitle>{ `${tDashboard('trend')} (${RANGE_LABELS[range]})` }</CardTitle>
                     </CardHeader>
 
                     <CardContent>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
 
                                 <XAxis
                                     dataKey="date"
-                                    tickFormatter={ (value) => formatDate(value, locale) }
+                                    tickFormatter={ (value) => formatDate(`${value}T12:00:00`, locale) }
                                     tickLine={false}
                                     axisLine={false}
                                     fontSize={12}
@@ -187,7 +187,7 @@ export default function DashboardPage() {
                                         border: "1px solid var(--border)",
                                         borderRadius: "8px",
                                     }}
-                                    labelFormatter={ (value) => formatDate(value, locale) }
+                                    labelFormatter={ (value) => formatDate(`${value}T12:00:00`, locale) }
                                 />
 
                                 <Area
