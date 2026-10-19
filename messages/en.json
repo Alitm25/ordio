@@ -138,7 +138,8 @@
       "passwordChangeSuccess": "Password changed successfully",
       "passwordChangeError": "Could not change password",
       "emailChangeSuccess": "Email changed successfully",
-      "emailChangeError": "Could not change email"
+      "emailChangeError": "Could not change email",
+      "tooManyAttempts": "Too many failed attempts. Try again in {minutes} minutes."
     },
     "order": {
       "orderDelete": "Order deleted successfully",

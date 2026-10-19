@@ -138,7 +138,8 @@
       "passwordChangeSuccess": "رمز عبور تغییر کرد",
       "passwordChangeError": "تغغیر رمز عبور ناموفق بود",
       "emailChangeSuccess": "ایمیل تغییر کرد",
-      "emailChangeError": "تغییر ایمیل ناموفق بود"
+      "emailChangeError": "تغییر ایمیل ناموفق بود",
+      "tooManyAttempts": "تعداد تلاش‌های ناموفق زیاد است. {minutes} دقیقه دیگر دوباره تلاش کنید."
     },
     "order": {
       "orderDelete": "سفارش حذف شد",
