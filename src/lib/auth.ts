@@ -1,11 +1,17 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+// Read the secret when it's USED, not when this file is loaded.
+// `next build` loads this file too, and building the app must not need production secrets.
+export function getJwtSecret(): string {
+    const secret = process.env.JWT_SECRET;
 
-if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET is missing");
+    if (!secret) {
+        throw new Error("JWT_SECRET is missing");
+    }
+
+    return secret;
 }
 
 export function verifyToken(token: string) {
-    return jwt.verify(token, JWT_SECRET as string);
+    return jwt.verify(token, getJwtSecret());
 }
