@@ -7,6 +7,7 @@ import { handleApiError } from "@/lib/apiError";
 import { validate } from "@/lib/validate";
 import { loginSchema } from "@/features/auth/schemas/loginSchema";
 import { createRateLimiter, getClientIp } from "@/lib/rateLimit";
+import { getJwtSecret } from "@/lib/auth";
 
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 // Only FAILED logins are counted. Two keys, because each one alone has a hole:
@@ -60,7 +61,7 @@ export async function POST(req: Request) {
                 userId: user._id,
                 email: user.email,
             },
-            process.env.JWT_SECRET as string,
+            getJwtSecret(),
             {
                 expiresIn: "7d"
             }
