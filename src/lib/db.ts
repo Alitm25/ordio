@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
-
-if (!MONGODB_URI) {
-    throw new Error("Please define MONGODB_URI in .env file");
-}
-
 // One shared connection for every request (kept on globalThis so dev hot-reloads don't open new ones)
 interface MongooseCache {
     conn: typeof mongoose | null;
@@ -21,7 +15,14 @@ export async function connectDB() {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI, {
+        // Read the URI when connecting, not when this file is loaded:
+        // `next build` loads this file too, and building the app must not need the database URL
+        const uri = process.env.MONGODB_URI;
+        if (!uri) {
+            throw new Error("Please define MONGODB_URI in .env file");
+        }
+
+        cached.promise = mongoose.connect(uri, {
             // Give up after 10s instead of the default 30s, so users see an error quickly when the DB is down
             serverSelectionTimeoutMS: 10_000,
         });
